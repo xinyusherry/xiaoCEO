@@ -1,0 +1,107 @@
+@import 'reset.css';
+@import 'element.css';
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+#app {
+  box-sizing: border-box;
+  background: #0B1C36;
+  padding: 8px;
+  height: 100%;
+  color: #fff;
+}
+#app .row {
+  display: flex;
+}
+#app .card-box {
+  display: flex;
+  flex-wrap: wrap;
+}
+#app .card {
+  height: 269px;
+  margin: 4.5px;
+  background: #16325D;
+  box-shadow: 0 2px 10px 0 rgba(3, 34, 57, 0.26);
+}
+#app .card .border {
+  width: 100%;
+  height: 2px;
+}
+#app .card .titleDiv {
+  width: calc(100% - 12px);
+  padding: 0 6px;
+  display: flex;
+  height: 30px;
+  line-height: 30px;
+  justify-content: space-between;
+  align-items: center;
+}
+#app .card .titleDiv .time {
+  color: #7594C3;
+  font-size: 15px;
+}
+#app .card .card-content {
+  height: calc(100% - 30px);
+}
+#app .card .card-content .bigNum {
+  font-size: 45px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+#app .card .card-content .bigNum img {
+  margin: 6px;
+  height: 20px;
+}
+#app .card .card-content .pieDiv {
+  width: 100%;
+  height: calc(100% - 90px);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+#app .card .card-content .pieDiv ul {
+  width: 40%;
+}
+#app .card .card-content .pieDiv ul li {
+  display: flex;
+  align-items: center;
+  line-height: 1.6;
+}
+#app .card .card-content .pieDiv ul li .rect {
+  width: 8px;
+  height: 8px;
+}
+#app .card .card-content .pieDiv ul li .name {
+  color: #6891D0;
+}
+#app .card .card-content .pieDiv ul li .value {
+  font-size: 15px;
+}
+#app .card .card-content .pieDiv ul li > span {
+  margin: 0 5px;
+  font-size: 13px;
+}
+#app .card.small {
+  height: 60px;
+}
+#app .card.small .title-content {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 0 15px;
+}
+#app .card.small .title-content > img {
+  margin: 0 5px;
+}
+#app .card.mid {
+  height: 130px;
+}
+#app .card.big {
+  height: 547px;
+}
