@@ -110,9 +110,6 @@ export default {
 </script>
 
 <style lang="less">
-  .card{
-    margin: 0
-  }
   // .flex{
   //   width: 100%;
   //   height: 2000px;
