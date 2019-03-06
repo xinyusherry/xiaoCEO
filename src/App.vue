@@ -34,6 +34,20 @@
         <component :is="componentId[item.i]"></component>
       </grid-item>
     </grid-layout>
+    <div v-if="isDraggable==true" class="addModule">
+        <el-button class="btn2" v-show="isAddBtn" size="small" @click="isAddBtn=false" icon="el-icon-circle-plus-outline">添加模块</el-button>
+        <div v-show="!isAddBtn">
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedModules" @change="handleCheckedModulesChange">
+            <el-checkbox v-for="module in layout" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
+          </el-checkbox-group>
+          <div class="btns">
+            <el-button class="btn btn1" size="small" @click="isAddBtn=true">取消</el-button>
+            <el-button class="btn btn2" size="small" @click="changeModules()">确定</el-button>
+          </div>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -49,27 +63,58 @@ import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
-export default {
-  data() {
-    return {
-      order: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-      isDraggable: false,
-      componentId: [
-        "dvlpDayMonth",
+
+const selModules = [
+  {
+    "id":"dvlpDayMonth",
+    "name":"发展（日、月）"
+  },
+  {
+    "id":"Comp2",
+    "name":"地图"
+  },
+  {
+    "id":"dvlpTime",
+    "name":"发展实时"
+  },
+  {
+    "id":"cjDayMonth",
+    "name":"拆机（日、月）"
+  },
+  {
+    "id":"cjTime",
+    "name":"拆机实时"
+  },
+];
+const allModules = [
         "Comp2",
+        "dvlpDayMonth",
         "dvlpTime",
         "cjDayMonth",
         "cjTime",
-      ],
+      ];
+export default {
+  data() {
+    return {
+      isDraggable: false,
+      isAddBtn:true,
+      checkAll: true,
+      isIndeterminate: false,
+      checkedModules: allModules,
+      modules: selModules,
+      componentId: allModules,
       layout: [
-        { x: 0, y: 0, w: 1, h: 1, i: "0" },
-        { x: 1, y: 0, w: 1, h: 2, i: "1" },
-        { x: 0, y: 1, w: 1, h: 1, i: "2" },
-        { x: 0, y: 2, w: 1, h: 1, i: "3" },
-        { x: 1, y: 2, w: 1, h: 1, i: "4" }
-      ]
+        { x: 1, y: 0, w: 1, h: 2, i: "0", id:"Comp2",name:"地图" },
+        { x: 0, y: 0, w: 1, h: 1, i: "1", id:"dvlpDayMonth",name:"发展（日、月）" },
+        { x: 0, y: 1, w: 1, h: 1, i: "2", id:"dvlpTime",name:"发展实时" },
+        { x: 0, y: 2, w: 1, h: 1, i: "3", id:"cjDayMonth",name:"拆机（日、月）" },
+        { x: 1, y: 2, w: 1, h: 1, i: "4", id:"cjTime",name:"拆机实时" }
+      ] 
     };
   },
+  // watch:{
+  //   checkedModules
+  // }
   components: {
     Card,
     GridLayout,
@@ -83,13 +128,20 @@ export default {
     cjTime
   },
   methods: {
-    orderUp(index) {
-      var num = this.order[index] - 1;
-      this.$set(this.order, index, num);
+    handleCheckAllChange(val) {
+      console.log(val);
+      this.checkedModules = val ? allModules : [];
+      this.isIndeterminate = false;
     },
-    orderDown(index) {
-      var num = this.order[index] + 1;
-      this.$set(this.order, index, num);
+    handleCheckedModulesChange(value) {
+      console.log(value);
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.modules.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.modules.length;
+    },
+    changeModules(){
+      this.isAddBtn=true;
+      this.componentId = this.checkedModules;
     }
   }
 };
@@ -118,6 +170,41 @@ export default {
       padding: 8px 40px;
       font-size: 14px;
       background-image: linear-gradient(-180deg, #98DCFD 0%, #5FB6F9 100%);
+    }
+  }
+  .addModule{
+    background: #16325D;
+    height: 200px;
+    margin: 0 10px 10px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    .el-checkbox__label{
+      color: #fff;
+    }
+    .el-button:focus, .el-button:hover {
+      color: #fff;
+      border-color: inherit;
+      background-color: transparent;
+    }
+    .btns{
+      position: absolute;
+      top: 15px;
+      right: 20px;
+    }
+    .btn{
+      padding: 8px 30px;
+      color: #fff;
+    }
+    .btn1{
+      margin-right:20px;
+      background: transparent;
+    }
+    .btn2{
+      background-image: linear-gradient(-225deg, #A834EF 0%, #2AC6FF 100%);
+      border: none;
+      color: #fff;
     }
   }
 </style>
