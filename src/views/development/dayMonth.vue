@@ -1,6 +1,11 @@
 <template>
   <div class="moveDiv">
-    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px">
+    <card
+      :cardset="day.cardset"
+      :timetype="'day'"
+      style="margin-right:10px"
+     
+    >
       <div class="card-content">
         <div class="bigNum">
           {{day.developDay.value}}
@@ -8,10 +13,15 @@
             :src="require(`../../assets/images/icon-${day.developDay.up?'up':'down'}.png`)"
           >
         </div>
-        <chart-pie :id="'pieDay'" :dataset="day.developDay.dataset" :color="day.colors" :legend="day.legend"></chart-pie>
+        <chart-pie
+          :id="'pieDay'"
+          :dataset="day.developDay.dataset"
+          :color="day.colors"
+          :legend="day.legend"
+        ></chart-pie>
       </div>
     </card>
-    <card :cardset="month.cardset" :timetype="'month'">
+    <card :cardset="month.cardset" :timetype="'month'" >
       <div class="card-content">
         <div class="bigNum">
           {{month.developMonth.value}}
@@ -19,7 +29,12 @@
             :src="require(`../../assets/images/icon-${month.developMonth.up?'up':'down'}.png`)"
           >
         </div>
-        <chart-pie :id="'pieMonth'" :dataset="month.developMonth.dataset" :color="month.colors" :legend="month.legend"></chart-pie>
+        <chart-pie
+          :id="'pieMonth'"
+          :dataset="month.developMonth.dataset"
+          :color="month.colors"
+          :legend="month.legend"
+        ></chart-pie>
       </div>
     </card>
   </div>
@@ -57,7 +72,7 @@ export default {
           ]
         },
         colors: ["#1AC175", "#1B8CEA"],
-        legend:["固话","移动"]
+        legend: ["固话", "移动"]
       },
       month: {
         cardset: {
@@ -81,9 +96,14 @@ export default {
           ]
         },
         colors: ["#EDC624", "#F84F4F"],
-        legend:["固话","移动"]
+        legend: ["固话", "移动"]
       }
     };
+  },
+  methods: {
+    showDialog: function() {
+      this.dialogTableVisible = true;
+    }
   }
 };
 </script>
