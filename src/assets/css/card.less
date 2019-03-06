@@ -12,7 +12,7 @@ body {
   box-sizing: border-box;
   background: #0B1C36;
   padding: 8px;
-  height: 100%;
+  min-height: 100%;
   color: #fff;
 
   .row {
@@ -71,7 +71,7 @@ body {
 
       .pieDiv {
         width: 100%;
-        height: calc(~'100% - 90px');
+        height: calc(~"100% - 90px");
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -90,11 +90,11 @@ body {
             }
 
             .name {
-              color: #6891D0
+              color: #6891d0;
             }
 
             .value {
-              font-size: 15px
+              font-size: 15px;
             }
 
             >span {
@@ -117,7 +117,8 @@ body {
       align-items: center;
       height: 60px;
       padding: 0 15px;
-      >img{
+
+      >img {
         margin: 0 5px
       }
     }
