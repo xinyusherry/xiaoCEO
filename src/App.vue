@@ -68,7 +68,7 @@
       </div>
     </div>
     <div>
-      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow">
+      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
         <component :is="dialogCompent"></component>
       </el-dialog>
     </div>
@@ -83,6 +83,7 @@ import Comp2 from "@/components/Comp2.vue";
 import Comp3 from "@/components/Comp3.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
+import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
@@ -167,7 +168,8 @@ export default {
     dvlpDayMonth,
     dvlpTime,
     cjDayMonth,
-    cjTime
+    cjTime,
+    dayMonthDetail
   },
   methods: {
     handleCheckAllChange(val) {
@@ -257,20 +259,25 @@ export default {
     color: #fff;
   }
 }
-.el-dialog__header {
-  background-image: linear-gradient(-135deg, #9bd9fc 0%, #3096fc 100%);
-  background: linear-gradient(to right, #9bd9fc, #3096fc);
-  opacity: 0.6;
-  text-align: center;
-  .el-dialog__title {
-    font-family: "PingFangSC-Medium";
-    font-size: 24px;
-    color: #ffffff;
+.el-dialog__wrapper {
+  .el-dialog__header {
+    // background-image: linear-gradient(-135deg, #9bd9fc 0%, #3096fc 100%);
+    background: linear-gradient(to right, #9bd9fc, #3096fc);
+    opacity: 0.6;
+    text-align: center;
+    .el-dialog__title {
+      font-family: "PingFangSC-Medium";
+      font-size: 24px;
+      color: #ffffff;
+    }
+    .el-icon-close:before {
+      content: "\E60F";
+      color: #fff;
+      font-size: 20px;
+    }
   }
-  .el-icon-close:before {
-    content: "\E60F";
-    color: #fff;
-    font-size: 20px;
+  .el-dialog__body{
+    background: rgba(0,0,0,.8);
   }
 }
 </style>
