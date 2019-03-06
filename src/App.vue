@@ -126,7 +126,6 @@ export default {
   methods: {
     handleCheckAllChange(val) {
       this.checkedModules = val ? allModulesId.concat() : [];
-      console.log(this.checkedModules);
       this.isIndeterminate = false;
     },
     handleCheckedModulesChange(value) {
@@ -156,7 +155,6 @@ export default {
             )
           }
         });
-        console.log(this.layout);
       }
     },
     //子组件传递过来的参数
