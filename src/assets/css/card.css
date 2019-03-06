@@ -21,7 +21,7 @@ body {
 }
 #app .card {
   height: 269px;
-  margin: 4.5px;
+  margin: 4.5px 10px;
   background: #16325D;
   box-shadow: 0 2px 10px 0 rgba(3, 34, 57, 0.26);
 }

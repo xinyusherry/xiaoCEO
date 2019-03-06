@@ -5,8 +5,7 @@
         <div class="title-content">
           <img src="./assets/images/icon-title.png" height="26" alt="">
           <img src="./assets/images/title.png" height="26" alt="">
-          <el-button @click="isDraggable=true">配置页面</el-button>
-          <el-button @click="isDraggable=false">配置完成</el-button>
+          <el-button class="layoutBtn" type="primary" size="small" @click="isDraggable=!isDraggable">配置{{!isDraggable?'页面':'完成'}}</el-button>
         </div>
       </Card>
     </div>
@@ -48,9 +47,9 @@ export default {
       layout:[
           {"x":0,"y":0,"w":1,"h":1,"i":"0"},
           {"x":1,"y":0,"w":1,"h":2,"i":"1"},
-          {"x":0,"y":0,"w":1,"h":1,"i":"2"},
-          {"x":1,"y":0,"w":1,"h":1,"i":"3"},
-          {"x":0,"y":0,"w":1,"h":1,"i":"4"}
+          {"x":0,"y":1,"w":1,"h":1,"i":"2"},
+          {"x":0,"y":2,"w":1,"h":1,"i":"3"},
+          {"x":1,"y":2,"w":1,"h":1,"i":"4"}
       ]
     }
   },
@@ -77,7 +76,6 @@ export default {
 
 <style lang="less">
   .vue-grid-item{
-    // background: #17325D;
     position: relative;
   }
   .mask{
@@ -90,6 +88,15 @@ export default {
     >div{
       float: right;
       margin: 10px;
+    }
+  }
+  .title-content{
+    display: flex;
+    .layoutBtn{
+      margin-left:auto;
+      padding: 8px 40px;
+      font-size: 14px;
+      background-image: linear-gradient(-180deg, #98DCFD 0%, #5FB6F9 100%);
     }
   }
 </style>
