@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="card-box">
-      <Card :classname="'small'" :cardset="{width:'100%',leftcolor:'#39B54A',rightcolor:'#F8E36E'}">
+      <Card :classname="'small'" :cardset="{width:'100%',leftcolor:'#39B54A',rightcolor:'#F8E36E'}" style="margin:4.5px 10px">
         <div class="title-content">
           <img src="./assets/images/icon-title.png" height="26" alt="">
           <img src="./assets/images/title.png" height="26" alt="">

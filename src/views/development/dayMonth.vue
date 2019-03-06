@@ -1,6 +1,6 @@
 <template>
   <div class="moveDiv">
-    <card :cardset="day.cardset" :timetype="'day'">
+    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px">
       <div class="card-content">
         <div class="bigNum">
           {{day.developDay.value}}
@@ -38,7 +38,7 @@ export default {
       day: {
         cardset: {
           title: "发展（日）",
-          width: "calc(50% - 9px)",
+          width: "calc(50% - 5px)",
           leftcolor: "#DAC5A1",
           rightcolor: "#B7A57B"
         },
@@ -61,7 +61,7 @@ export default {
       month: {
         cardset: {
           title: "发展（月）",
-          width: "calc(50% - 9px)",
+          width: "calc(50% - 5px)",
           leftcolor: "#DAC5A1",
           rightcolor: "#B7A57B"
         },
