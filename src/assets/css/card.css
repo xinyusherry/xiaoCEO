@@ -31,8 +31,7 @@ body {
   height: 2px;
 }
 #app .card .titleDiv {
-  width: calc(100% - 12px);
-  padding: 0 6px;
+  padding: 5px 10px 0;
   display: flex;
   height: 30px;
   line-height: 30px;
