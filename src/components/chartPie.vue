@@ -51,7 +51,7 @@ export default {
           emphasis: {
             label: {
               show: true,
-              formatter: "{b}: {d}"
+              formatter: "{b}: {d}%"
             }
           },
           labelLine: {
