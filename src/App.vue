@@ -68,11 +68,10 @@
       </div>
     </div>
     <div>
-        <el-dialog title="收货地址" :visible.sync="isDialogShow" >
-            <component :is="dialogCompent"></component>
-        </el-dialog>
+      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow">
+        <component :is="dialogCompent"></component>
+      </el-dialog>
     </div>
-    
   </div>
 </template>
 
@@ -127,8 +126,9 @@ export default {
       checkedModules: allModules,
       modules: selModules,
       componentId: allModules,
-      dialogCompent:"Comp2",//弹出层组件名字
+      dialogCompent: "Comp2", //弹出层组件名字
       isDialogShow: false,
+      dialogTitle: "", //弹出层标题
       layout: [
         { x: 1, y: 0, w: 1, h: 2, i: "0", id: "Comp2", name: "地图" },
         {
@@ -186,10 +186,11 @@ export default {
       this.isAddBtn = true;
       this.componentId = this.checkedModules;
     },
-    headCall(param){
-     alert(param);
+    //子组件传递过来的参数
+    headCall(param) {
       this.isDialogShow = true;
-      this.dialogCompent = param;
+      this.dialogCompent = param.dialogCompent;
+      this.dialogTitle = param.dialogTitle;
     }
   }
 };
@@ -254,6 +255,22 @@ export default {
     background-image: linear-gradient(-225deg, #a834ef 0%, #2ac6ff 100%);
     border: none;
     color: #fff;
+  }
+}
+.el-dialog__header {
+  background-image: linear-gradient(-135deg, #9bd9fc 0%, #3096fc 100%);
+  background: linear-gradient(to right, #9bd9fc, #3096fc);
+  opacity: 0.6;
+  text-align: center;
+  .el-dialog__title {
+    font-family: "PingFangSC-Medium";
+    font-size: 24px;
+    color: #ffffff;
+  }
+  .el-icon-close:before {
+    content: "\E60F";
+    color: #fff;
+    font-size: 20px;
   }
 }
 </style>
