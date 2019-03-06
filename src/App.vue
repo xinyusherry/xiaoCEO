@@ -1,11 +1,20 @@
 <template>
   <div id="app">
     <div class="card-box">
-      <Card :classname="'small'" :cardset="{width:'100%',leftcolor:'#39B54A',rightcolor:'#F8E36E'}" style="margin:4.5px 10px">
+      <Card
+        :classname="'small'"
+        :cardset="{width:'100%',leftcolor:'#39B54A',rightcolor:'#F8E36E'}"
+        style="margin:4.5px 10px"
+      >
         <div class="title-content">
-          <img src="./assets/images/icon-title.png" height="26" alt="">
-          <img src="./assets/images/title.png" height="26" alt="">
-          <el-button class="layoutBtn" type="primary" size="small" @click="isDraggable=!isDraggable">配置{{!isDraggable?'页面':'完成'}}</el-button>
+          <img src="./assets/images/icon-title.png" height="26" alt>
+          <img src="./assets/images/title.png" height="26" alt>
+          <el-button
+            class="layoutBtn"
+            type="primary"
+            size="small"
+            @click="isDraggable=!isDraggable"
+          >配置{{!isDraggable?'页面':'完成'}}</el-button>
         </div>
       </Card>
     </div>
@@ -48,6 +57,11 @@
           </div>
         </div>
     </div>
+    <div>
+      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
+        <component :is="dialogCompent"></component>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -59,6 +73,7 @@ import Comp2 from "@/components/Comp2.vue";
 import Map from "@/components/Map.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
+import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
@@ -84,12 +99,15 @@ export default {
   data() {
     return {
       isDraggable: false,
-      isAddBtn:true,
+      isAddBtn: true,
       checkAll: true,
       isIndeterminate: false,
       checkedModules: allModulesId,
       modules: allModules,
-      layout: allModulesLayout
+      layout: allModulesLayout,
+      dialogCompent: "Comp2", //弹出层组件名字
+      isDialogShow: false,
+      dialogTitle: "", //弹出层标题
     };
   },
   components: {
@@ -102,7 +120,8 @@ export default {
     dvlpDayMonth,
     dvlpTime,
     cjDayMonth,
-    cjTime
+    cjTime,
+    dayMonthDetail
   },
   methods: {
     handleCheckAllChange(val) {
@@ -112,7 +131,8 @@ export default {
     handleCheckedModulesChange(value) {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.modules.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.modules.length;
+      this.isIndeterminate =
+        checkedCount > 0 && checkedCount < this.modules.length;
     },
     deleteModule(index){
       this.layout.splice(index, 1);
@@ -137,69 +157,97 @@ export default {
         });
         console.log(this.layout);
       }
+    },
+    //子组件传递过来的参数
+    headCall(param) {
+      this.isDialogShow = true;
+      this.dialogCompent = param.dialogCompent;
+      this.dialogTitle = param.dialogTitle;
     }
   }
 };
 </script>
 
 <style lang="less">
-  .vue-grid-item{
-    position: relative;
+.vue-grid-item {
+  position: relative;
+}
+.mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.1);
+  > div {
+    float: right;
+    margin: 10px;
   }
-  .mask{
+}
+.title-content {
+  display: flex;
+  .layoutBtn {
+    margin-left: auto;
+    padding: 8px 40px;
+    font-size: 14px;
+    background-image: linear-gradient(-180deg, #98dcfd 0%, #5fb6f9 100%);
+  }
+}
+.addModule {
+  background: #16325d;
+  height: 200px;
+  margin: 0 10px 10px 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .el-checkbox__label {
+    color: #fff;
+  }
+  .el-button:focus,
+  .el-button:hover {
+    color: #fff;
+    border-color: inherit;
+    background-color: transparent;
+  }
+  .btns {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255,255,255,0.1);
-    >div{
-      float: right;
-      margin: 10px;
+    top: 15px;
+    right: 20px;
+  }
+  .btn {
+    padding: 8px 30px;
+    color: #fff;
+  }
+  .btn1 {
+    margin-right: 20px;
+    background: transparent;
+  }
+  .btn2 {
+    background-image: linear-gradient(-225deg, #a834ef 0%, #2ac6ff 100%);
+    border: none;
+    color: #fff;
+  }
+}
+.el-dialog__wrapper {
+  .el-dialog__header {
+    // background-image: linear-gradient(-135deg, #9bd9fc 0%, #3096fc 100%);
+    background: linear-gradient(to right, #9bd9fc, #3096fc);
+    opacity: 0.6;
+    text-align: center;
+    .el-dialog__title {
+      font-family: "PingFangSC-Medium";
+      font-size: 24px;
+      color: #ffffff;
+    }
+    .el-icon-close:before {
+      content: "\E60F";
+      color: #fff;
+      font-size: 20px;
     }
   }
-  .title-content{
-    display: flex;
-    .layoutBtn{
-      margin-left:auto;
-      padding: 8px 40px;
-      font-size: 14px;
-      background-image: linear-gradient(-180deg, #98DCFD 0%, #5FB6F9 100%);
-    }
+  .el-dialog__body{
+    background: rgba(0,0,0,.8);
   }
-  .addModule{
-    background: #16325D;
-    height: 200px;
-    margin: 0 10px 10px 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    .el-checkbox__label{
-      color: #fff;
-    }
-    .el-button:focus, .el-button:hover {
-      color: #fff;
-      border-color: inherit;
-      background-color: transparent;
-    }
-    .btns{
-      position: absolute;
-      top: 15px;
-      right: 20px;
-    }
-    .btn{
-      padding: 8px 30px;
-      color: #fff;
-    }
-    .btn1{
-      margin-right:20px;
-      background: transparent;
-    }
-    .btn2{
-      background-image: linear-gradient(-225deg, #A834EF 0%, #2AC6FF 100%);
-      border: none;
-      color: #fff;
-    }
-  }
+}
 </style>

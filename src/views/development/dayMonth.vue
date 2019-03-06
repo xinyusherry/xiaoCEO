@@ -6,7 +6,7 @@
       style="margin-right:10px"
      
     >
-      <div class="card-content">
+      <div class="card-content" v-on:click="sendMsg">
         <div class="bigNum">
           {{day.developDay.value}}
           <img
@@ -22,7 +22,7 @@
       </div>
     </card>
     <card :cardset="month.cardset" :timetype="'month'" >
-      <div class="card-content">
+      <div class="card-content" v-on:click="sendMsg">
         <div class="bigNum">
           {{month.developMonth.value}}
           <img
@@ -101,8 +101,12 @@ export default {
     };
   },
   methods: {
-    showDialog: function() {
-      this.dialogTableVisible = true;
+    sendMsg:function() {
+      const param = {
+        dialogCompent:"dayMonthDetail",
+        dialogTitle:"发展",
+      }
+      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     }
   }
 };
