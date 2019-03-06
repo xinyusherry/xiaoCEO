@@ -29,9 +29,9 @@
         :i="item.i"
       >
         <div v-if="isDraggable==true" class="mask">
-          <div>删除</div>
+          <div @click="deleteModule(item.i)">删除</div>
         </div>
-        <component :is="componentId[item.i]"></component>
+        <component :is="item.id"></component>
       </grid-item>
     </grid-layout>
     <div v-if="isDraggable==true" class="addModule">
@@ -40,7 +40,7 @@
           <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
           <div style="margin: 15px 0;"></div>
           <el-checkbox-group v-model="checkedModules" @change="handleCheckedModulesChange">
-            <el-checkbox v-for="module in layout" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
+            <el-checkbox v-for="module in modules" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
           </el-checkbox-group>
           <div class="btns">
             <el-button class="btn btn1" size="small" @click="isAddBtn=true">取消</el-button>
@@ -56,7 +56,7 @@
 import Card from "@/components/Card.vue";
 import Comp1 from "@/components/Comp1.vue";
 import Comp2 from "@/components/Comp2.vue";
-import Comp3 from "@/components/Comp3.vue";
+import Map from "@/components/Map.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
 import cjDayMonth from "@/views/chaiji/dayMonth";
@@ -64,35 +64,22 @@ import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
 
-const selModules = [
-  {
-    "id":"dvlpDayMonth",
-    "name":"发展（日、月）"
-  },
-  {
-    "id":"Comp2",
-    "name":"地图"
-  },
-  {
-    "id":"dvlpTime",
-    "name":"发展实时"
-  },
-  {
-    "id":"cjDayMonth",
-    "name":"拆机（日、月）"
-  },
-  {
-    "id":"cjTime",
-    "name":"拆机实时"
-  },
+const allModulesLayout = [
+    { x: 1, y: 0, w: 1, h: 2, i: 0, id:"Map" },
+    { x: 0, y: 0, w: 1, h: 1, i: 1, id:"dvlpDayMonth" },
+    { x: 0, y: 1, w: 1, h: 1, i: 2, id:"dvlpTime" },
+    { x: 0, y: 2, w: 1, h: 1, i: 3, id:"cjDayMonth" },
+    { x: 1, y: 2, w: 1, h: 1, i: 4, id:"cjTime" }
 ];
 const allModules = [
-        "Comp2",
-        "dvlpDayMonth",
-        "dvlpTime",
-        "cjDayMonth",
-        "cjTime",
-      ];
+    { id:"Map", name:"地图" },
+    { id:"dvlpDayMonth", name:"发展（日、月）" },
+    { id:"dvlpTime", name:"发展实时" },
+    { id:"cjDayMonth", name:"拆机（日、月）" },
+    { id:"cjTime", name:"拆机实时" }
+]
+const allModulesId = allModules.map(obj=>(obj.id));
+
 export default {
   data() {
     return {
@@ -100,28 +87,18 @@ export default {
       isAddBtn:true,
       checkAll: true,
       isIndeterminate: false,
-      checkedModules: allModules,
-      modules: selModules,
-      componentId: allModules,
-      layout: [
-        { x: 1, y: 0, w: 1, h: 2, i: "0", id:"Comp2",name:"地图" },
-        { x: 0, y: 0, w: 1, h: 1, i: "1", id:"dvlpDayMonth",name:"发展（日、月）" },
-        { x: 0, y: 1, w: 1, h: 1, i: "2", id:"dvlpTime",name:"发展实时" },
-        { x: 0, y: 2, w: 1, h: 1, i: "3", id:"cjDayMonth",name:"拆机（日、月）" },
-        { x: 1, y: 2, w: 1, h: 1, i: "4", id:"cjTime",name:"拆机实时" }
-      ] 
+      checkedModules: allModulesId,
+      modules: allModules,
+      layout: allModulesLayout
     };
   },
-  // watch:{
-  //   checkedModules
-  // }
   components: {
     Card,
     GridLayout,
     GridItem,
     Comp1,
     Comp2,
-    Comp3,
+    Map,
     dvlpDayMonth,
     dvlpTime,
     cjDayMonth,
@@ -129,19 +106,37 @@ export default {
   },
   methods: {
     handleCheckAllChange(val) {
-      console.log(val);
-      this.checkedModules = val ? allModules : [];
+      this.checkedModules = val ? allModulesId : [];
       this.isIndeterminate = false;
     },
     handleCheckedModulesChange(value) {
-      console.log(value);
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.modules.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.modules.length;
     },
+    deleteModule(index){
+      this.layout.splice(index, 1);
+    },
     changeModules(){
       this.isAddBtn=true;
-      this.componentId = this.checkedModules;
+      if(this.checkAll){
+        this.layout = allModulesLayout;
+      }else{
+        this.layout = [];
+        this.checkedModules.map((id,index)=>{
+          var len = this.checkedModules.length;
+          if(id=="Map"){
+            this.layout.push(
+              { x: 1, y: 0, w: 1, h: 2, i: index, id:id },
+            )
+          }else{
+            this.layout.push(
+              { x: 0, y: 0, w: 1, h: 1, i: index, id:id },
+            )
+          }
+        });
+        console.log(this.layout);
+      }
     }
   }
 };
