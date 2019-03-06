@@ -15,7 +15,8 @@ export default {
   },
   mounted() {
     setTimeout(()=>{
-      this.$echarts.init(document.getElementById(this.id)).setOption({
+      var thisChart = this.$echarts.init(document.getElementById(this.id));
+      thisChart.setOption({
         grid: {
           containLabel: true,
           height: "70%",
@@ -70,7 +71,10 @@ export default {
           }
         ]
       });
-    });
+      window.addEventListener("resize", () => { 
+        thisChart.resize();
+      });
+    },0);
   }
 };
 </script>

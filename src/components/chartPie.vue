@@ -19,7 +19,8 @@ export default {
   },
   mounted() {
     setTimeout(()=>{
-      this.$echarts.init(document.getElementById(this.id)).setOption({
+      var thisChart = this.$echarts.init(document.getElementById(this.id));
+      thisChart.setOption({
         /* legend: {
               orient: 'vertical',
               top: 'center',
@@ -67,6 +68,9 @@ export default {
             };
           })
         }
+      });
+      window.addEventListener("resize", () => { 
+        thisChart.resize();
       });
     },0);
   }
