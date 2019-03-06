@@ -8,7 +8,7 @@
             :src="require(`../../assets/images/icon-${day.developDay.up?'up':'down'}.png`)"
           >
         </div>
-        <chart-pie :id="'pieDay'" :dataset="day.developDay.dataset" :color="day.colors"></chart-pie>
+        <chart-pie :id="'pieDay'" :dataset="day.developDay.dataset" :color="day.colors" :legend="day.legend"></chart-pie>
       </div>
     </card>
     <card :cardset="month.cardset" :timetype="'month'">
@@ -19,7 +19,7 @@
             :src="require(`../../assets/images/icon-${month.developMonth.up?'up':'down'}.png`)"
           >
         </div>
-        <chart-pie :id="'pieMonth'" :dataset="month.developMonth.dataset" :color="month.colors"></chart-pie>
+        <chart-pie :id="'pieMonth'" :dataset="month.developMonth.dataset" :color="month.colors" :legend="month.legend"></chart-pie>
       </div>
     </card>
   </div>
@@ -56,7 +56,8 @@ export default {
             }
           ]
         },
-        colors: ["#1AC175", "#1B8CEA"]
+        colors: ["#1AC175", "#1B8CEA"],
+        legend:["固话","移动"]
       },
       month: {
         cardset: {
@@ -79,7 +80,8 @@ export default {
             }
           ]
         },
-        colors: ["#EDC624", "#F84F4F"]
+        colors: ["#EDC624", "#F84F4F"],
+        legend:["固话","移动"]
       }
     };
   }

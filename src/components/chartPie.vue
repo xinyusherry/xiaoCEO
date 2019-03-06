@@ -1,42 +1,45 @@
 <template>
   <div class="pieDiv">
-    <div :id="id" style="width:60%;height:100%"></div>
-    <ul>
+    <div :id="id" style="width:80%;height:100%"></div>
+    <!-- <ul>
       <li v-for="(v,i) in dataset" :key="i">
         <span class="rect" :style="{background:color[i]}"></span>
         <span class="name">{{v.name }}</span>
         <span class="value">{{v.value}}</span>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script>
 export default {
-  props: ["id", "dataset", "color"],
+  props: ["id", "dataset", "color","legend"],
   data: function() {
     return {};
   },
   mounted() {
+    let _this = this;
     setTimeout(()=>{
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       thisChart.setOption({
-        /* legend: {
+       legend: {
               orient: 'vertical',
-              top: 'center',
-              right: '15%',
+              top: 'middle',
+              right: '0%',
               textStyle: {
                 color: '#6891D0',
                 fontSize: 14
               },
+              data:this.legend,
               formatter(name) {
-                console.log(_this.dataset)
-                return name
-              },
-              itemWidth: 14,
-              itemHeight: 14,
-              itemGap: 16
-            }, */
+                  for (var i = 0; i < _this.dataset.length; i++) {
+                    if (_this.dataset[i].name == name) {
+                        return name +'  '+ _this.dataset[i].value;
+                    }
+                }
+              }
+             
+            }, 
         series: {
           type: "pie",
           selectedMode: "single",

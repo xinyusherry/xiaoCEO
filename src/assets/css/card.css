@@ -62,7 +62,7 @@ body {
   width: 100%;
   height: calc(100% - 90px);
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 #app .card .card-content .pieDiv ul {
