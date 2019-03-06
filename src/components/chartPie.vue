@@ -18,59 +18,57 @@ export default {
     return {};
   },
   mounted() {
-    // debugger
-    // 绘制图表。
-    // this.$nextTick(()=>{
-    //   })
-    this.$echarts.init(document.getElementById(this.id)).setOption({
-      /* legend: {
-            orient: 'vertical',
-            top: 'center',
-            right: '15%',
-            textStyle: {
-              color: '#6891D0',
-              fontSize: 14
-            },
-            formatter(name) {
-              console.log(_this.dataset)
-              return name
-            },
-            itemWidth: 14,
-            itemHeight: 14,
-            itemGap: 16
-          }, */
-      series: {
-        type: "pie",
-        selectedMode: "single",
-        label: {
-          show: false,
-          position: "inside",
-          color: "#fff"
-        },
-        emphasis: {
+    setTimeout(()=>{
+      this.$echarts.init(document.getElementById(this.id)).setOption({
+        /* legend: {
+              orient: 'vertical',
+              top: 'center',
+              right: '15%',
+              textStyle: {
+                color: '#6891D0',
+                fontSize: 14
+              },
+              formatter(name) {
+                console.log(_this.dataset)
+                return name
+              },
+              itemWidth: 14,
+              itemHeight: 14,
+              itemGap: 16
+            }, */
+        series: {
+          type: "pie",
+          selectedMode: "single",
           label: {
-            show: true,
-            formatter: "{b}: {d}"
-          }
-        },
-        labelLine: {
-          show: false
-        },
-        color: this.color,
-        center: ["50%", "50%"],
-        radius: [0, "50%"],
-        tooltip: {
-          position: "left",
-          formatter: "{b}：{c}"
-        },
-        data: this.dataset.map((v, i) => {
-          return {
-            ...v,
-            selected: i === 0 ? true : false
-          };
-        })
-      }
-    });
+            show: false,
+            position: "inside",
+            color: "#fff"
+          },
+          emphasis: {
+            label: {
+              show: true,
+              formatter: "{b}: {d}"
+            }
+          },
+          labelLine: {
+            show: false
+          },
+          color: this.color,
+          center: ["50%", "50%"],
+          radius: [0, "50%"],
+          tooltip: {
+            position: "left",
+            formatter: "{b}：{c}"
+          },
+          data: this.dataset.map((v, i) => {
+            return {
+              ...v,
+              selected: i === 0 ? true : false
+            };
+          })
+        }
+      });
+    },0);
   }
 };
 </script>

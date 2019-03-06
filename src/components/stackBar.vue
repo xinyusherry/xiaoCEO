@@ -14,63 +14,63 @@ export default {
     };
   },
   mounted() {
-    this.$echarts.init(document.getElementById(this.id)).setOption({
-      grid: {
-        containLabel: true,
-        height: "70%",
-        width: "50%",
-        top: "13%"
-      },
-      tooltip: {},
-      color: this.color,
-      legend: {
-        data: this.dataset.legendData, //['主拆', '欠拆'],
-        orient: "vertical",
-        align: "left",
-        left: "right",
-        top: "middle",
-        itemWidth: 9,
-        itemHeight: 9,
-        textStyle: {
-          color: "#fff"
-        }
-      },
-      xAxis: {
-        type: "category",
-        axisLine: {
+    setTimeout(()=>{
+      this.$echarts.init(document.getElementById(this.id)).setOption({
+        grid: {
+          containLabel: true,
+          height: "70%",
+          width: "50%",
+          top: "13%"
+        },
+        tooltip: {},
+        color: this.color,
+        legend: {
+          data: this.dataset.legendData, //['主拆', '欠拆'],
+          orient: "vertical",
+          align: "left",
+          left: "right",
+          top: "middle",
+          itemWidth: 9,
+          itemHeight: 9,
+          textStyle: {
+            color: "#fff"
+          }
+        },
+        xAxis: {
+          type: "category",
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          axisLabel: {
+            color: "#fff"
+          },
+          data: this.dataset.xAxis //['移网', '固网']
+        },
+        yAxis: {
+          type: "value",
           show: false
         },
-        axisTick: {
-          show: false
-        },
-        axisLabel: {
-          color: "#fff"
-        },
-        data: this.dataset.xAxis //['移网', '固网']
-      },
-      yAxis: {
-        type: "value",
-        show: false
-      },
-      series: [
-        {
-          name: "主拆",
-          type: "bar",
-          data: this.ywData,
-          stack: "one",
-          barWidth: 15
-        },
-        {
-          name: "欠拆",
-          barWidth: 15,
-          type: "bar",
-          data: this.gwData,
-          stack: "one"
-        }
-      ]
+        series: [
+          {
+            name: "主拆",
+            type: "bar",
+            data: this.ywData,
+            stack: "one",
+            barWidth: 15
+          },
+          {
+            name: "欠拆",
+            barWidth: 15,
+            type: "bar",
+            data: this.gwData,
+            stack: "one"
+          }
+        ]
+      });
     });
-
-    
   }
 };
 </script>

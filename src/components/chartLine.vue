@@ -23,67 +23,70 @@ export default {
     };
   },
   mounted() {
-    this.$echarts.init(document.getElementById(this.id)).setOption({
-      grid: {
-        containLabel: true,
-        width: "79%",
-        height: "70%",
-        top: "13%"
-      },
-      tooltip: {
-        trigger: "axis",
-        axisPointer: {
-          type: "cross",
-          label: {
-            backgroundColor: "#6a7985"
-          }
-        }
-      },
-      xAxis: {
-        type: "category",
-        boundaryGap: false,
-        name: "时",
-        axisLine: {
-          lineStyle: {
-            color: "#F5F5FB"
-          }
+    setTimeout(()=>{
+      var _thisChart = this.$echarts.init(document.getElementById(this.id));
+      _thisChart.setOption({
+        grid: {
+          containLabel: true,
+          width: "79%",
+          height: "70%",
+          top: "13%"
         },
-        splitLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        },
-        data: this.xAxisData
-      },
-      yAxis: {
-        type: "value",
-        scale: true,
-        axisLine: {
-          lineStyle: {
-            color: "#F5F5FB"
-          }
-        },
-        splitLine: {
-          show: false
-        },
-        axisTick: {
-          show: false
-        }
-      },
-      series: [
-        {
-          type: "line",
-          color: this.color,
-          emphasis: {
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
             label: {
-              show: true
+              backgroundColor: "#6a7985"
+            }
+          }
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: false,
+          name: "时",
+          axisLine: {
+            lineStyle: {
+              color: "#F5F5FB"
             }
           },
-          data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
-        }
-      ]
-    });
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.xAxisData
+        },
+        yAxis: {
+          type: "value",
+          scale: true,
+          axisLine: {
+            lineStyle: {
+              color: "#F5F5FB"
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            type: "line",
+            color: this.color,
+            emphasis: {
+              label: {
+                show: true
+              }
+            },
+            data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
+          }
+        ]
+      });
+    },0);
   }
 };
 </script>
