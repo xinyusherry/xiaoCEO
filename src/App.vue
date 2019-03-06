@@ -29,7 +29,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in layout"
+        v-for="(item,index) in layout"
         :key="item.i"
         :x="item.x"
         :y="item.y"
@@ -38,7 +38,7 @@
         :i="item.i"
       >
         <div v-if="isDraggable==true" class="mask">
-          <div @click="deleteModule(item.i)">删除</div>
+          <div @click="deleteModule(index,item.id)">删除</div>
         </div>
         <component :is="item.id"></component>
       </grid-item>
@@ -92,8 +92,8 @@ const allModules = [
     { id:"dvlpTime", name:"发展实时" },
     { id:"cjDayMonth", name:"拆机（日、月）" },
     { id:"cjTime", name:"拆机实时" }
-]
-const allModulesId = allModules.map(obj=>(obj.id));
+];
+const allModulesId = allModules.map((obj)=>(obj.id));
 
 export default {
   data() {
@@ -102,9 +102,9 @@ export default {
       isAddBtn: true,
       checkAll: true,
       isIndeterminate: false,
-      checkedModules: allModulesId,
       modules: allModules,
-      layout: allModulesLayout,
+      checkedModules: allModulesId.concat(),
+      layout: allModulesLayout.concat(),
       dialogCompent: "Comp2", //弹出层组件名字
       isDialogShow: false,
       dialogTitle: "", //弹出层标题
@@ -125,7 +125,8 @@ export default {
   },
   methods: {
     handleCheckAllChange(val) {
-      this.checkedModules = val ? allModulesId : [];
+      this.checkedModules = val ? allModulesId.concat() : [];
+      console.log(this.checkedModules);
       this.isIndeterminate = false;
     },
     handleCheckedModulesChange(value) {
@@ -134,17 +135,17 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.modules.length;
     },
-    deleteModule(index){
+    deleteModule(index,id){
       this.layout.splice(index, 1);
+      this.checkedModules.splice(this.checkedModules.indexOf(id), 1);
     },
     changeModules(){
       this.isAddBtn=true;
+      this.layout = [];
       if(this.checkAll){
-        this.layout = allModulesLayout;
+        this.layout = allModulesLayout.concat();
       }else{
-        this.layout = [];
         this.checkedModules.map((id,index)=>{
-          var len = this.checkedModules.length;
           if(id=="Map"){
             this.layout.push(
               { x: 1, y: 0, w: 1, h: 2, i: index, id:id },

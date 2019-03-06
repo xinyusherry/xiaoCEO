@@ -31,8 +31,8 @@ export default {
           align: "left",
           left: "right",
           top: "middle",
-          itemWidth: 9,
-          itemHeight: 9,
+          itemWidth: 10,
+          itemHeight: 10,
           textStyle: {
             color: "#fff"
           }
