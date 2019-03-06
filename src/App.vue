@@ -34,17 +34,18 @@
 
 <script>
 // @ is an alias to /src
-import Card from '@/components/Card.vue'
-import Comp1 from '@/components/Comp1.vue'
-import Comp2 from '@/components/Comp2.vue'
-import Comp3 from '@/components/Comp3.vue'
-import { GridLayout,GridItem } from 'vue-grid-layout'
+import Card from '@/components/Card.vue';
+import Comp1 from '@/components/Comp1.vue';
+import Comp2 from '@/components/Comp2.vue';
+import Comp3 from '@/components/Comp3.vue';
+import Development from '@/components/Development.vue';
+import { GridLayout,GridItem } from 'vue-grid-layout';
 
 export default {
   data() {
     return {
       isDraggable:false,
-      componentId:['Comp1','Comp2','Comp3'],
+      componentId:['Comp1','Comp2','Comp3','Development'],
       layout:[
           {"x":0,"y":0,"w":1,"h":1,"i":"0"},
           {"x":1,"y":0,"w":1,"h":2,"i":"1"},
@@ -60,7 +61,8 @@ export default {
     GridItem,
     Comp1,
     Comp2,
-    Comp3
+    Comp3,
+    Development
   },
   methods:{
     orderUp(index){
