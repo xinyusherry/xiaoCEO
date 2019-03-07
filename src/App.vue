@@ -190,6 +190,8 @@ export default {
     },
     //子组件传递过来的参数
     headCall(param) {
+      //拖拽时禁止弹出层显示
+      if(isDraggable)return false;
       this.isDialogShow = true;
       this.dialogCompent = param.dialogCompent;
       this.dialogTitle = param.dialogTitle;
