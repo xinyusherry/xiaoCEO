@@ -23,12 +23,16 @@ export default {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       thisChart.setOption({
        legend: {
-              orient: 'vertical',
-              top: 'middle',
-              right: '0%',
+          orient: 'vertical',
+          align: "left",
+          left: "right",
+          top: "middle",
+          itemWidth: 10,
+          itemHeight: 10,
               textStyle: {
-                color: '#6891D0',
-                fontSize: 14
+                color: '#fff',
+                fontSize: 14,
+                padding:[0,0,0,5]
               },
               data:this.legend,
               formatter(name) {
@@ -58,7 +62,7 @@ export default {
             show: false
           },
           color: this.color,
-          center: ["50%", "50%"],
+          center: ["30%", "50%"],
           radius: [0, "50%"],
           tooltip: {
             position: "left",
