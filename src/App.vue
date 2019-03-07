@@ -40,7 +40,7 @@
         <div v-if="isDraggable==true" class="mask">
           <div @click="deleteModule(index,item.id)">删除</div>
         </div>
-        <component :is="item.id"></component>
+        <component :is="item.id" @headCallBack = "headCall"></component>
       </grid-item>
     </grid-layout>
     <div v-if="isDraggable==true" class="addModule">
@@ -160,7 +160,7 @@ export default {
     //子组件传递过来的参数
     headCall(param) {
       //拖拽时禁止弹出层显示
-      if(isDraggable)return false;
+      if(this.isDraggable)return false;
       this.isDialogShow = true;
       this.dialogCompent = param.dialogCompent;
       this.dialogTitle = param.dialogTitle;
