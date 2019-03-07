@@ -40,22 +40,32 @@
         <div v-if="isDraggable==true" class="mask">
           <div @click="deleteModule(index,item.id)">删除</div>
         </div>
-        <component :is="item.id" @headCallBack = "headCall"></component>
+        <component :is="item.id" @headCallBack="headCall"></component>
       </grid-item>
     </grid-layout>
     <div v-if="isDraggable==true" class="addModule">
-        <el-button class="btn2" v-show="isAddBtn" size="small" @click="isAddBtn=false" icon="el-icon-circle-plus-outline">添加模块</el-button>
-        <div v-show="!isAddBtn">
-          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-          <div style="margin: 15px 0;"></div>
-          <el-checkbox-group v-model="checkedModules" @change="handleCheckedModulesChange">
-            <el-checkbox v-for="module in modules" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
-          </el-checkbox-group>
-          <div class="btns">
-            <el-button class="btn btn1" size="small" @click="isAddBtn=true">取消</el-button>
-            <el-button class="btn btn2" size="small" @click="changeModules()">确定</el-button>
-          </div>
+      <el-button
+        class="btn2"
+        v-show="isAddBtn"
+        size="small"
+        @click="isAddBtn=false"
+        icon="el-icon-circle-plus-outline"
+      >添加模块</el-button>
+      <div v-show="!isAddBtn">
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+        >全选</el-checkbox>
+        <div style="margin: 15px 0;"></div>
+        <el-checkbox-group v-model="checkedModules" @change="handleCheckedModulesChange">
+          <el-checkbox v-for="module in modules" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
+        </el-checkbox-group>
+        <div class="btns">
+          <el-button class="btn btn1" size="small" @click="isAddBtn=true">取消</el-button>
+          <el-button class="btn btn2" size="small" @click="changeModules()">确定</el-button>
         </div>
+      </div>
     </div>
     <div>
       <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
@@ -78,22 +88,21 @@ import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
-
 const allModulesLayout = [
-    { x: 1, y: 0, w: 1, h: 2, i: 0, id:"Map" },
-    { x: 0, y: 0, w: 1, h: 1, i: 1, id:"dvlpDayMonth" },
-    { x: 0, y: 1, w: 1, h: 1, i: 2, id:"dvlpTime" },
-    { x: 0, y: 2, w: 1, h: 1, i: 3, id:"cjDayMonth" },
-    { x: 1, y: 2, w: 1, h: 1, i: 4, id:"cjTime" }
+  { x: 1, y: 0, w: 1, h: 2, i: 0, id: "Map" },
+  { x: 0, y: 0, w: 1, h: 1, i: 1, id: "dvlpDayMonth" },
+  { x: 0, y: 1, w: 1, h: 1, i: 2, id: "dvlpTime" },
+  { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
+  { x: 1, y: 2, w: 1, h: 1, i: 4, id: "cjTime" }
 ];
 const allModules = [
-    { id:"Map", name:"地图" },
-    { id:"dvlpDayMonth", name:"发展（日、月）" },
-    { id:"dvlpTime", name:"发展实时" },
-    { id:"cjDayMonth", name:"拆机（日、月）" },
-    { id:"cjTime", name:"拆机实时" }
+  { id: "Map", name: "地图" },
+  { id: "dvlpDayMonth", name: "发展（日、月）" },
+  { id: "dvlpTime", name: "发展实时" },
+  { id: "cjDayMonth", name: "拆机（日、月）" },
+  { id: "cjTime", name: "拆机实时" }
 ];
-const allModulesId = allModules.map((obj)=>(obj.id));
+const allModulesId = allModules.map(obj => obj.id);
 
 export default {
   data() {
@@ -107,7 +116,7 @@ export default {
       layout: allModulesLayout.concat(),
       dialogCompent: "Comp2", //弹出层组件名字
       isDialogShow: false,
-      dialogTitle: "", //弹出层标题
+      dialogTitle: "" //弹出层标题
     };
   },
   components: {
@@ -134,25 +143,21 @@ export default {
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.modules.length;
     },
-    deleteModule(index,id){
+    deleteModule(index, id) {
       this.layout.splice(index, 1);
       this.checkedModules.splice(this.checkedModules.indexOf(id), 1);
     },
-    changeModules(){
-      this.isAddBtn=true;
+    changeModules() {
+      this.isAddBtn = true;
       this.layout = [];
-      if(this.checkAll){
+      if (this.checkAll) {
         this.layout = allModulesLayout.concat();
-      }else{
-        this.checkedModules.map((id,index)=>{
-          if(id=="Map"){
-            this.layout.push(
-              { x: 1, y: 0, w: 1, h: 2, i: index, id:id },
-            )
-          }else{
-            this.layout.push(
-              { x: 0, y: 0, w: 1, h: 1, i: index, id:id },
-            )
+      } else {
+        this.checkedModules.map((id, index) => {
+          if (id == "Map") {
+            this.layout.push({ x: 1, y: 0, w: 1, h: 2, i: index, id: id });
+          } else {
+            this.layout.push({ x: 0, y: 0, w: 1, h: 1, i: index, id: id });
           }
         });
       }
@@ -160,7 +165,7 @@ export default {
     //子组件传递过来的参数
     headCall(param) {
       //拖拽时禁止弹出层显示
-      if(this.isDraggable)return false;
+      if (this.isDraggable) return false;
       this.isDialogShow = true;
       this.dialogCompent = param.dialogCompent;
       this.dialogTitle = param.dialogTitle;
@@ -247,8 +252,22 @@ export default {
       font-size: 20px;
     }
   }
-  .el-dialog__body{
-    background: rgba(0,0,0,.8);
+  .el-dialog__body {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+.btnList {
+  .el-input__inner {
+    border: 1px solid #5fb6f9;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  .el-icon-date:before {
+    color: #5fb6f9;
+  }
+}
+.table {
+  .el-table__header-wrapper tr>th {
+        background: #0f5d7d;
   }
 }
 </style>

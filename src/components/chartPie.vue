@@ -7,43 +7,45 @@
         <span class="name">{{v.name }}</span>
         <span class="value">{{v.value}}</span>
       </li>
-    </ul> -->
+    </ul>-->
   </div>
 </template>
 
 <script>
 export default {
-  props: ["id", "dataset", "color","legend"],
+  props: ["id", "dataset", "color", "legend"],
   data: function() {
     return {};
   },
   mounted() {
     let _this = this;
-    setTimeout(()=>{
+    setTimeout(() => {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
+      thisChart.on("legendselectchanged", function(param) {
+        event.stopPropagation();
+      });
       thisChart.setOption({
-       legend: {
-          orient: 'vertical',
+        legend: {
+          orient: "vertical",
           align: "left",
           left: "right",
           top: "middle",
           itemWidth: 10,
           itemHeight: 10,
-              textStyle: {
-                color: '#fff',
-                fontSize: 14,
-                padding:[0,0,0,5]
-              },
-              data:this.legend,
-              formatter(name) {
-                  for (var i = 0; i < _this.dataset.length; i++) {
-                    if (_this.dataset[i].name == name) {
-                        return name +'  '+ _this.dataset[i].value;
-                    }
-                }
+          textStyle: {
+            color: "#fff",
+            fontSize: 14,
+            padding: [0, 0, 0, 5]
+          },
+          data: this.legend,
+          formatter(name) {
+            for (var i = 0; i < _this.dataset.length; i++) {
+              if (_this.dataset[i].name == name) {
+                return name + "  " + _this.dataset[i].value;
               }
-             
-            }, 
+            }
+          }
+        },
         series: {
           type: "pie",
           selectedMode: "single",
@@ -76,10 +78,10 @@ export default {
           })
         }
       });
-      window.addEventListener("resize", () => { 
+      window.addEventListener("resize", () => {
         thisChart.resize();
       });
-    },0);
+    }, 0);
   }
 };
 </script>
