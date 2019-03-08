@@ -39,7 +39,18 @@
           @cell-mouse-leave="handleMouseOut"
         >
           <el-table-column prop="date" label="日期" width="180"></el-table-column>
-          <el-table-column prop="name" label="姓名" width="180" sortable></el-table-column>
+          <el-table-column align="center" label="姓名" width="180" sortable>
+              <template slot-scope="scope">
+                  <el-popover
+                          placement="right"
+                          width="400"
+                          trigger="hover">
+                      <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
+                      <div slot="reference">{{scope.row.name}}</div>
+                  </el-popover>
+              </template>
+          </el-table-column>
+          <!-- <el-table-column prop="name" label="姓名" width="180" sortable></el-table-column> -->
           <el-table-column prop="address" label="地址" sortable></el-table-column>
         </el-table>
         <div id="tableLine" v-show="isTableLineShow">
@@ -84,26 +95,31 @@ export default {
       tableData: [
         {
           date: "2016-05-02",
+          id:'1',
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄"
         },
         {
           date: "2016-05-04",
+          id:'2',
           name: "王小虎",
           address: "上海市普陀区金沙江路 1517 弄"
         },
         {
           date: "2016-05-01",
+          id:'3',
           name: "王小虎",
           address: "上海市普陀区金沙江路 1519 弄"
         },
         {
           date: "2016-05-03",
+          id:'4',
           name: "王小虎",
           address: "上海市普陀区金沙江路 1516 弄"
         },
          {
           date: "2016-05-07",
+          id:'5',
           name: "王小虎",
           address: "上海市普陀区金沙江路 1515 弄"
         }
@@ -291,8 +307,10 @@ export default {
   },
   mounted() {
     this.drawLineChart("line", "#fbbf50");
-
     this.drawPieChart("pie");
+    this.tableData.map((obj)=>{
+      this.drawLineChart("tableLineChart"+obj.id, "#fbbf50");
+    });
   }
 };
 </script>
