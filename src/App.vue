@@ -88,6 +88,7 @@ import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
+//默认布局
 const allModulesLayout = [
   { x: 1, y: 0, w: 1, h: 2, i: 0, id: "Map" },
   { x: 0, y: 0, w: 1, h: 1, i: 1, id: "dvlpDayMonth" },
@@ -107,15 +108,15 @@ const allModulesId = allModules.map(obj => obj.id);
 export default {
   data() {
     return {
-      isDraggable: false,
-      isAddBtn: true,
-      checkAll: true,
-      isIndeterminate: false,
-      modules: allModules,
-      checkedModules: allModulesId.concat(),
-      layout: allModulesLayout.concat(),
+      isDraggable: false,//是否可拖动
+      isAddBtn: true,//添加模块部分显示
+      checkAll: true,//是否全选
+      isIndeterminate: false,//全选按钮状态
+      modules: allModules, //所有模块名称
+      checkedModules: allModulesId.concat(), //已选模块id
+      layout: allModulesLayout.concat(), //布局展示模块
       dialogCompent: "Comp2", //弹出层组件名字
-      isDialogShow: false,
+      isDialogShow: false, //弹出层显示
       dialogTitle: "" //弹出层标题
     };
   },
@@ -133,21 +134,22 @@ export default {
     dayMonthDetail
   },
   methods: {
-    handleCheckAllChange(val) {
+    handleCheckAllChange(val) {  //是否全选
       this.checkedModules = val ? allModulesId.concat() : [];
       this.isIndeterminate = false;
     },
-    handleCheckedModulesChange(value) {
+    handleCheckedModulesChange(value) {  //检查所有选项状态
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.modules.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.modules.length;
     },
-    deleteModule(index, id) {
+    deleteModule(index, id) {  //删除单个模块
       this.layout.splice(index, 1);
       this.checkedModules.splice(this.checkedModules.indexOf(id), 1);
+      this.handleCheckedModulesChange(this.checkedModules);
     },
-    changeModules() {
+    changeModules() {  //添加删除模块
       this.isAddBtn = true;
       this.layout = [];
       if (this.checkAll) {
