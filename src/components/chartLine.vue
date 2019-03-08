@@ -28,6 +28,9 @@ export default {
         thisChart.on("legendselectchanged", function(param) {
         event.stopPropagation();
       });
+         thisChart.on("click", function(param) {
+        event.stopPropagation();
+      });
       thisChart.setOption({
         grid: {
           containLabel: true,
