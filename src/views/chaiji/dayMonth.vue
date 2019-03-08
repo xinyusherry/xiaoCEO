@@ -1,7 +1,7 @@
 <template>
   <div class="moveDiv">
     <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px">
-      <div class="card-content">
+      <div class="card-content" v-on:click="sendMsg">
         <div class="bigNum">
           {{day.cjDay.value}}
           <img
@@ -12,7 +12,7 @@
       </div>
     </card>
     <card :cardset="month.cardset" :timetype="'month'">
-      <div class="card-content">
+      <div class="card-content" v-on:click="sendMsg">
         <div class="bigNum">
           {{month.cjMonth.value}}
           <img
@@ -111,6 +111,15 @@ export default {
         colors: ["#F25F19", "#1B8CEA"]
       }
     };
+  },
+  methods:{
+      sendMsg:function() {
+      const param = {
+        dialogCompent:"cjDayMonthDetail",
+        dialogTitle:"拆机",
+      }
+      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    }
   }
 };
 </script>

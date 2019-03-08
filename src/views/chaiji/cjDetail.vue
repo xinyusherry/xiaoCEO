@@ -2,11 +2,11 @@
   <div>
     <div class="header">
       <div class="tipDiv">
-        <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span>
+        <!-- <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span> -->
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 0}" @click="changeTab(0)">固网 44</li>
-        <li :class="{active:isActive === 1}" @click="changeTab(1)">移网 66</li>
+        <li :class="{active:isActive === 0}" @click="changeTab(0)">固话拆机 44</li>
+        <li :class="{active:isActive === 1}" @click="changeTab(1)">移动拆机 66</li>
       </ul>
       <el-radio-group v-model="isDay">
         <el-radio :label="1">日</el-radio>
@@ -18,18 +18,17 @@
       <div id="pie"></div>
     </div>
     <!-- table部分开始 -->
-    <div>
-      <div class="btnList header">
-        <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;"></el-date-picker>
-        <div class="rightBtn header">
-          <div class="down mr20">下载</div>
+    <div v-if="isActive===0">
+      <div class="btnList">
+        <div class="rightBtn">
+          <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;margin-right:20px"></el-date-picker>
           <ul class="header">
             <li class="down">人员</li>
             <li class="xq">小区</li>
           </ul>
         </div>
       </div>
-      <div class="table" :style="tableBgStyle">
+      <div class="table" :style="tableBgStyle" >
         <el-table
           :data="tableData"
           style="width: 100%;"
@@ -303,6 +302,11 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.rightBtn{
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
 }
 .tipDiv {
   width: 192px;

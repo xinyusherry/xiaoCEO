@@ -86,6 +86,7 @@ import dvlpTime from "@/views/development/time";
 import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
+import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
 const allModulesLayout = [
@@ -129,6 +130,7 @@ export default {
     dvlpDayMonth,
     dvlpTime,
     cjDayMonth,
+    cjDayMonthDetail,
     cjTime,
     dayMonthDetail
   },
@@ -260,9 +262,13 @@ export default {
   .el-input__inner {
     border: 1px solid #5fb6f9;
     background-color: rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #FFFFFF;
+    line-height: 41px;
   }
   .el-icon-date:before {
     color: #5fb6f9;
+   font-size: 18px;
   }
 }
 .table {
