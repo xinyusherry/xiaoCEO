@@ -87,6 +87,7 @@ import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
+import arrears from "@/views/arrears/index";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
 //默认布局
@@ -95,14 +96,16 @@ const allModulesLayout = [
   { x: 0, y: 0, w: 1, h: 1, i: 1, id: "dvlpDayMonth" },
   { x: 0, y: 1, w: 1, h: 1, i: 2, id: "dvlpTime" },
   { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
-  { x: 1, y: 2, w: 1, h: 1, i: 4, id: "cjTime" }
+  { x: 1, y: 2, w: 1, h: 1, i: 4, id: "cjTime" },
+  { x: 2, y: 2, w: 1, h: 1, i: 5, id: "arrears" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
   { id: "dvlpDayMonth", name: "发展（日、月）" },
   { id: "dvlpTime", name: "发展实时" },
   { id: "cjDayMonth", name: "拆机（日、月）" },
-  { id: "cjTime", name: "拆机实时" }
+  { id: "cjTime", name: "拆机实时" },
+  { id: "arrears", name: "欠费" }
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -133,7 +136,8 @@ export default {
     cjDayMonth,
     cjDayMonthDetail,
     cjTime,
-    dayMonthDetail
+    dayMonthDetail,
+    arrears
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
