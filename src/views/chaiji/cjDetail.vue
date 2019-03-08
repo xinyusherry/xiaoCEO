@@ -21,42 +21,37 @@
     <div v-if="isActive===0">
       <div class="btnList">
         <div class="rightBtn">
-          <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;margin-right:20px"></el-date-picker>
+          <el-date-picker
+            v-model="date"
+            type="date"
+            placeholder="选择日期"
+            style="background:#070d12;margin-right:20px"
+          ></el-date-picker>
           <ul class="header">
             <li class="down">人员</li>
             <li class="xq">小区</li>
           </ul>
         </div>
       </div>
-      <div class="table" :style="tableBgStyle" >
+      <div class="table" :style="tableBgStyle">
         <el-table
           :data="tableData"
           style="width: 100%;"
           :cell-style="cellStyle"
           :header-cell-style="cellStyle"
           highlight-current-row
-          @cell-mouse-enter="handleMouseEnter"
-          @cell-mouse-leave="handleMouseOut"
         >
           <el-table-column prop="date" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
-              <template slot-scope="scope">
-                  <el-popover
-                          placement="right"
-                          width="400"
-                          trigger="hover">
-                      <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
-                      <div slot="reference">{{scope.row.name}}</div>
-                  </el-popover>
-              </template>
+            <template slot-scope="scope">
+              <el-popover placement="right" width="400" trigger="hover" >
+                <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
+                <div slot="reference">{{scope.row.name}}</div>
+              </el-popover>
+            </template>
           </el-table-column>
-          <!-- <el-table-column prop="name" label="姓名" width="180" sortable></el-table-column> -->
           <el-table-column prop="address" label="地址" sortable></el-table-column>
         </el-table>
-        <div id="tableLine" v-show="isTableLineShow">
-          <img :src="img" alt class="arrow">
-          <div id="tableLineChart" style="width:100%;height:100%;"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -85,41 +80,44 @@ export default {
       date: "",
       isTableLineShow: false,
       img: require("@/assets/images/sj.png"),
-      tableBg:require("@/assets/images/tabBg.png"),
-      tableBgStyle:{
-          background: 'url('+require('@/assets/images/tabBg.png')+') left top no-repeat',
-          backgroundSize: '100% 100%',
-          height: '297px',
-          padding: '18px'
+      tableBg: require("@/assets/images/tabBg.png"),
+      tableBgStyle: {
+        background:
+          "url(" +
+          require("@/assets/images/tabBg.png") +
+          ") left top no-repeat",
+        backgroundSize: "100% 100%",
+        height: "297px",
+        padding: "18px"
       },
       tableData: [
         {
           date: "2016-05-02",
-          id:'1',
+          id: "1",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄"
         },
         {
           date: "2016-05-04",
-          id:'2',
+          id: "2",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1517 弄"
         },
         {
           date: "2016-05-01",
-          id:'3',
+          id: "3",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1519 弄"
         },
         {
           date: "2016-05-03",
-          id:'4',
+          id: "4",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1516 弄"
         },
-         {
+        {
           date: "2016-05-07",
-          id:'5',
+          id: "5",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1515 弄"
         }
@@ -176,11 +174,11 @@ export default {
             },
             data: this.xAxisData,
             axisLabel: {
-                show: true,
-                textStyle: {
-                    color: '#24FAFF',
-                    fontSize:12
-                }
+              show: true,
+              textStyle: {
+                color: "#24FAFF",
+                fontSize: 12
+              }
             }
           },
           yAxis: {
@@ -203,10 +201,10 @@ export default {
               fontSize: 14
             },
             axisLabel: {
-            show: true,
-            textStyle: {
-                color: '#24FAFF',
-                fontSize:12
+              show: true,
+              textStyle: {
+                color: "#24FAFF",
+                fontSize: 12
               }
             }
           },
@@ -287,44 +285,28 @@ export default {
     },
     cellStyle() {
       return "text-align: center";
-    },
-    handleMouseEnter(row, column, cell, event) {
-      console.log("row", row);
-      console.log("column", column);
-      console.log("cell", cell);
-      console.log("event", event);
-      if (column.property === "date") {
-        this.isTableLineShow = true;
-        let $div = document.getElementById("tableLine");
-        $div.style.left = event.offsetX + 20 + "px";
-        $div.style.top = event.offsetY + 20 + "px";
-        this.drawLineChart("tableLineChart", "#fbbf50");
-      }
-    },
-    handleMouseOut(row, column, cell, event) {
-      this.isTableLineShow = false;
     }
   },
   mounted() {
     this.drawLineChart("line", "#fbbf50");
     this.drawPieChart("pie");
-    this.tableData.map((obj)=>{
-      this.drawLineChart("tableLineChart"+obj.id, "#fbbf50");
+    this.tableData.map(obj => {
+      this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
     });
   }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.rightBtn{
-    justify-content: flex-end;
-    display: flex;
-    align-items: center;
+.rightBtn {
+  justify-content: flex-end;
+  display: flex;
+  align-items: center;
 }
 .tipDiv {
   width: 192px;
@@ -380,21 +362,52 @@ export default {
 .table {
   margin-top: 20px;
   position: relative;
+}
 
+.el-dialog__wrapper {
+  .el-dialog__header {
+    background: linear-gradient(to right, #9bd9fc, #3096fc);
+    opacity: 0.6;
+    text-align: center;
+    .el-dialog__title {
+      font-family: "PingFangSC-Medium";
+      font-size: 24px;
+      color: #ffffff;
+    }
+    .el-icon-close:before {
+      content: "\E60F";
+      color: #fff;
+      font-size: 20px;
+    }
+  }
+  .el-dialog__body {
+    background: rgba(0, 0, 0, 0.8);
+  }
 }
-#tableLine {
-  position: absolute;
-  width: 642px;
-  height: 208px;
-  background-color: rgba(30, 60, 86, 0.8);
-  left: 0;
-  top: 0;
-  z-index: 100;
+.btnList {
+  .el-input__inner {
+    border: 1px solid #5fb6f9;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 41px;
+  }
+  .el-icon-date:before {
+    color: #5fb6f9;
+    font-size: 18px;
+  }
 }
-.arrow {
-  position: absolute;
-  left: -20px;
-  width: 20px;
-  top: 20px;
+.table {
+  .el-table__header-wrapper tr > th {
+    background: #0f5d7d;
+  }
+ 
 }
+ .el-popover {
+    background: rgba(30, 60, 86, 0.8)!important;
+    border: 1px solid rgba(30, 60, 86, 0.8)!important;
+  }
+  .el-popper[x-placement^="right"] .popper__arrow:after {
+    border-right-color: rgba(30, 60, 86, 0.8)!important;
+  }
 </style>

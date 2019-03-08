@@ -243,43 +243,6 @@ export default {
     color: #fff;
   }
 }
-.el-dialog__wrapper {
-  .el-dialog__header {
-    // background-image: linear-gradient(-135deg, #9bd9fc 0%, #3096fc 100%);
-    background: linear-gradient(to right, #9bd9fc, #3096fc);
-    opacity: 0.6;
-    text-align: center;
-    .el-dialog__title {
-      font-family: "PingFangSC-Medium";
-      font-size: 24px;
-      color: #ffffff;
-    }
-    .el-icon-close:before {
-      content: "\E60F";
-      color: #fff;
-      font-size: 20px;
-    }
-  }
-  .el-dialog__body {
-    background: rgba(0, 0, 0, 0.8);
-  }
-}
-.btnList {
-  .el-input__inner {
-    border: 1px solid #5fb6f9;
-    background-color: rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #FFFFFF;
-    line-height: 41px;
-  }
-  .el-icon-date:before {
-    color: #5fb6f9;
-   font-size: 18px;
-  }
-}
-.table {
-  .el-table__header-wrapper tr>th {
-        background: #0f5d7d;
-  }
-}
+
+
 </style>
