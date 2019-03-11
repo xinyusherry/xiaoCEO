@@ -42,7 +42,7 @@
           highlight-current-row
           stripe
         >
-          <el-table-column prop="date" label="日期" width="180"></el-table-column>
+          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
             <template slot-scope="scope">
               <el-popover placement="right" width="400" trigger="hover" >
@@ -51,7 +51,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column prop="address" label="地址" sortable></el-table-column>
+          <el-table-column prop="address" label="地址" align="center" sortable></el-table-column>
         </el-table>
       </div>
     </div>
@@ -293,8 +293,13 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle() {
-      return "text-align: center";
+    cellStyle({row, column, rowIndex, columnIndex}) {
+      if(columnIndex === 0){
+        return "color: #6AFFFD";
+      }else{
+        return '';
+      }
+      
     }
   },
   mounted() {
@@ -372,18 +377,5 @@ export default {
 .table {
   margin-top: 20px;
   position: relative;
-}
-.btnList {
-  .el-input__inner {
-    border: 1px solid #5fb6f9;
-    background-color: rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #ffffff;
-    line-height: 41px;
-  }
-  .el-icon-date:before {
-    color: #5fb6f9;
-    font-size: 18px;
-  }
 }
 </style>

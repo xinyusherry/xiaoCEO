@@ -1,12 +1,12 @@
 <template>
-  <div class="moveDiv">
+  <div class="moveDiv" v-on:click="sendMsg">
     <card
       :cardset="day.cardset"
       :timetype="'day'"
       style="margin-right:10px"
      
     >
-      <div class="card-content" v-on:click="sendMsg">
+      <div class="card-content">
         <div class="bigNum">
           {{day.developDay.value}}
           <img
@@ -22,7 +22,7 @@
       </div>
     </card>
     <card :cardset="month.cardset" :timetype="'month'" >
-      <div class="card-content" v-on:click="sendMsg">
+      <div class="card-content" >
         <div class="bigNum">
           {{month.developMonth.value}}
           <img

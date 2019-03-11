@@ -38,7 +38,7 @@
           highlight-current-row
           stripe
         >
-          <el-table-column prop="date" label="日期" width="180"></el-table-column>
+          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
               <template slot-scope="scope">
                   <el-popover
@@ -50,7 +50,7 @@
                   </el-popover>
               </template>
           </el-table-column>
-          <el-table-column prop="address" label="地址" sortable></el-table-column>
+          <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
         </el-table>
      
       </div>
@@ -80,7 +80,6 @@ export default {
       ],
       date: "",
       isTableLineShow: false,
-      img: require("@/assets/images/sj.png"),
       tableBg:require("@/assets/images/tabBg.png"),
       tableBgStyle:{
           background: 'url('+require('@/assets/images/tabBg.png')+') left top no-repeat',
@@ -289,8 +288,13 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle() {
-      return "text-align: center";
+    cellStyle({row, column, rowIndex, columnIndex}) {
+      if(columnIndex === 0){
+        return "color: #6AFFFD";
+      }else{
+        return '';
+      }
+      
     }
   },
   mounted() {

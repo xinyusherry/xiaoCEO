@@ -69,7 +69,7 @@
     </div>
     <div>
       <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
-        <component :is="dialogCompent"></component>
+        <component :is="dialogCompent" @headCallBack="headCall"></component>
       </el-dialog>
     </div>
   </div>
@@ -88,6 +88,8 @@ import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import arrears from "@/views/arrears/index";
+import arrearsSecond from "@/views/arrears/arrearsSecond";
+import arrearsThird from "@/views/arrears/arrearsThird";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
 //默认布局
@@ -137,7 +139,9 @@ export default {
     cjDayMonthDetail,
     cjTime,
     dayMonthDetail,
-    arrears
+    arrears,
+    arrearsSecond,
+    arrearsThird
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
@@ -280,7 +284,7 @@ export default {
   background: url('~@/assets/images/icon_table_tr_bg_odd.png') left top repeat!important;
     background-size: 100% 100%!important;
     border-bottom: none!important;
-    color: #fff!important;
+    color: #fff;
 }
 .el-table th.is-leaf{
  border-bottom: none!important;

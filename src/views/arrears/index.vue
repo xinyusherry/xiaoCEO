@@ -1,5 +1,5 @@
 <template>
-  <div class="moveDiv">
+  <div class="moveDiv" v-on:click="sendMsg">
     <div class="content">
       <card :cardset="lj" :timetype="''" style="margin-right:10px;">
           <div class="precent">
@@ -61,13 +61,13 @@ export default {
     };
   },
   methods: {
-    //   sendMsg:function() {
-    //   const param = {
-    //     dialogCompent:"cjDayMonthDetail",
-    //     dialogTitle:"拆机",
-    //   }
-    //   this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
-    // }
+      sendMsg:function() {
+      const param = {
+        dialogCompent:"arrearsSecond",
+        dialogTitle:"欠费",
+      }
+      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    }
   }
 };
 </script>
