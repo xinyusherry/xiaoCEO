@@ -26,6 +26,9 @@ footer, header, hgroup, menu, nav, section {
 html{
 	/* font-size: 75px; */
 }
+*{
+	box-sizing: border-box;
+}
 body {
 	line-height: 1;
 }
