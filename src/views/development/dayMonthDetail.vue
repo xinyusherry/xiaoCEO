@@ -34,8 +34,9 @@
           :data="tableData"
           style="width: 100%;"
           :cell-style="cellStyle"
-          :header-cell-style="cellStyle"
+          :header-cell-style="headerBgStyle"
           highlight-current-row
+          stripe
         >
           <el-table-column prop="date" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
@@ -86,6 +87,14 @@ export default {
           backgroundSize: '100% 100%',
           height: '297px',
           padding: '18px'
+      },
+       headerBgStyle: {
+        background:
+          "url(" +
+          require("@/assets/images/icon_table_header.png") +
+          ") left top repeat",
+        backgroundSize: "100% 100%",
+        textAlign:"center"
       },
        tableData: [
         {
@@ -357,26 +366,7 @@ export default {
 
 }
 
-.el-dialog__wrapper {
-  .el-dialog__header {
-    background: linear-gradient(to right, #9bd9fc, #3096fc);
-    opacity: 0.6;
-    text-align: center;
-    .el-dialog__title {
-      font-family: "PingFangSC-Medium";
-      font-size: 24px;
-      color: #ffffff;
-    }
-    .el-icon-close:before {
-      content: "\E60F";
-      color: #fff;
-      font-size: 20px;
-    }
-  }
-  .el-dialog__body {
-    background: rgba(0, 0, 0, 0.8);
-  }
-}
+
 .btnList {
   .el-input__inner {
     border: 1px solid #5fb6f9;
@@ -391,9 +381,6 @@ export default {
   }
 }
 .table {
-  .el-table__header-wrapper tr > th {
-    background: #0f5d7d;
-  }
  .el-popover {
     background: rgba(30, 60, 86, 0.8)!important;
     border: 1px solid rgba(30, 60, 86, 0.8)!important;
