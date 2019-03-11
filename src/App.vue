@@ -282,4 +282,10 @@ export default {
 .el-table th.is-leaf{
  border-bottom: none!important;
 }
+.el-table, .el-table__expanded-cell{
+  background-color:unset!important;
+}
+.el-table--group::after, .el-table--border::after, .el-table::before{
+  background-color:unset!important;
+}
 </style>
