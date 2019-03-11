@@ -386,11 +386,4 @@ export default {
     font-size: 18px;
   }
 }
- .el-popover {
-    background: rgba(30, 60, 86, 0.8)!important;
-    border: 1px solid rgba(30, 60, 86, 0.8)!important;
-  }
-  .el-popper[x-placement^="right"] .popper__arrow:after {
-    border-right-color: rgba(30, 60, 86, 0.8)!important;
-  }
 </style>
