@@ -97,7 +97,7 @@ const allModulesLayout = [
   { x: 0, y: 1, w: 1, h: 1, i: 2, id: "dvlpTime" },
   { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
   { x: 1, y: 2, w: 1, h: 1, i: 4, id: "cjTime" },
-  { x: 2, y: 2, w: 1, h: 1, i: 5, id: "arrears" },
+  { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
