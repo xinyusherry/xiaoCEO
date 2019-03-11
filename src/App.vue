@@ -266,25 +266,30 @@ export default {
       font-size: 20px;
     }
   }
-  // .el-dialog__body {
-  //   background: url('~@/assets/images/icon_dialog_bg.png') left top repeat;
-  //   background-size: 100% 100%;
-  // }
 }
 .el-table th>.cell {
     font-size: 16px;
     color: #fff;
 }
-.el-table--striped .el-table__body tr.el-table__row--striped td{
-   background: url('~@/assets/images/icon_table_tr_bg_even.png') left top repeat!important;
-    background-size: 100% 100%!important;
-     border-bottom: none!important;
+.el-table--striped .el-table__body tr{
+  &.el-table__row--striped{
+    td{
+      background: rgba(71, 187, 196,0.1) !important;
+      border-bottom: none!important;
+    }
+  }
 }
-.el-table td{
-  background: url('~@/assets/images/icon_table_tr_bg_odd.png') left top repeat!important;
-    background-size: 100% 100%!important;
-    border-bottom: none!important;
+.el-table tr{
+     background: rgba(0,0,0,0.1) !important;
     color: #fff;
+    &.current-row,&.hover-row{
+      td{
+        background: unset !important;
+      }
+    }
+    td{
+      border-bottom: none!important;
+    }
 }
 .el-table th.is-leaf{
  border-bottom: none!important;
@@ -296,10 +301,11 @@ export default {
   background-color:unset!important;
 }
  .el-popover {
-    background: rgba(30, 60, 86, 0.8)!important;
-    border: 1px solid rgba(30, 60, 86, 0.8)!important;
-  }
-  .el-popper[x-placement^="right"] .popper__arrow:after {
-    border-right-color: rgba(30, 60, 86, 0.8)!important;
-  }
+  background: rgba(30, 60, 86, 0.8)!important;
+  border: 1px solid rgba(30, 60, 86, 0.8)!important;
+}
+.el-popper[x-placement^="right"] .popper__arrow::after {
+  left: 0 !important;
+  border-right-color: rgba(30, 60, 86, 1) !important;
+}
 </style>
