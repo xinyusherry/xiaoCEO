@@ -88,6 +88,7 @@ import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import arrears from "@/views/arrears/index";
+import cost from "@/views/cost/index";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
 import arrearsThird from "@/views/arrears/arrearsThird";
 import { GridLayout, GridItem } from "vue-grid-layout";
@@ -107,7 +108,8 @@ const allModules = [
   { id: "dvlpTime", name: "发展实时" },
   { id: "cjDayMonth", name: "拆机（日、月）" },
   { id: "cjTime", name: "拆机实时" },
-  { id: "arrears", name: "欠费" }
+  { id: "arrears", name: "欠费" },
+  { id: "cost", name: "成本" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -141,7 +143,8 @@ export default {
     dayMonthDetail,
     arrears,
     arrearsSecond,
-    arrearsThird
+    arrearsThird,
+    cost
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
