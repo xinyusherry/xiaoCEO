@@ -244,9 +244,13 @@ export default {
   }
 }
 .el-dialog__wrapper {
+  .el-dialog{
+    background: rgba(0,0,0,0.6);
+  }
   .el-dialog__header {
-    background: linear-gradient(to right, #9bd9fc, #3096fc);
+    background: linear-gradient(to right, rgba(155, 217, 252, 0.6), rgba(48, 150, 252, 0.6));
     text-align: center;
+    padding: 15px 20px;
     .el-dialog__title {
       font-family: "PingFangSC-Medium";
       font-size: 24px;
@@ -258,10 +262,10 @@ export default {
       font-size: 20px;
     }
   }
-  .el-dialog__body {
-    background: url('~@/assets/images/icon_dialog_bg.png') left top repeat;
-    background-size: 100% 100%;
-  }
+  // .el-dialog__body {
+  //   background: url('~@/assets/images/icon_dialog_bg.png') left top repeat;
+  //   background-size: 100% 100%;
+  // }
 }
 .el-table th>.cell {
     font-size: 16px;
@@ -271,7 +275,6 @@ export default {
    background: url('~@/assets/images/icon_table_tr_bg_even.png') left top repeat!important;
     background-size: 100% 100%!important;
      border-bottom: none!important;
-     
 }
 .el-table td{
   background: url('~@/assets/images/icon_table_tr_bg_odd.png') left top repeat!important;
