@@ -80,7 +80,7 @@ export default {
 .content {
   display: flex;
   justify-content: space-between;
-  height: calc(50%);
+  height: calc(50% - 5px);
 }
 .precent{
     display: flex;

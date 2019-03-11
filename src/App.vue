@@ -101,8 +101,9 @@ const allModulesLayout = [
   { x: 0, y: 0, w: 1, h: 1, i: 1, id: "dvlpDayMonth" },
   { x: 0, y: 1, w: 1, h: 1, i: 2, id: "dvlpTime" },
   { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
-  { x: 1, y: 2, w: 1, h: 1, i: 4, id: "cjTime" },
+  { x: 1, y: 1, w: 1, h: 1, i: 4, id: "cjTime" },
   { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
+  { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" }
 ];
 const allModules = [
   { id: "Map", name: "地图" },
