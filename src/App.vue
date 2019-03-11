@@ -243,6 +243,43 @@ export default {
     color: #fff;
   }
 }
-
-
+.el-dialog__wrapper {
+  .el-dialog__header {
+    background: linear-gradient(to right, #9bd9fc, #3096fc);
+    text-align: center;
+    .el-dialog__title {
+      font-family: "PingFangSC-Medium";
+      font-size: 24px;
+      color: #ffffff;
+    }
+    .el-icon-close:before {
+      content: "\E60F";
+      color: #fff;
+      font-size: 20px;
+    }
+  }
+  .el-dialog__body {
+    background: url('~@/assets/images/icon_dialog_bg.png') left top repeat;
+    background-size: 100% 100%;
+  }
+}
+.el-table th>.cell {
+    font-size: 16px;
+    color: #fff;
+}
+.el-table--striped .el-table__body tr.el-table__row--striped td{
+   background: url('~@/assets/images/icon_table_tr_bg_even.png') left top repeat!important;
+    background-size: 100% 100%!important;
+     border-bottom: none!important;
+     
+}
+.el-table td{
+  background: url('~@/assets/images/icon_table_tr_bg_odd.png') left top repeat!important;
+    background-size: 100% 100%!important;
+    border-bottom: none!important;
+    color: #fff!important;
+}
+.el-table th.is-leaf{
+ border-bottom: none!important;
+}
 </style>
