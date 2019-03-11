@@ -14,7 +14,7 @@
           </div>
       </card>
     </div>
-    <div class="content">
+    <div class="content" style="margin-top:10px">
       <card :cardset="dq" :timetype="''" style="margin-right:10px;">
            <div class="precent">
               <el-progress :percentage="25"  color="#F16012" style="width:70%" :show-text="false"></el-progress>

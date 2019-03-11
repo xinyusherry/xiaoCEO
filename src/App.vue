@@ -38,7 +38,9 @@
         :i="item.i"
       >
         <div v-if="isDraggable==true" class="mask">
-          <div @click="deleteModule(index,item.id)">删除</div>
+          <div>
+            <div @click="deleteModule(index,item.id)" class="del">×</div>
+          </div>
         </div>
         <component :is="item.id" @headCallBack="headCall"></component>
       </grid-item>
@@ -198,8 +200,14 @@ export default {
   bottom: 0;
   background: rgba(255, 255, 255, 0.1);
   > div {
-    float: right;
-    margin: 10px;
+    text-align: right;
+    background-color: rgba(0,0,0,0.5);
+    overflow: hidden;
+    .del{
+      float: right;
+      font-size: 40px;
+      padding-right: 6px;
+    }
   }
 }
 .title-content {
@@ -247,9 +255,20 @@ export default {
     color: #fff;
   }
 }
+.el-radio__input.is-checked+.el-radio__label{
+  color: #fff!important;
+}
+.el-radio__label{
+  color: #7594C3;
+}
+.el-radio__inner{
+  border-color: #7594C3!important;
+  background-color: #000!important;
+}
 .el-dialog__wrapper {
   .el-dialog{
     background: rgba(0,0,0,0.6);
+    margin-top: 10vh!important;
   }
   .el-dialog__header {
     background: linear-gradient(to right, rgba(155, 217, 252, 0.6), rgba(48, 150, 252, 0.6));
