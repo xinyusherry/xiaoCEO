@@ -1,9 +1,11 @@
 <template>
-  <card :cardset="cardset" :timetype="'time'">
-    <div class="card-content">
-      <chart-line :id="'lineTime'" :dataset="developOnTime.dataset" :color="colors"></chart-line>
-    </div>
-  </card>
+  <div class="moveDiv" @click="sendMsg">
+    <card :cardset="cardset" :timetype="'time'">
+      <div class="card-content">
+        <chart-line :id="'lineTime'" :dataset="developOnTime.dataset" :color="colors"></chart-line>
+      </div>
+    </card>
+  </div>
 </template>
 
 <script>
@@ -36,9 +38,22 @@ export default {
       },
       colors: ["#F7E43C"]
     };
+  },
+  methods:{
+      sendMsg:function() {
+      const param = {
+          dialogCompent:"dvlpTimeSed",
+          dialogTitle:"发展（实时）",
+      }
+      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      }
   }
 };
 </script>
 
 <style scoped>
+.moveDiv {
+  width: 100%;
+  height: 100%;
+}
 </style>

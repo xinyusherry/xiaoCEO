@@ -81,10 +81,10 @@
 // @ is an alias to /src
 import Card from "@/components/Card.vue";
 import Comp1 from "@/components/Comp1.vue";
-import Comp2 from "@/components/Comp2.vue";
 import Map from "@/components/Map.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
+import dvlpTimeSed from "@/views/development/timeSecond";
 import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
@@ -126,7 +126,7 @@ export default {
       modules: allModules, //所有模块名称
       checkedModules: allModulesId.concat(), //已选模块id
       layout: allModulesLayout.concat(), //布局展示模块
-      dialogCompent: "Comp2", //弹出层组件名字
+      dialogCompent: "", //弹出层组件名字
       isDialogShow: false, //弹出层显示
       dialogTitle: "" //弹出层标题
     };
@@ -136,10 +136,10 @@ export default {
     GridLayout,
     GridItem,
     Comp1,
-    Comp2,
     Map,
     dvlpDayMonth,
     dvlpTime,
+    dvlpTimeSed,
     cjDayMonth,
     cjDayMonthDetail,
     cjTime,
