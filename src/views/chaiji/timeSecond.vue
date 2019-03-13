@@ -5,34 +5,12 @@
         </div>
         <div class="flex">
             <div class="flex-item" style="margin-right:10%">
-                <div class="title blue">移动发展</div>
-                <div><span class="type">日</span><span>1234 / 2344</span></div>
-                <div><span class="type now">月</span><span>1234 / 2344</span></div>
-                <div class="flex-between">
-                    <span>日完成</span>
-                    <div style="width:60%"><el-progress :text-inside="false" :stroke-width="12" :percentage="80.99" color="#6AFFFD" :show-text="false"></el-progress></div>
-                    <span>88.88%</span>
-                </div>
-                <div class="flex-between">
-                    <span>月完成</span>
-                    <div style="width:60%"><el-progress :text-inside="false" :stroke-width="12" :percentage="80.88" color="#6AFFFD" :show-text="false"></el-progress></div>
-                    <span>88.88%</span>
-                </div>
+                <div><span class="title blue">主动拆机</span></div>
+                <div><span>1234 / 2344</span></div>
             </div>
             <div class="flex-item">
-                <div class="title green">固话发展</div>
-                <div><span class="type">日</span><span>1234 / 2344</span></div>
-                <div><span class="type now">月</span><span>1234 / 2344</span></div>
-                <div class="flex-between">
-                    <span>日完成</span>
-                    <div style="width:60%"><el-progress :text-inside="false" :stroke-width="12" :percentage="80.99" color="#1AC175" :show-text="false"></el-progress></div>
-                    <span>88.88%</span>
-                </div>
-                <div class="flex-between">
-                    <span>月完成</span>
-                    <div style="width:60%"><el-progress :text-inside="false" :stroke-width="12" :percentage="80.88" color="#1AC175" :show-text="false"></el-progress></div>
-                    <span>88.88%</span>
-                </div>
+                <div><span class="title green">被动拆机</span></div>
+                <div><span>1234 / 2344</span></div>
             </div>
         </div>
         <div style="height:300px">
@@ -61,8 +39,8 @@ export default {
         barHandleClick(barChart){
             barChart.on("click", (params)=>{
                 const param = {
-                    dialogCompent:"dvlpTimeTrd",
-                    dialogTitle:"发展（实时）"
+                    dialogCompent:"cjTimeTrd",
+                    dialogTitle:"拆机（实时）"
                 }
                 const thirdParams = {
                     index:params.dataIndex,
@@ -91,6 +69,7 @@ export default {
     align-items: center;
     .flex-item{
         width: 30%;
+        text-align: center;
         .title{
             position: relative;
             font-size: 18px;
