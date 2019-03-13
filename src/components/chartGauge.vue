@@ -323,12 +323,6 @@ export default {
             },
             axisLabel: {
               show: false,
-              distance: -15,
-              textStyle: {
-                color: "#03B7C9",
-                fontSize: "12",
-                fontWeight: "bold"
-              }
             },
             pointer: {
               //仪表盘指针
@@ -351,10 +345,8 @@ export default {
             endAngle: -45,
             radius: "78%",
             center: ["67%", "55%"], // 默认全局居中
-
             min: 0,
             max: 100,
-
             axisLine: {
               show: true,
               lineStyle: {
@@ -381,9 +373,7 @@ export default {
             },
             splitLine: {
               show: false,
-              length: 20
             },
-
             axisLabel: {
               show: false
             },
@@ -406,11 +396,6 @@ export default {
               textStyle: {
                 fontSize: 16,
                 color: "#88bc66"
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: "#03B7C9"
               }
             },
             data: [
