@@ -91,6 +91,7 @@ import cjTime from "@/views/chaiji/time";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import arrears from "@/views/arrears/index";
 import cost from "@/views/cost/index";
+import costSecond from "@/views/cost/costSecond";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
 import arrearsThird from "@/views/arrears/arrearsThird";
 import { GridLayout, GridItem } from "vue-grid-layout";
@@ -147,7 +148,8 @@ export default {
     arrears,
     arrearsSecond,
     arrearsThird,
-    cost
+    cost,
+    costSecond
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
