@@ -71,7 +71,7 @@
     </div>
     <div>
       <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
-        <component :is="dialogCompent" @headCallBack="headCall"></component>
+        <component :is="dialogCompent" @headCallBack="headCall" :sendParams="thirdParams"></component>
       </el-dialog>
     </div>
   </div>
@@ -85,6 +85,7 @@ import Map from "@/components/Map.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
 import dvlpTimeSed from "@/views/development/timeSecond";
+import dvlpTimeTrd from "@/views/development/timeThird";
 import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
@@ -129,7 +130,8 @@ export default {
       layout: allModulesLayout.concat(), //布局展示模块
       dialogCompent: "", //弹出层组件名字
       isDialogShow: false, //弹出层显示
-      dialogTitle: "" //弹出层标题
+      dialogTitle: "", //弹出层标题
+      thirdParams: ""//二级传至三级页面参数
     };
   },
   components: {
@@ -141,6 +143,7 @@ export default {
     dvlpDayMonth,
     dvlpTime,
     dvlpTimeSed,
+    dvlpTimeTrd,
     cjDayMonth,
     cjDayMonthDetail,
     cjTime,
@@ -183,12 +186,15 @@ export default {
       }
     },
     //子组件传递过来的参数
-    headCall(param) {
+    headCall(param,thirdParams) {
       //拖拽时禁止弹出层显示
       if (this.isDraggable) return false;
       this.isDialogShow = true;
       this.dialogCompent = param.dialogCompent;
       this.dialogTitle = param.dialogTitle;
+      if(thirdParams!=null){
+        this.thirdParams = thirdParams;
+      }
     }
   }
 };
@@ -332,5 +338,13 @@ export default {
 .el-popper[x-placement^="right"] .popper__arrow::after {
   left: 0 !important;
   border-right-color: rgba(30, 60, 86, 1) !important;
+}
+.el-progress-bar__outer{
+    background-color: #777 !important;
+}
+.el-table td.gutter, .el-table th.gutter{
+  // background-image: linear-gradient(-180deg, rgba(31, 200, 255, 0.7) 0%, rgba(8, 69, 109, 0.7) 100%);
+  opacity: 0.7;
+  background-image: linear-gradient(-180deg, #1FC8FF 0%, #08456D 100%);
 }
 </style>

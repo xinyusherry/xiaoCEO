@@ -3,13 +3,13 @@
     <div class="content">
       <card :cardset="lj" :timetype="''" style="margin-right:10px;">
           <div class="precent">
-              <el-progress :percentage="70"  color="red" style="width:70%" :show-text="false"></el-progress>
+              <el-progress :percentage="70" :stroke-width="12" color="#D80C1D" style="width:70%" :show-text="false"></el-progress>
               <h3 class="precent_text">70<span class="unit">%</span></h3>
           </div>
       </card>
       <card :cardset="dy" :timetype="''">
             <div class="precent">
-              <el-progress :percentage="60"  color="#19c172" style="width:70%" :show-text="false"></el-progress>
+              <el-progress :percentage="60" :stroke-width="12" color="#19c172" style="width:70%" :show-text="false"></el-progress>
               <h3 class="precent_text">60<span class="unit">%</span></h3>
           </div>
       </card>
@@ -17,13 +17,13 @@
     <div class="content" style="margin-top:10px">
       <card :cardset="dq" :timetype="''" style="margin-right:10px;">
            <div class="precent">
-              <el-progress :percentage="25"  color="#F16012" style="width:70%" :show-text="false"></el-progress>
+              <el-progress :percentage="25" :stroke-width="12" color="#F16012" style="width:70%" :show-text="false"></el-progress>
               <h3 class="precent_text">25<span class="unit">%</span></h3>
           </div>
       </card>
       <card :cardset="cq" :timetype="''">
            <div class="precent">
-              <el-progress :percentage="34"  color="#68FCFC" style="width:70%" :show-text="false"></el-progress>
+              <el-progress :percentage="34" :stroke-width="12" color="#68FCFC" style="width:70%" :show-text="false"></el-progress>
               <h3 class="precent_text">34<span class="unit">%</span></h3>
           </div>
       </card>

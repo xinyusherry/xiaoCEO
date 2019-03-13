@@ -12,12 +12,7 @@ export default {
   mounted() {
     setTimeout(()=>{
       var thisChart = this.$echarts.init(document.getElementById(this.id));
-        thisChart.on("legendselectchanged", function(event) {
-        event.stopPropagation();
-      });
-         thisChart.on("click", function(event) {
-        event.stopPropagation();
-      });
+      this.$emit('CallBack', thisChart);
       thisChart.setOption({
         grid: {
           containLabel: true,
