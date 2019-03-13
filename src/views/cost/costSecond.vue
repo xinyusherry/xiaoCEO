@@ -196,9 +196,6 @@ export default {
         yAxis: [
           {
             type: "value",
-            axisLabel: {
-              formatter: "{value}"
-            },
             axisTick: {
               show: false
             },
@@ -326,9 +323,6 @@ export default {
         yAxis: [
           {
             type: "value",
-            axisLabel: {
-              formatter: "{value}"
-            },
             axisTick: {
               show: false
             },
@@ -392,7 +386,7 @@ export default {
             data: [20, 50, 80, 58, 83, 68, 57, 80, 42, 66],
             barWidth: 10, //柱子宽度
             barGap: 1, //柱子之间间距
-            color: "#F868AF",
+            color: color,
             itemStyle: {
               normal: {
                 barBorderRadius: [10, 10, 0, 0]
@@ -486,9 +480,6 @@ export default {
         yAxis: [
           {
             type: "value",
-            axisLabel: {
-              formatter: "{value}"
-            },
             axisTick: {
               show: false
             },
@@ -540,7 +531,7 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle({ row, column, rowIndex, columnIndex }) {
+    cellStyle({columnIndex }) {
       if (columnIndex === 0) {
         return "color: #6AFFFD";
       } else {
