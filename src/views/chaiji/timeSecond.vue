@@ -5,11 +5,11 @@
         </div>
         <div class="flex">
             <div class="flex-item" style="margin-right:10%">
-                <div><span class="title blue">移动发展</span></div>
+                <div><span class="title blue">主动拆机</span></div>
                 <div><span>1234 / 2344</span></div>
             </div>
             <div class="flex-item">
-                <div><span class="title green">固话发展</span></div>
+                <div><span class="title green">被动拆机</span></div>
                 <div><span>1234 / 2344</span></div>
             </div>
         </div>

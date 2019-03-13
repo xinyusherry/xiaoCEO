@@ -80,7 +80,6 @@
 <script>
 // @ is an alias to /src
 import Card from "@/components/Card.vue";
-import Comp1 from "@/components/Comp1.vue";
 import Map from "@/components/Map.vue";
 import dvlpDayMonth from "@/views/development/dayMonth";
 import dvlpTime from "@/views/development/time";
@@ -143,7 +142,6 @@ export default {
     Card,
     GridLayout,
     GridItem,
-    Comp1,
     Map,
     dvlpDayMonth,
     dvlpTime,
