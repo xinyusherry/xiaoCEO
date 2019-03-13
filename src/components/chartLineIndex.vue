@@ -12,19 +12,19 @@ export default {
   mounted() {
     setTimeout(()=>{
       var thisChart = this.$echarts.init(document.getElementById(this.id));
-      this.$emit('CallBack', thisChart);
       thisChart.setOption({
         grid: {
           containLabel: true,
-          width: "80%",
-          height: "70%",
-          top: "13%"
+          top: "20%",
+          bottom: "5%",
+          left:"1%",
+          right:"1%"
         },
         tooltip: {
-          trigger: "axis",
-          axisPointer:{
-            type:"none"
-          }
+          // trigger: "axis",
+          // axisPointer:{
+          //   type:"none"
+          // }
         },
         xAxis: {
           type: "category",
@@ -62,6 +62,13 @@ export default {
         series: [
           {
             type: "line",
+            symbolSize:10,
+            itemStyle:{
+              borderWidth:2
+            },
+            lineStyle:{
+              width:4
+            },
             color: this.color,
             data: this.dataset.data
           }

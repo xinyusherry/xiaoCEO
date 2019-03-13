@@ -31,16 +31,19 @@ body {
   height: 2px;
 }
 #app .card .titleDiv {
-  padding: 5px 10px 0;
+  padding: 15px 10px 0;
   display: flex;
   height: 30px;
   line-height: 30px;
   justify-content: space-between;
   align-items: center;
 }
+#app .card .titleDiv .title{
+  font-size: 20px;
+}
 #app .card .titleDiv .time {
   color: #7594C3;
-  font-size: 15px;
+  font-size: 16px;
 }
 #app .card .card-content {
   height: calc(100% - 30px);
