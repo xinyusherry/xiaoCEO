@@ -89,6 +89,8 @@ import dvlpTimeTrd from "@/views/development/timeThird";
 import dayMonthDetail from "@/views/development/dayMonthDetail";
 import cjDayMonth from "@/views/chaiji/dayMonth";
 import cjTime from "@/views/chaiji/time";
+import cjTimeSed from "@/views/chaiji/timeSecond";
+import cjTimeTrd from "@/views/chaiji/timeThird";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import arrears from "@/views/arrears/index";
 import cost from "@/views/cost/index";
@@ -107,7 +109,7 @@ const allModulesLayout = [
   { x: 1, y: 1, w: 1, h: 1, i: 4, id: "cjTime" },
   { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
   { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" },
-   { x: 1, y: 3, w: 1, h: 1, i: 7, id: "income" },
+  { x: 0, y: 4, w: 1, h: 1, i: 7, id: "income" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -150,6 +152,8 @@ export default {
     cjDayMonth,
     cjDayMonthDetail,
     cjTime,
+    cjTimeSed,
+    cjTimeTrd,
     dayMonthDetail,
     arrears,
     arrearsSecond,
@@ -347,8 +351,6 @@ export default {
     background-color: #777 !important;
 }
 .el-table td.gutter, .el-table th.gutter{
-  // background-image: linear-gradient(-180deg, rgba(31, 200, 255, 0.7) 0%, rgba(8, 69, 109, 0.7) 100%);
-  opacity: 0.7;
-  background-image: linear-gradient(-180deg, #1FC8FF 0%, #08456D 100%);
+  background: url('./assets/images/icon_table_header.png') repeat left top / 100% 100%;
 }
 </style>
