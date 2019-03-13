@@ -94,6 +94,7 @@ import cost from "@/views/cost/index";
 import costSecond from "@/views/cost/costSecond";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
 import arrearsThird from "@/views/arrears/arrearsThird";
+import income from "@/views/income/index";
 import { GridLayout, GridItem } from "vue-grid-layout";
 
 //默认布局
@@ -104,7 +105,8 @@ const allModulesLayout = [
   { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
   { x: 1, y: 1, w: 1, h: 1, i: 4, id: "cjTime" },
   { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
-  { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" }
+  { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" },
+   { x: 0, y: 0, w: 1, h: 1, i: 7, id: "income" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -114,6 +116,7 @@ const allModules = [
   { id: "cjTime", name: "拆机实时" },
   { id: "arrears", name: "欠费" },
   { id: "cost", name: "成本" },
+  { id: "income", name: "增量收益分享" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -149,7 +152,8 @@ export default {
     arrearsSecond,
     arrearsThird,
     cost,
-    costSecond
+    costSecond,
+    income
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选

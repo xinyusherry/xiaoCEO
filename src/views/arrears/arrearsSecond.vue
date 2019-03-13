@@ -1,7 +1,7 @@
 <template>
   <div >
     <div>
-      <div class="rightBtn header btnList">
+      <div class="rightBtn btnList">
         <el-select v-model="value" placeholder="请选择" style="margin-right:20px">
           <el-option
             v-for="item in options"
