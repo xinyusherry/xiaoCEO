@@ -36,7 +36,7 @@
             </div>
         </div>
         <div style="height:300px">
-            <chart-bar :id="'devTimeBar'" :dataset="chartBar.dataset" :color="chartBar.colors"></chart-bar>
+            <chart-bar :id="'devTimeBar'" :dataset="chartBar.dataset" :color="chartBar.colors" @CallBack="barHandleClick"></chart-bar>
         </div>
     </div>
 </template>
@@ -59,22 +59,23 @@ export default {
         };
     },
     methods:{
-        sendMsg:function() {
-        const param = {
-            dialogCompent:"dvlpTimeSed",
-            dialogTitle:"拆机(实时)",
-        }
-        this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+        barHandleClick(barChart){
+            barChart.on("click", (params)=>{
+                const param = {
+                    dialogCompent:"dvlpTimeTrd",
+                    dialogTitle:"发展(实时)"
+                }
+                const thirdParams = {
+                    index:params.dataIndex,
+                    name:params.name
+                }
+                this.$emit('headCallBack', param , thirdParams);
+            });
         }
     }
 }
 </script>
 
-<style>
-.devTimeSed .el-progress-bar__outer{
-    background-color: #777;
-}
-</style>
 <style scoped lang="less">
 .dateDiv{
     text-align: right;
