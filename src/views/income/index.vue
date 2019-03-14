@@ -1,5 +1,5 @@
 <template>
-  <div class="moveDiv">
+  <div class="moveDiv" @click="sendMsg">
     <card :cardset="cardset" :timetype="'month'">
       <div class="card-content">
         <chart-gauge :id="'guage'"></chart-gauge>
@@ -27,13 +27,13 @@ export default {
     };
   },
   methods:{
-    //   sendMsg:function() {
-    //   const param = {
-    //       dialogCompent:"dvlpTimeSed",
-    //       dialogTitle:"发展（实时）",
-    //   }
-    //   this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
-    //   }
+      sendMsg:function() {
+      const param = {
+          dialogCompent:"incomeSecond",
+          dialogTitle:"增量收益分享",
+      }
+      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      }
   }
 };
 </script>

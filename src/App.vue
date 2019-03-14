@@ -97,6 +97,7 @@ import costSecond from "@/views/cost/costSecond";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
 import arrearsThird from "@/views/arrears/arrearsThird";
 import income from "@/views/income/index";
+import incomeSecond from "@/views/income/incomeSecond";
 import profit from "@/views/profit/index";
 import profitSed from "@/views/profit/profitSecond";
 import { GridLayout, GridItem } from "vue-grid-layout";
@@ -163,6 +164,7 @@ export default {
     cost,
     costSecond,
     income,
+    incomeSecond,
     profit,
     profitSed
   },
