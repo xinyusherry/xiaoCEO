@@ -9,6 +9,9 @@
         <div class="title-content">
           <img src="./assets/images/icon-title.png" height="26" alt>
           <img src="./assets/images/title.png" height="26" alt>
+          <swiper v-if="swiperSlides.length>1" :options="swiperOption">
+            <swiper-slide v-for="(slide, index) in swiperSlides" :key="index"><span class="lightblue">{{ slide.name }}</span>  {{ slide.time }}  发展了<span class="lightblue">【{{ slide.product }}】！</span></swiper-slide>
+          </swiper>
           <el-button
             class="layoutBtn"
             type="primary"
@@ -101,6 +104,7 @@ import incomeSecond from "@/views/income/incomeSecond";
 import profit from "@/views/profit/index";
 import profitSed from "@/views/profit/profitSecond";
 import { GridLayout, GridItem } from "vue-grid-layout";
+import { close } from 'fs';
 
 //默认布局
 const allModulesLayout = [
@@ -140,7 +144,18 @@ export default {
       dialogCompent: "", //弹出层组件名字
       isDialogShow: false, //弹出层显示
       dialogTitle: "", //弹出层标题
-      thirdParams: ""//二级传至三级页面参数
+      thirdParams: "",//二级传至三级页面参数
+      swiperOption: { //轮播属性
+        loop : true,
+        loopAdditionalSlides : 2,
+        observer:true,
+        observeParents:true,
+        speed: 1000,
+        autoplay: {
+            delay: 1000,
+        }
+      },
+      swiperSlides:[]//轮播数据
     };
   },
   components: {
@@ -210,6 +225,18 @@ export default {
         this.thirdParams = thirdParams;
       }
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      //模拟请求轮播数据
+      this.swiperSlides = [
+        {name:"赵三",time: "14 : 10 ：53",product:"天津宽带100M包月-10元/月"}, 
+        {name:"钱三",time: "14 : 20 ：53",product:"天津宽带100M包月-20元/月"}, 
+        {name:"孙三",time: "14 : 30 ：53",product:"天津宽带100M包月-30元/月"}, 
+        {name:"李三",time: "14 : 40 ：53",product:"天津宽带100M包月-40元/月"}, 
+        {name:"周三",time: "14 : 50 ：53",product:"天津宽带100M包月-50元/月"}
+      ];
+    }, 0)
   }
 };
 </script>
@@ -243,6 +270,12 @@ export default {
     padding: 8px 40px;
     font-size: 14px;
     background-image: linear-gradient(-180deg, #98dcfd 0%, #5fb6f9 100%);
+  }
+  .swiper-container{
+    width: 60%;
+  }
+  .lightblue{
+    color: #6AFFFD;
   }
 }
 .addModule {
