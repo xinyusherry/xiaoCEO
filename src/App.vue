@@ -226,6 +226,20 @@ export default {
       }
     }
   },
+  created(){
+    let params = {
+      data:this.layout
+    };
+    this.$axios.post("/Workbench/getUserModule", params
+    ).then(function(res) {
+      //var resData = res.data;
+      alert("请求成功");
+      console.log(res);
+    }).catch(function(e){
+      alert("出错了");
+      console.log(e);
+    });
+  },
   mounted() {
     setTimeout(() => {
       //模拟请求轮播数据
