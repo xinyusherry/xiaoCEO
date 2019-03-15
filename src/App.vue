@@ -414,4 +414,63 @@ export default {
 .el-table td.gutter, .el-table th.gutter{
   background: url('./assets/images/icon_table_header.png') repeat left top / 100% 100%;
 }
+input.el-input__inner {
+    background: transparent !important;
+    border-color: #5FB6F9 !important;
+    font-size: 16px;
+    color: #ffffff;
+}
+.el-icon-date:before {
+    color: #5fb6f9;
+    font-size: 18px;
+}
+.el-picker-panel.el-date-picker.el-popper{
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-color: #5FB6F9;
+  .el-date-table th{
+    color: #fff;
+  }
+  .el-picker-panel__content table td .cell,
+  .el-date-picker__header>button,
+  .el-date-picker__header>span{
+    color: #fff;
+    &:hover{
+      color:#409EFF;
+    }
+  }
+  .popper__arrow{
+    border-bottom-color: #409EFF;
+    &::after{
+      border-bottom-color: #000;
+    }
+  }
+}
+.el-select-dropdown.el-popper{
+  background: rgba(0, 0, 0, 0.8);
+  border-color: #5FB6F9;
+  li.el-select-dropdown__item{
+    color: #fff;
+    &.selected {
+      color: #409EFF;
+    }
+    &.hover,&:hover{
+      background-color: rgba(255,255,255,0.2);
+    }
+  }
+  .popper__arrow{
+    border-bottom-color: #409EFF !important;
+    &::after{
+      border-bottom-color: #000 !important;
+    }
+  }
+}
+.el-radio-button:first-child .el-radio-button__inner{
+  border-color: #1B8CEA!important;
+}
+span.el-radio-button__inner{
+  background: rgba(0, 0, 0, 0.5);
+  color:#979797;
+  border-color: #1B8CEA;
+}
 </style>
