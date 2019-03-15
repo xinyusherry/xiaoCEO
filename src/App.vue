@@ -103,6 +103,8 @@ import income from "@/views/income/index";
 import incomeSecond from "@/views/income/incomeSecond";
 import profit from "@/views/profit/index";
 import profitSed from "@/views/profit/profitSecond";
+import warning from "@/views/warning/index";
+import warningSecond from "@/views/warning/warningSecond";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
@@ -117,6 +119,7 @@ const allModulesLayout = [
   { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" },
   { x: 0, y: 4, w: 1, h: 1, i: 7, id: "income" },
   { x: 1, y: 3, w: 1, h: 1, i: 8, id: "profit" },
+  { x: 0, y: 5, w: 1, h: 1, i: 9, id: "warning" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -128,6 +131,7 @@ const allModules = [
   { id: "cost", name: "成本" },
   { id: "income", name: "增量收益分享" },
   { id: "profit", name: "利润、准利润" },
+  { id: "warning", name: "到期预警" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -181,7 +185,9 @@ export default {
     income,
     incomeSecond,
     profit,
-    profitSed
+    profitSed,
+    warning,
+    warningSecond
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
