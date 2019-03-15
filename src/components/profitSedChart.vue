@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  props: ["id","type","dataset", "color"],
+  props: ["id","type","dataset","title","color"],
   data: function() {
     return {
     };
@@ -13,23 +13,36 @@ export default {
     setTimeout(()=>{
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       thisChart.setOption({
+        color: this.color,
+        title: {
+          left: 'center',
+          text: this.title,
+          top:"5%",
+          textStyle:{
+            color:"#24FAFF"
+          }
+        },
+        legend: {
+          data: this.dataset.legendData,
+          top:"16%",
+          textStyle:{
+            color:"#fff"
+          }
+        },
         grid: {
           containLabel: true,
-          width: "80%",
-          height: "70%",
-          top: "13%"
+          top: "30%",
+          bottom: "5%",
+          left:"5%",
+          right:"5%"
         },
         tooltip: {
-          trigger: "axis",
-          axisPointer:{
-            type:"none"
-          }
+          trigger: "axis"
         },
         xAxis: {
           type: "category",
           boundaryGap: true,
           axisLabel:{
-            fontSize:16,
             color: "#24FAFF"
           },
           axisLine: {
@@ -69,10 +82,16 @@ export default {
         },
         series: [
           {
-            type: this.type,
-            color: this.color,
+            name:this.dataset.legendData[0].name,
+            type:this.type,
             barWidth:10,
-            data: this.dataset.data
+            data: this.dataset.data[0]
+          },
+          {
+            name:this.dataset.legendData[1].name,
+            type:this.type,
+            barWidth:10,
+            data: this.dataset.data[1]
           }
         ]
       });

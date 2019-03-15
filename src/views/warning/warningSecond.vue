@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div>
       <div class="rightBtn btnList">
         <el-select v-model="value" placeholder="请选择" style="margin-right:20px">

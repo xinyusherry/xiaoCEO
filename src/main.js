@@ -12,10 +12,10 @@ import qs from 'qs';
 
 
 axios.defaults.baseURL = '/microservice-ui';   //配置接口地址
-axios.defaults.transformRequest= [function (data) {
+axios.defaults.transformRequest = [function (data) {
   // 对 data 进行任意转换处理
   return qs.stringify({JsonParam:JSON.stringify(data)})
-}],
+}]
 
 
 Vue.use(VueAwesomeSwiper, /* { default global options } */)

@@ -1,118 +1,74 @@
 <template>
     <div class="devTimeSed">
-        <div class="dateDiv">
-            <span>2019-03-12</span>
-        </div>
-        <div class="flex">
-            <div class="flex-item" style="margin-right:10%">
-                <div><span class="title blue">主动拆机</span></div>
-                <div><span>1234 / 2344</span></div>
+        <div class="chartDiv" style="margin-bottom:20px">
+            <div class="changeDiv">
+                <el-date-picker v-model="date" type="month" placeholder="选择日期"></el-date-picker>
             </div>
-            <div class="flex-item">
-                <div><span class="title green">被动拆机</span></div>
-                <div><span>1234 / 2344</span></div>
-            </div>
+            <Chart :id="'profitLine'" :title="'利润、准利润完成趋势'" :type="'line'" :dataset="lineChart.dataset" :color="lineChart.colors"></Chart>
         </div>
-        <div style="height:300px">
-            <chart-bar :id="'devTimeBar'" :dataset="chartBar.dataset" :color="chartBar.colors" @CallBack="barHandleClick"></chart-bar>
+        <div class="chartDiv">
+            <div class="changeDiv">
+                <el-radio-group v-model="tabVal">
+                    <el-radio-button label="zlr">准利润</el-radio-button>
+                    <el-radio-button label="lr">利润</el-radio-button>
+                </el-radio-group>
+            </div>
+            <Chart :id="'profitBar'" :title="'同比分析'" :type="'bar'" :dataset="barChart.dataset" :color="barChart.colors"></Chart>
         </div>
     </div>
 </template>
 
 <script>
-import chartBar from "../../components/chartBar.vue";
+import Chart from "../../components/profitSedChart.vue";
 
 export default {
-    components: { chartBar },
+    components: { Chart },
     data() {
         return {
-            chartBar: {
+            date:"",
+            tabVal:"zlr",
+            lineChart: {
                 dataset: {
-                    xAxis: ["新零售", "小区营销", "小区承接", "营业厅"],
-                    data: [100,200,300,400],
+                    legendData:[
+                        {name:"利润"}, 
+                        {name:"准利润"}
+                    ],
+                    xAxis: ["12月","1月", "2月", "3月", "4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+                    data: [
+                        [100,200,300,400,500,100,200,300,400,500,100,200,300],
+                        [500,400,300,200,100,500,400,300,200,100,500,400,300]
+                    ]
                 },
-                colors: ["#F868AF"]
+                colors: ["#0097FF","#F7E43C"]
             },
+            barChart: {
+                dataset: {
+                    legendData:[
+                        {name:"2018",icon:"path://M 100 100 L 300 100 L 300 300 L 100 300 z"}, 
+                        {name:"2019",icon:"path://M 100 100 L 300 100 L 300 300 L 100 300 z"}
+                    ],
+                    xAxis: ["1月", "2月", "3月", "4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+                    data: [
+                        [100,200,300,400,500,100,200,300,400,500,100,200],
+                        [500,400,300,200,100,500]
+                    ]
+                },
+                colors: ["#F868AF","#3AA3F3"]
+            }
         };
-    },
-    methods:{
-        barHandleClick(barChart){
-            barChart.on("click", (params)=>{
-                const param = {
-                    dialogCompent:"cjTimeTrd",
-                    dialogTitle:"拆机（实时）"
-                }
-                const thirdParams = {
-                    index:params.dataIndex,
-                    name:params.name
-                }
-                this.$emit('headCallBack', param , thirdParams);
-            });
-        }
     }
 }
 </script>
 
 <style scoped lang="less">
-.dateDiv{
-    text-align: right;
-    span{
-        padding: 5px 30px;
-        color: #fff;
-        background-color: rgba(95, 182, 249,0.5);
-        border-radius: 3px;
-    }
+.chartDiv{
+    position: relative;
+    height: 300px;
 }
-.flex{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .flex-item{
-        width: 30%;
-        text-align: center;
-        .title{
-            position: relative;
-            font-size: 18px;
-            &::before{
-                content: '';
-                position: absolute;
-                left: -20px;
-                width: 5px;
-                height: 22px;
-                background: #fff;
-            }
-            &.blue{
-                color: #6AFFFD;
-                &::before{
-                    background: #6AFFFD;
-                }
-            }
-             &.green{
-                color: #1AC175;
-                &::before{
-                    background: #1AC175;
-                }
-            }
-        }
-        >div{
-            margin: 25px 0;
-            color: #fff;
-            font-size: 16px;
-        }
-    }
-}
-.flex-between{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.type{
-    margin-right: 10px;
-    padding: 2px 5px;
-    &.now{
-        background-color: #5FB6F9;
-        border-radius: 50%;
-        color: #6AFFFD;
-    }
+.changeDiv{
+    position: absolute;
+    right: 10px;
+    top: 0;
+    z-index: 9;
 }
 </style>
