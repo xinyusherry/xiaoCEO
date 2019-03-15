@@ -103,7 +103,7 @@ export default {
               }
             },
             zlevel: 2,
-            barWidth: "35%",
+            barWidth: "50%",
             data: yData
           },
           {
@@ -113,7 +113,7 @@ export default {
             zlevel: 1,
             itemStyle: {
               normal: {
-                color: "#121847",
+                color: "#385472",
                 borderWidth: 0,
                 borderType:"dashed",
                 shadowBlur: {
@@ -124,7 +124,7 @@ export default {
                 }
               }
             },
-            barWidth: "35%",
+            barWidth: "50%",
             data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
           }
         ]
@@ -238,7 +238,7 @@ export default {
     })();
     var yData = [13.7, 13.4, 13.5, 16.1, 17.4, 15.2];
     this.drawBarChart("canvas", "#6afefc", xData, yData);
-    this.getChartData("#1AC175", 10, "mychart");
+    this.getChartData("#6bfaff", 10, "mychart");
   }
 };
 </script>
