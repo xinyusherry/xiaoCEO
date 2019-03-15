@@ -99,8 +99,8 @@ import cost from "@/views/cost/index";
 import costSecond from "@/views/cost/costSecond";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
 import arrearsThird from "@/views/arrears/arrearsThird";
-import income from "@/views/income/index";
-import incomeSecond from "@/views/income/incomeSecond";
+import share from "@/views/share/index";
+import shareSecond from "@/views/share/shareSecond";
 import profit from "@/views/profit/index";
 import profitSed from "@/views/profit/profitSecond";
 import warning from "@/views/warning/index";
@@ -117,7 +117,7 @@ const allModulesLayout = [
   { x: 1, y: 1, w: 1, h: 1, i: 4, id: "cjTime" },
   { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
   { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" },
-  { x: 0, y: 4, w: 1, h: 1, i: 7, id: "income" },
+  { x: 0, y: 4, w: 1, h: 1, i: 7, id: "share" },
   { x: 1, y: 3, w: 1, h: 1, i: 8, id: "profit" },
   { x: 0, y: 5, w: 1, h: 1, i: 9, id: "warning" },
 ];
@@ -129,7 +129,7 @@ const allModules = [
   { id: "cjTime", name: "拆机实时" },
   { id: "arrears", name: "欠费" },
   { id: "cost", name: "成本" },
-  { id: "income", name: "增量收益分享" },
+  { id: "share", name: "增量收益分享" },
   { id: "profit", name: "利润、准利润" },
   { id: "warning", name: "到期预警" },
 ];
@@ -182,8 +182,8 @@ export default {
     arrearsThird,
     cost,
     costSecond,
-    income,
-    incomeSecond,
+    share,
+    shareSecond,
     profit,
     profitSed,
     warning,
