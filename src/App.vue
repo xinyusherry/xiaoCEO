@@ -3,7 +3,7 @@
     <div class="card-box">
       <Card
         :classname="'small'"
-        :cardset="{width:'100%',leftcolor:'#39B54A',rightcolor:'#F8E36E'}"
+        :cardset="{width:'calc(100% - 20px)',leftcolor:'#39B54A',rightcolor:'#F8E36E'}"
         style="margin:4.5px 10px"
       >
         <div class="title-content">
@@ -231,6 +231,18 @@ export default {
         this.thirdParams = thirdParams;
       }
     }
+  },
+  created(){
+    let params = {
+      data:this.layout
+    };
+    //测试接口
+    this.$axios.post("/Workbench/getUserModule", params
+    ).then(function(res) {
+      //console.log(res);
+    }).catch(function(e){
+      //console.log(e);
+    });
   },
   mounted() {
     setTimeout(() => {
