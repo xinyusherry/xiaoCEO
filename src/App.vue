@@ -95,6 +95,8 @@ import cjTimeSed from "@/views/chaiji/timeSecond";
 import cjTimeTrd from "@/views/chaiji/timeThird";
 import cjDayMonthDetail from "@/views/chaiji/cjDetail";
 import arrears from "@/views/arrears/index";
+import income from "@/views/income/index";
+import incomeSed from "@/views/income/incomeSed";
 import cost from "@/views/cost/index";
 import costSecond from "@/views/cost/costSecond";
 import arrearsSecond from "@/views/arrears/arrearsSecond";
@@ -105,6 +107,8 @@ import profit from "@/views/profit/index";
 import profitSed from "@/views/profit/profitSecond";
 import warning from "@/views/warning/index";
 import warningSecond from "@/views/warning/warningSecond";
+import xiaoqu from "@/views/xiaoqu/index";
+import xiaoquSed from "@/views/xiaoqu/xqSecond";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
@@ -120,6 +124,8 @@ const allModulesLayout = [
   { x: 0, y: 4, w: 1, h: 1, i: 7, id: "share" },
   { x: 1, y: 3, w: 1, h: 1, i: 8, id: "profit" },
   { x: 0, y: 5, w: 1, h: 1, i: 9, id: "warning" },
+  { x: 1, y: 4, w: 1, h: 1, i: 10, id: "xiaoqu" },
+  { x: 0, y: 6, w: 1, h: 1, i: 11, id: "income" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -132,6 +138,8 @@ const allModules = [
   { id: "share", name: "增量收益分享" },
   { id: "profit", name: "利润、准利润" },
   { id: "warning", name: "到期预警" },
+  { id: "xiaoqu", name: "小区" },
+  { id: "income", name: "收入" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -180,6 +188,8 @@ export default {
     arrears,
     arrearsSecond,
     arrearsThird,
+    income,
+    incomeSed,
     cost,
     costSecond,
     share,
@@ -187,7 +197,9 @@ export default {
     profit,
     profitSed,
     warning,
-    warningSecond
+    warningSecond,
+    xiaoqu,
+    xiaoquSed
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
