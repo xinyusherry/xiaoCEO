@@ -109,6 +109,7 @@ import warning from "@/views/warning/index";
 import warningSecond from "@/views/warning/warningSecond";
 import xiaoqu from "@/views/xiaoqu/index";
 import xiaoquSed from "@/views/xiaoqu/xqSecond";
+import arrive from "@/views/arrive/index";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
@@ -126,6 +127,7 @@ const allModulesLayout = [
   { x: 0, y: 5, w: 1, h: 1, i: 9, id: "warning" },
   { x: 1, y: 4, w: 1, h: 1, i: 10, id: "xiaoqu" },
   { x: 0, y: 6, w: 1, h: 1, i: 11, id: "income" },
+  { x: 1, y: 5, w: 1, h: 1, i: 12, id: "arrive" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -140,6 +142,7 @@ const allModules = [
   { id: "warning", name: "到期预警" },
   { id: "xiaoqu", name: "小区" },
   { id: "income", name: "收入" },
+  { id: "arrive", name: "到达" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -199,7 +202,8 @@ export default {
     warning,
     warningSecond,
     xiaoqu,
-    xiaoquSed
+    xiaoquSed,
+    arrive,
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
