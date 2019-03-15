@@ -40,19 +40,15 @@
         >
           <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
-              <template slot-scope="scope">
-                  <el-popover
-                          placement="right"
-                          width="400"
-                          trigger="hover">
-                      <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
-                      <div slot="reference">{{scope.row.name}}</div>
-                  </el-popover>
-              </template>
+            <template slot-scope="scope">
+              <el-popover placement="right" width="400" trigger="hover">
+                <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
+                <div slot="reference">{{scope.row.name}}</div>
+              </el-popover>
+            </template>
           </el-table-column>
           <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
         </el-table>
-     
       </div>
     </div>
   </div>
@@ -80,49 +76,52 @@ export default {
       ],
       date: "",
       isTableLineShow: false,
-      tableBg:require("@/assets/images/tabBg.png"),
-      tableBgStyle:{
-          background: 'url('+require('@/assets/images/tabBg.png')+') left top no-repeat',
-          backgroundSize: '100% 100%',
-          height: '297px',
-          padding: '18px'
+      tableBg: require("@/assets/images/tabBg.png"),
+      tableBgStyle: {
+        background:
+          "url(" +
+          require("@/assets/images/tabBg.png") +
+          ") left top no-repeat",
+        backgroundSize: "100% 100%",
+        height: "297px",
+        padding: "18px"
       },
-       headerBgStyle: {
+      headerBgStyle: {
         background:
           "url(" +
           require("@/assets/images/icon_table_header.png") +
           ") left top repeat",
         backgroundSize: "100% 100%",
-        textAlign:"center"
+        textAlign: "center"
       },
-       tableData: [
+      tableData: [
         {
           date: "2016-05-02",
-          id:'1',
+          id: "1",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1518 弄"
         },
         {
           date: "2016-05-04",
-          id:'2',
+          id: "2",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1517 弄"
         },
         {
           date: "2016-05-01",
-          id:'3',
+          id: "3",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1519 弄"
         },
         {
           date: "2016-05-03",
-          id:'4',
+          id: "4",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1516 弄"
         },
-         {
+        {
           date: "2016-05-07",
-          id:'5',
+          id: "5",
           name: "王小虎",
           address: "上海市普陀区金沙江路 1515 弄"
         }
@@ -179,11 +178,11 @@ export default {
             },
             data: this.xAxisData,
             axisLabel: {
-                show: true,
-                textStyle: {
-                    color: '#24FAFF',
-                    fontSize:12
-                }
+              show: true,
+              textStyle: {
+                color: "#24FAFF",
+                fontSize: 12
+              }
             }
           },
           yAxis: {
@@ -206,10 +205,10 @@ export default {
               fontSize: 14
             },
             axisLabel: {
-            show: true,
-            textStyle: {
-                color: '#24FAFF',
-                fontSize:12
+              show: true,
+              textStyle: {
+                color: "#24FAFF",
+                fontSize: 12
               }
             }
           },
@@ -260,14 +259,28 @@ export default {
               normal: {
                 show: true,
                 position: "outside",
-                formatter: "{b}: {d}%"
+                // formatter: "{b}: {d}%",
+                formatter: function(params) {
+                  return (
+                    "{white|" + params.name + "}  {per|" + params.percent + "%}"
+                  );
+                },
+                rich: {
+                  white: {
+                    color: "#fff",
+                    align: "center",
+                    fontSize: 14,
+                    padding: [21, 0]
+                  },
+                  per: {
+                    color: "#fff",
+                    fontSize: 15,
+                    align: "center"
+                  }
+                }
               },
               emphasis: {
                 show: true,
-                textStyle: {
-                  fontSize: "30",
-                  fontWeight: "bold"
-                }
               }
             },
             labelLine: {
@@ -276,7 +289,7 @@ export default {
               }
             },
             data: [
-              { value: 40, name: "满堂红" },
+              { value: 50, name: "满堂红" },
               { value: 20, name: "尊享红" },
               { value: 40, name: "其他" }
             ]
@@ -288,20 +301,19 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle({row, column, rowIndex, columnIndex}) {
-      if(columnIndex === 0){
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
         return "color: #6AFFFD";
-      }else{
-        return '';
+      } else {
+        return "";
       }
-      
     }
   },
   mounted() {
     this.drawLineChart("line", "#fbbf50");
     this.drawPieChart("pie");
-     this.tableData.map((obj)=>{
-      this.drawLineChart("tableLineChart"+obj.id, "#fbbf50");
+    this.tableData.map(obj => {
+      this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
     });
   }
 };
@@ -367,9 +379,7 @@ export default {
 .table {
   margin-top: 20px;
   position: relative;
-
 }
-
 
 .btnList {
   .el-input__inner {
@@ -384,5 +394,4 @@ export default {
     font-size: 18px;
   }
 }
-
 </style>

@@ -45,7 +45,7 @@
           <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
           <el-table-column align="center" label="姓名" width="180" sortable>
             <template slot-scope="scope">
-              <el-popover placement="right" width="400" trigger="hover" >
+              <el-popover placement="right" width="400" trigger="hover">
                 <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
                 <div slot="reference">{{scope.row.name}}</div>
               </el-popover>
@@ -91,15 +91,15 @@ export default {
         height: "297px",
         padding: "18px"
       },
-       headerBgStyle: {
+      headerBgStyle: {
         background:
           "url(" +
           require("@/assets/images/icon_table_header.png") +
           ") left top repeat",
         backgroundSize: "100% 100%",
-        textAlign:"center"
+        textAlign: "center"
       },
-      
+
       tableData: [
         {
           date: "2016-05-02",
@@ -265,14 +265,28 @@ export default {
               normal: {
                 show: true,
                 position: "outside",
-                formatter: "{b}: {d}%"
+                // formatter: "{b}: {d}%"
+                formatter: function(params) {
+                  return (
+                    "{white|" + params.name + "}  {per|" + params.percent + "%}"
+                  );
+                },
+                rich: {
+                  white: {
+                    color: "#fff",
+                    align: "center",
+                    fontSize: 14,
+                    padding: [21, 0]
+                  },
+                  per: {
+                    color: "#fff",
+                    fontSize: 15,
+                    align: "center"
+                  }
+                }
               },
               emphasis: {
-                show: true,
-                textStyle: {
-                  fontSize: "30",
-                  fontWeight: "bold"
-                }
+                show: true
               }
             },
             labelLine: {
@@ -293,13 +307,12 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle({row, column, rowIndex, columnIndex}) {
-      if(columnIndex === 0){
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
         return "color: #6AFFFD";
-      }else{
-        return '';
+      } else {
+        return "";
       }
-      
     }
   },
   mounted() {
