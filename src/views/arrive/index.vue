@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="sendMsg">
     <div class="border"></div>
     <div class="titleDiv">
       <span class="title">到达</span>
@@ -25,7 +25,9 @@
       </div>
       <div class="main_bottom">
         <div>
-          <p class="desc mb14"><span class="add">+</span>25</p>
+          <p class="desc mb14">
+            <span class="add">+</span>25
+          </p>
           <p class="num_desc">用户净增</p>
         </div>
         <div>
@@ -61,7 +63,15 @@ export default {
     };
   },
   mounted() {},
-  methods: {}
+  methods: {
+    sendMsg: function() {
+      const param = {
+        dialogCompent: "arriveSecond",
+        dialogTitle: "到达"
+      };
+      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    }
+  }
 };
 </script>
 <style>
@@ -111,7 +121,7 @@ export default {
         display: flex;
         flex-direction: column;
         border-right: 2px solid #223f63;
-        &.brnone{
+        &.brnone {
           border-right: none;
         }
       }
@@ -135,15 +145,15 @@ export default {
   width: 20%;
   margin-bottom: 13px;
 }
-.add{
+.add {
   color: #35c98e;
   font-size: 20px;
 }
-.mb14{
+.mb14 {
   margin-bottom: 14px;
 }
-.num_desc{
-    font-size: 20px;
-    color: #7594C3;
+.num_desc {
+  font-size: 20px;
+  color: #7594c3;
 }
 </style>

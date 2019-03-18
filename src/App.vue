@@ -110,6 +110,7 @@ import warningSecond from "@/views/warning/warningSecond";
 import xiaoqu from "@/views/xiaoqu/index";
 import xiaoquSed from "@/views/xiaoqu/xqSecond";
 import arrive from "@/views/arrive/index";
+import arriveSecond from "@/views/arrive/arriveSecond";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
@@ -204,6 +205,7 @@ export default {
     xiaoqu,
     xiaoquSed,
     arrive,
+    arriveSecond,
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
