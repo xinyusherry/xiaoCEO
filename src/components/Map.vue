@@ -52,7 +52,7 @@ export default {
       haveNoValue: true, //没有数据时不显示图例
       level3Data: [], //小区数据
       indexMax3: [], //记录图例数值
-      colors: ["#ED2626", "#CC1FAB", "#C14F1E", "#E59515", "#12DD78"],
+      colors: ["#12DD78", "#E59515", "#C14F1E", "#CC1FAB", "#ED2626"],
       legendData: [],
       infoWindow: null,
       showSelect: false,
@@ -250,11 +250,7 @@ export default {
         info += "</div>";
       }
       if (data.value)
-        info +=
-          '<p class="idx cellValue">指标值：' +
-          data.value  +
-          "%" +
-          "</p>";
+        info += '<p class="idx cellValue">指标值：' + data.value + "%" + "</p>";
       if (data.cellNum)
         info += '<p class="idx cellNum">小区数：' + data.cellNum + "</p>";
       if (data.houseNum)
