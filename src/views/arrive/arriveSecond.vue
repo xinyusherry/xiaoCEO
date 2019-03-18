@@ -397,12 +397,6 @@ export default {
           ],
           tooltip: {
             trigger: "axis",
-            axisPointer: {
-              type: "cross",
-              label: {
-                backgroundColor: "#6a7985"
-              }
-            }
           },
           xAxis: {
             type: "category",
@@ -461,11 +455,6 @@ export default {
               symbol: "none",
               color: lineData.colors[0],
               name: lineData.legendData[0].name,
-              emphasis: {
-                label: {
-                  show: true
-                }
-              },
               data: lineData.data[0]
             },
             {
@@ -473,11 +462,6 @@ export default {
               symbol: "none",
               color: lineData.colors[1],
               name: lineData.legendData[1].name,
-              emphasis: {
-                label: {
-                  show: true
-                }
-              },
               data: lineData.data[1]
             },
             {
@@ -485,11 +469,6 @@ export default {
               symbol: "none",
               color: lineData.colors[2],
               name: lineData.legendData[2].name,
-              emphasis: {
-                label: {
-                  show: true
-                }
-              },
               data: lineData.data[2]
             }
           ]
