@@ -50,7 +50,19 @@ export default {
               xAxis:["1月","2月","3月","4月","5月"],
               data: [100,300,200,500,400],
           },
-          colors: ["#FC9868"]
+          colors: {
+            type: 'linear',
+            x: 0,
+            y: 0,
+            x2: 0,
+            y2: 1,
+            colorStops: [{
+                offset: 0, color: '#FAD961' // 0% 处的颜色
+            }, {
+                offset: 1, color: '#F76B1C' // 100% 处的颜色
+            }],
+            global: false // 缺省为 false
+          }
         }
       },
       dy: {
