@@ -69,9 +69,6 @@ export default {
   border-color: #7594c3 !important;
   background-color: #16325d !important;
 }
-.el-radio-group label:nth-of-type(1) {
-  margin-right: 15px;
-}
 </style>
 
 <style lang="less" scoped>
@@ -82,6 +79,9 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  .el-radio-group label:nth-of-type(1) {
+    margin-right: 15px;
+  }
 }
 .mr10 {
   margin-right: 30px;
