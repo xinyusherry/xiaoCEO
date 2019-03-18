@@ -187,7 +187,7 @@ export default {
       _this.layer.setOptions({
         style: {
           lineWidth: 1,
-          stroke: "transparent",
+          stroke: "rgba(255,255,255,0)",
           opacity: 0.8,
           fillOpacity: 0.8,
           fill: function(data) {
@@ -204,16 +204,16 @@ export default {
       _this.showLegend();
     },
     fillcolor(num, Max) {
-      if (num > Max[4]) {
+      if (num > Max[3]) {
         return this.colors[4];
-      } else if (num > Max[3]) {
-        return this.colors[3];
       } else if (num > Max[2]) {
-        return this.colors[2];
+        return this.colors[3];
       } else if (num > Max[1]) {
+        return this.colors[2];
+      } else if (num > Max[0]) {
         return this.colors[1];
       } else {
-        return this.colors[0];
+        return this.colors[4];
       }
     },
     showLegend() {
@@ -252,7 +252,7 @@ export default {
       if (data.value)
         info +=
           '<p class="idx cellValue">指标值：' +
-          (data.value * 100).toFixed(2) +
+          data.value  +
           "%" +
           "</p>";
       if (data.cellNum)
@@ -310,7 +310,7 @@ export default {
 }
 #legend {
   position: absolute;
-  width: 120px;
+  width: 160px;
   padding: 5px 20px;
   right: 15px;
   bottom: 13px;
