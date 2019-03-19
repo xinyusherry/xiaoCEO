@@ -14,14 +14,24 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="main"  @click="sendMsg">
-      <div>
-        <div class="spot"></div>
-        <span class="desc ml10">到达</span>
-        <div class="lineChart">
-          <chartLine :id="'drChart'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
+    <div class="main" @click="sendMsg">
+      <div class="main_top">
+        <div>
+          <div class="spot"></div>
+          <span class="desc ml10">宽带</span>
+          <div class="lineChart">
+            <chartLine :id="'drChart1'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
+          </div>
+          <span class="desc">231244</span>
         </div>
-        <span class="desc">231244</span>
+         <div>
+          <div class="spot"></div>
+          <span class="desc ml10">移动</span>
+          <div class="lineChart">
+            <chartLine :id="'drChart2'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
+          </div>
+          <span class="desc">231244</span>
+        </div>
       </div>
       <div class="main_bottom">
         <div>
@@ -110,6 +120,17 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    &.main_top{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      >div{
+         flex: 1;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+    }
     &.main_bottom {
       display: flex;
       justify-content: space-between;
@@ -141,9 +162,8 @@ export default {
   margin-left: 10px;
 }
 .lineChart {
-  height: 30%;
-  width: 20%;
-  margin-bottom: 13px;
+  height: 10%;
+  width: 30%;
 }
 .add {
   color: #35c98e;
