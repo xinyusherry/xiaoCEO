@@ -1,5 +1,5 @@
 <template>
-  <div class="card" @click="sendMsg">
+  <div class="card">
     <div class="border"></div>
     <div class="titleDiv">
       <span class="title">到达</span>
@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="main">
+    <div class="main"  @click="sendMsg">
       <div>
         <div class="spot"></div>
         <span class="desc ml10">到达</span>
