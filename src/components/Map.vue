@@ -22,11 +22,12 @@
 import Vue from "vue";
 import VueAMap from "vue-amap";
 import { lazyAMapApiLoaderInstance } from "vue-amap";
+
 Vue.use(VueAMap);
 
 VueAMap.initAMapApiLoader({
   key: "09e75819cd27fb296e85a4b36ed4a97c",
-  plugin: [
+/*   plugin: [
     "Autocomplete",
     "PlaceSearch",
     "Scale",
@@ -34,12 +35,12 @@ VueAMap.initAMapApiLoader({
     "ToolBar",
     "MapType",
     "PolyEditor",
-    "CircleEditor"
-  ],
+    "CircleEditor",
+    'Loca'
+  ], */
   uiVersion: "1.0.11",
   v: "1.2.1" // 默认高德 sdk 版本为 1.4.4
 });
-let amapManager = new VueAMap.AMapManager();
 export default {
   name: "Map",
   data() {
@@ -88,12 +89,13 @@ export default {
       });
       //位置可视化
       _this.loca = new Loca.create(_this.map);
-      //创建可视化图层
+      // //创建可视化图层
       _this.layer = Loca.visualLayer({
         container: _this.loca,
         type: "polygon", //设置坐标类型：面(polygon)
         shape: "polygon", //polygon
-        eventSupport: true
+        eventSupport: true,
+        zIndex:50
       });
       //加载DistrictExplorer，loadUI的路径参数为模块名中 'ui/' 之后的部分
       AMapUI.loadUI(["geo/DistrictExplorer"], function(DistrictExplorer) {
@@ -109,13 +111,13 @@ export default {
       //创建一个实例
       this.districtExplorer = new DistrictExplorer({
         eventSupport: true,
-        map: this.map //关联的地图实例
+        map: _this.map //关联的地图实例
       });
       var adcode = 120000; //tj的区划编码
 
-      this.districtExplorer.loadAreaNode(adcode, function(error, areaNode) {
+      this.districtExplorer.loadAreaNode(adcode, function(error) {
         if (error) {
-          console.error(error);
+          // console.error(error);
           return;
         }
         _this.render();
@@ -134,7 +136,7 @@ export default {
       }
       if (this.toRequest) this.getlevel3();
       else this.showLevel3();
-      this.layer.on("click", function(e) {
+      _this.layer.on("click", function(e) {
         _this.openInfoNew(e.rawData.center, e.rawData.name, e.rawData);
       });
     },
@@ -145,9 +147,10 @@ export default {
         kpiId: this.radio
       };
       this.$axios
+        // .post("http://localhost/mapTest/test-area-xq-n.php", params)
         .post("/Workbench/getCellData", params)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.resultData.xqData.length == 0) {
             _this.haveNoValue = true;
           } else {
@@ -159,19 +162,21 @@ export default {
           _this.indexMax3.push(res.data.resultData.max2);
           _this.indexMax3.push(res.data.resultData.max1);
           _this.indexMax3.push(res.data.resultData.max);
-          this.showLevel3();
+          
           _this.map.setCenter([
             res.data.resultData.MAP_CENTER_X,
             res.data.resultData.MAP_CENTER_Y
           ]);
+          this.showLevel3();
         })
         .catch(error => {
-          console.log(error);
+          console.error(error);
         });
     },
     //显示小区数据
     showLevel3() {
       let _this = this;
+      _this.layer.remove();
       _this.layer.setData(_this.level3Data.xqData, {
         type: "json",
         lnglat: function(obj) {
@@ -187,7 +192,7 @@ export default {
       _this.layer.setOptions({
         style: {
           lineWidth: 1,
-          stroke: "rgba(255,255,255,0)",
+          stroke: '#fff',
           opacity: 0.8,
           fillOpacity: 0.8,
           fill: function(data) {
@@ -218,7 +223,6 @@ export default {
     },
     showLegend() {
       this.legendData = this.indexMax3.map((v, i) => {
-        console.log(v);
         if (i === 0)
           return {
             color: this.colors[i],
