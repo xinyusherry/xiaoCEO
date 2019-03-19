@@ -61,8 +61,8 @@
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
+          style="margin-bottom:20px"
         >全选</el-checkbox>
-        <div style="margin: 15px 0;"></div>
         <el-checkbox-group v-model="checkedModules" @change="handleCheckedModulesChange">
           <el-checkbox v-for="module in modules" :label="module.id" :key="module.id">{{module.name}}</el-checkbox>
         </el-checkbox-group>
@@ -325,6 +325,12 @@ export default {
   .el-checkbox__label {
     color: #fff;
   }
+  .el-checkbox {
+    margin-left: 30px;
+  }
+  .el-checkbox-group .el-checkbox{
+    margin-bottom: 10px;
+  }
   .el-button:focus,
   .el-button:hover {
     color: #fff;
@@ -417,10 +423,12 @@ export default {
  .el-popover {
   background: rgba(30, 60, 86, 0.8)!important;
   border: 1px solid rgba(30, 60, 86, 0.8)!important;
-}
-.el-popper[x-placement^="right"] .popper__arrow::after {
-  left: 0 !important;
-  border-right-color: rgba(30, 60, 86, 1) !important;
+  .popper__arrow{
+    border-right-color: rgba(30, 60, 86, 0.8)!important;
+    &::after{
+      border-right-color: rgba(30, 60, 86, 0.8)!important;
+    }
+  }
 }
 .el-progress-bar__outer{
     background-color: #777 !important;
@@ -455,8 +463,10 @@ input.el-input__inner {
   }
   .popper__arrow{
     border-bottom-color: #409EFF;
+    border-top-color: #409EFF;
     &::after{
       border-bottom-color: #000;
+      border-top-color: #000;
     }
   }
 }
@@ -474,8 +484,10 @@ input.el-input__inner {
   }
   .popper__arrow{
     border-bottom-color: #409EFF !important;
+    border-top-color: #409EFF !important;
     &::after{
       border-bottom-color: #000 !important;
+      border-top-color: #000 !important;
     }
   }
 }

@@ -4,21 +4,22 @@
 
 <script>
 export default {
-  props: ["id","type","dataset","title","color"],
+  props: ["id","type","dataset","title"],
   data: function() {
     return {
+      chartOption:{}
     };
   },
   mounted() {
     setTimeout(()=>{
-      var thisChart = this.$echarts.init(document.getElementById(this.id));
-      thisChart.setOption({
-        color: this.color,
+      let thisChart = this.$echarts.init(document.getElementById(this.id));
+      this.chartOption = this.type=="sj" ? {
+        color: ["#0097FF","#F868AF"],
         title: {
           left: 'center',
           text: this.title,
           textStyle:{
-            color:"#24FAFF"
+            color:"#6AFFFD"
           }
         },
         grid: {
@@ -92,20 +93,85 @@ export default {
         }],
         series: [
           {
-            name:this.dataset.legendData[0].name,
-            type:this.type,
-            barWidth:10,
+            type:"line",
+            yAxisIndex:1,
             data: this.dataset.data[0]
           },
           {
-            name:this.dataset.legendData[1].name,
-            type:this.type,
+            type:"bar",
             barWidth:10,
-            yAxisIndex:1,
             data: this.dataset.data[1]
           }
         ]
-      });
+      }
+      :
+      {
+        color: ["#0097FF","#F868AF"],
+        title: {
+          left: 'center',
+          text: this.title,
+          textStyle:{
+            color:"#24FAFF"
+          }
+        },
+        grid: {
+          containLabel: true,
+          top: "20%",
+          bottom: "5%",
+          left:"5%",
+          right:"5%"
+        },
+        tooltip: {
+          trigger: "axis"
+        },
+        xAxis: {
+          type: "category",
+          boundaryGap: true,
+          axisLabel:{
+            color: "#24FAFF"
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#3E6BCE"
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          data: this.dataset.xAxis
+        },
+        yAxis: {
+          type: "value",
+          nameTextStyle:{
+            color: "#24FAFF"
+          },
+          axisLabel:{
+            color: "#24FAFF"
+          },
+          axisLine: {
+            lineStyle: {
+              color: "#3E6BCE"
+            }
+          },
+          splitLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        series: [
+          {
+            type:"line",
+            data: this.dataset.data[0]
+          }
+        ]
+      }
+      thisChart.clear();
+      thisChart.setOption(this.chartOption);
       window.addEventListener("resize", () => { 
         thisChart.resize();
       });

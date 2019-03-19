@@ -23,10 +23,19 @@
             <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
             <el-table-column align="center" label="姓名" width="180" sortable>
                 <template slot-scope="scope">
-                    <el-popover placement="right" width="400" trigger="hover">
-                        <Chart :id="'tableLineChart'+scope.row.id" :title="'小区收入及用户变化趋势'" :type="'line'" :dataset="lineChart.dataset" :color="lineChart.colors"></Chart>
-                        <div slot="reference">{{scope.row.name}}</div>
-                    </el-popover>
+                    <div v-if="tabVal=='all'">{{scope.row.name}}</div>
+                    <div v-if="tabVal=='sj'">
+                        <el-popover placement="right" width="400" trigger="hover">
+                            <Chart :id="'tableLineChart-sj'+scope.row.id" :title="'小区收入及用户变化趋势'" :type="'sj'" :dataset="lineChart.dataset"></Chart>
+                            <div slot="reference">{{scope.row.name}}</div>
+                        </el-popover>
+                    </div>
+                    <div v-if="tabVal=='ds'">
+                        <el-popover placement="right" width="400" trigger="hover">
+                            <Chart :id="'tableLineChart-ds'+scope.row.id" :title="'小区渗透率变化趋势'" :type="'ds'" :dataset="lineChart.dataset"></Chart>
+                            <div slot="reference">{{scope.row.name}}</div>
+                        </el-popover>
+                    </div>
                 </template>
             </el-table-column>
             <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
@@ -56,7 +65,7 @@ export default {
                         [500,400,300,200,100,500,400,300,200,100,500,400,300]
                     ]
                 },
-                colors: ["#0097FF","#F7E43C"]
+                colors: ["#0097FF","#F5515F"]
             },
             tableBg: require("@/assets/images/tabBg.png"),
             tableBgStyle: {
