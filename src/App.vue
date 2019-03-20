@@ -73,7 +73,7 @@
       </div>
     </div>
     <div>
-      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="70%">
+      <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="80%">
         <component :is="dialogCompent" @headCallBack="headCall" :sendParams="thirdParams"></component>
       </el-dialog>
     </div>

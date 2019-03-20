@@ -4,7 +4,7 @@
       <h3 class="border"></h3>
       <h3 class="formula">计算公式</h3>
       <img src="~@/assets/images/wh-icon.png" alt class="wh">
-      <div class="formula_list ml30">
+      <div class="formula_list" style="margin-left: 20px;flex-wrap:wrap;">
         <img src="~@/assets/images/icon_l.png" alt class="icon_l">
         <div class="formula_list">
           <img src="~@/assets/images/icon_h_l.png" alt class="icon_h">
@@ -341,8 +341,5 @@ export default {
   font-size: 12px;
   color: #ffe104;
   padding: 0 10px;
-}
-.ml30{
-  margin-left: 30px;
 }
 </style>
