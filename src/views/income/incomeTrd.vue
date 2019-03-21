@@ -46,11 +46,7 @@
             height="300"
             >
             <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-            <el-table-column align="center" label="姓名" width="180" sortable>
-                <template slot-scope="scope">
-                    <div>{{scope.row.name}}</div>
-                </template>
-            </el-table-column>
+            <el-table-column align="center" label="姓名" width="180" sortable></el-table-column>
             <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
             </el-table>
         </div>

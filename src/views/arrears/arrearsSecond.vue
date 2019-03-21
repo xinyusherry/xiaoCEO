@@ -11,7 +11,6 @@
           ></el-option>
         </el-select>
         <el-date-picker v-model="date" type="date" placeholder="选择日期" style="margin-right:20px"></el-date-picker>
-        <div class="down mr20" v-on:click="sendMsg">详单</div>
       </div>
       <div class="table" :style="tableBgStyle">
         <el-table
@@ -21,9 +20,16 @@
           :cell-style="cellStyle"
           highlight-current-row
           stripe
+          height="300"
         >
           <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" prop="name" label="姓名" width="180" sortable></el-table-column>
+          <el-table-column align="center" prop="name" label="姓名" width="180" sortable>
+              <template slot-scope="scope">
+                  <div>
+                    <el-button type="primary" @click="sendMsg(scope.row)" size="small">{{scope.row.name}}</el-button>
+                  </div>
+              </template>
+          </el-table-column>
           <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
         </el-table>
       </div>
@@ -42,7 +48,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
         padding: "18px"
       },
       headerBgStyle: {
@@ -105,12 +110,12 @@ export default {
     };
   },
   methods: {
-    sendMsg() {
+    sendMsg(trdParams) {
       const param = {
         dialogCompent: "arrearsThird",
         dialogTitle: "欠费"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      this.$emit("headCallBack", param, trdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {

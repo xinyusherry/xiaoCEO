@@ -4,19 +4,9 @@
       <div class="btnList header">
         <img :src="require(`../../assets/images/icon_goback.png`)" alt class="icon_goback" v-on:click="sendMsg">
         <div class="rightBtn header btnList">
-          <el-select v-model="value" placeholder="请选择" style="margin-right:20px">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <el-date-picker v-model="date" type="date" placeholder="选择日期" style="margin-right:20px"></el-date-picker>
           <div class="down mr20">下载</div>
         </div>
       </div>
-
       <div class="table" :style="tableBgStyle">
         <el-table
           :data="tableData"
@@ -25,6 +15,7 @@
           :cell-style="cellStyle"
           highlight-current-row
           stripe
+          height="300"
         >
           <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
           <el-table-column align="center" prop="name" label="姓名" width="180" sortable></el-table-column>
@@ -36,6 +27,7 @@
 </template>
 <script>
 export default {
+  props:["sendParams"],
   data() {
     return {
       date: "",
@@ -46,7 +38,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
         padding: "18px"
       },
       headerBgStyle: {
