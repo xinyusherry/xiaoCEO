@@ -470,15 +470,16 @@ input.el-input__inner {
     }
   }
 }
-.el-select-dropdown.el-popper{
+.el-select-dropdown.el-popper,.el-select-dropdown.is-multiple{
   background: rgba(0, 0, 0, 0.8);
   border-color: #5FB6F9;
   li.el-select-dropdown__item{
     color: #fff;
     &.selected {
       color: #409EFF;
+      background: transparent;
     }
-    &.hover,&:hover{
+    &.hover,&:hover,&.selected.hover{
       background-color: rgba(255,255,255,0.2);
     }
   }
