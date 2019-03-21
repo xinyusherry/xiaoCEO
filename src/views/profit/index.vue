@@ -6,7 +6,18 @@
           ￥&nbsp;&nbsp;
           <span class="hj">(合计值)</span>
         </h3>
-        <h3 class="total_num">143,434,344,345,354</h3>
+        <el-popover
+          placement="top"
+          width="300"
+          trigger="hover">
+          <div style="color:#fff">
+            <p>单元类型（农村/城市）</p>  
+            <p>市公司排名xxx  平均完成率 xxxx</p>
+            <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+            <p>分公司排名xxx 平均完成率 xxxx</p>
+          </div>
+          <h3 class="total_num" slot="reference">143,434,344,345,354</h3>
+        </el-popover>
         <div class="line">
           <chartLine :id="'zlrChart'" :dataset="zlr.chartLine.dataset" :color="zlr.chartLine.colors"></chartLine>
         </div>
@@ -18,7 +29,18 @@
           ￥&nbsp;&nbsp;
           <span class="hj">(合计值)</span>
         </h3>
-        <h3 class="total_num">143,434,344,345,354</h3>
+        <el-popover
+          placement="top"
+          width="300"
+          trigger="hover">
+          <div style="color:#fff">
+            <p>单元类型（农村/城市）</p>  
+            <p>市公司排名xxx  平均完成率 xxxx</p>
+            <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+            <p>分公司排名xxx 平均完成率 xxxx</p>
+          </div>
+          <h3 class="total_num" slot="reference">143,434,344,345,354</h3>
+        </el-popover>
         <div class="line">
             <chartLine :id="'lrChart'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
         </div>

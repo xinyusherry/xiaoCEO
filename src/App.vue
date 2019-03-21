@@ -423,10 +423,16 @@ export default {
  .el-popover {
   background: rgba(30, 60, 86, 0.8)!important;
   border: 1px solid rgba(30, 60, 86, 0.8)!important;
-  .popper__arrow{
+  &[x-placement^=right] .popper__arrow{
     border-right-color: rgba(30, 60, 86, 0.8)!important;
     &::after{
       border-right-color: rgba(30, 60, 86, 0.8)!important;
+    }
+  }
+  &[x-placement^=top] .popper__arrow{
+    border-top-color: rgba(30, 60, 86, 0.8)!important;
+    &::after{
+      border-top-color: rgba(30, 60, 86, 0.8)!important;
     }
   }
 }

@@ -2,7 +2,18 @@
   <div class="moveDiv" @click="sendMsg">
     <card :cardset="xs" :timetype="'month'" style="margin-right:10px;">
       <div class="cardCont flexard">
-        <div style="font-size:50px">90%</div>
+        <el-popover
+          placement="top"
+          width="300"
+          trigger="hover">
+          <div style="color:#fff">
+            <p>单元类型（农村/城市）</p>  
+            <p>市公司排名xxx  平均完成率 xxxx</p>
+            <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+            <p>分公司排名xxx 平均完成率 xxxx</p>
+          </div>
+          <div style="font-size:50px" slot="reference">90%</div>
+        </el-popover>
         <div style="color: #7594C3;">12 392 192.23（元）</div>
         <div style="width:100%; height:120px">
           <chartLine :id="'xsIncomeChart'" :dataset="xs.chartLine.dataset" :color="xs.chartLine.colors"></chartLine>
@@ -15,7 +26,18 @@
           <div class="progressDiv">
             <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
           </div>
-          <div class="numDiv">88%</div>
+          <el-popover
+            placement="top"
+            width="300"
+            trigger="hover">
+            <div style="color:#fff">
+              <p>单元类型（农村/城市）</p>  
+              <p>市公司排名xxx  平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>分公司排名xxx 平均完成率 xxxx</p>
+            </div>
+            <div class="numDiv" slot="reference">88%</div>
+          </el-popover>
         </div>
       </card>
       <card :cardset="lj" :timetype="''" style="height:calc(50% - 5px);">
@@ -23,7 +45,18 @@
           <div class="progressDiv">
             <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
           </div>
-          <div class="numDiv">88%</div>
+          <el-popover
+            placement="top"
+            width="300"
+            trigger="hover">
+            <div style="color:#fff">
+              <p>单元类型（农村/城市）</p>  
+              <p>市公司排名xxx  平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>分公司排名xxx 平均完成率 xxxx</p>
+            </div>
+            <div class="numDiv" slot="reference">88%</div>
+          </el-popover>
         </div>
       </card>
     </div>

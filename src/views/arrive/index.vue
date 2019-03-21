@@ -41,11 +41,33 @@
           <p class="num_desc">用户净增</p>
         </div>
         <div>
-          <p class="desc mb14">25%</p>
+          <el-popover
+            placement="top"
+            width="300"
+            trigger="hover">
+            <div style="color:#fff">
+              <p>单元类型（农村/城市）</p>  
+              <p>市公司排名xxx  平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>分公司排名xxx 平均完成率 xxxx</p>
+            </div>
+            <p class="desc mb14" slot="reference">25%</p>
+          </el-popover>
           <p class="num_desc">住宅用户渗透率</p>
         </div>
         <div class="brnone">
-          <p class="desc mb14">25%</p>
+          <el-popover
+            placement="top"
+            width="300"
+            trigger="hover">
+            <div style="color:#fff">
+              <p>单元类型（农村/城市）</p>  
+              <p>市公司排名xxx  平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>分公司排名xxx 平均完成率 xxxx</p>
+            </div>
+            <p class="desc mb14" slot="reference">25%</p>
+          </el-popover>
           <p class="num_desc">端口实占率</p>
         </div>
       </div>

@@ -8,7 +8,20 @@
     <div class="content">
       <card :cardset="sjxq" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont">
-          <div class="numDiv flexcc">456</div>
+          <div class="numDiv flexcc">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover">
+              <div style="color:#fff">
+                <p>单元类型（农村/城市）</p>  
+                <p>市公司排名xxx  平均完成率 xxxx</p>
+                <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+                <p>分公司排名xxx 平均完成率 xxxx</p>
+              </div>
+              <div slot="reference">456</div>
+            </el-popover>
+          </div>
           <div class="progressDiv flexcc">
             <div class="textDiv"><span>占比</span><span>88.88%</span></div>
             <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
@@ -17,7 +30,20 @@
       </card>
       <card :cardset="dsxq" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont">
-          <div class="numDiv flexcc">456</div>
+          <div class="numDiv flexcc">
+            <el-popover
+              placement="top"
+              width="300"
+              trigger="hover">
+              <div style="color:#fff">
+                <p>单元类型（农村/城市）</p>  
+                <p>市公司排名xxx  平均完成率 xxxx</p>
+                <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+                <p>分公司排名xxx 平均完成率 xxxx</p>
+              </div>
+              <div slot="reference">456</div>
+            </el-popover>
+          </div>
           <div class="progressDiv flexcc">
             <div class="textDiv"><span>占比</span><span>88.88%</span></div>
             <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
