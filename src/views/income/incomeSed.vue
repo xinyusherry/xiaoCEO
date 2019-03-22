@@ -32,7 +32,7 @@
             <el-date-picker size="small" v-model="date" type="month" placeholder="选择日期" style="flex:0 0 130px;margin-left:20px"></el-date-picker>
         </div>
         <div class="chartDiv" id="incomePie" style="padding-right:10px"></div>
-        <el-radio-group v-model="tabVal" size="small" style="margin-top:10px">
+        <el-radio-group v-model="tabVal" size="small" style="margin-top:20px">
             <el-radio-button label="fyw">收入分业务</el-radio-button>
             <el-radio-button label="fcp">收入分产品</el-radio-button>
             <el-radio-button label="dgs">收入大工商</el-radio-button>
@@ -467,6 +467,7 @@ export default {
         float: left;
         width: 30%;
         height: 100%;
+        text-align: center;
         .title{
             text-align: center;
             font-size: 18px;

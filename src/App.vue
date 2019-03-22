@@ -113,25 +113,27 @@ import arrive from "@/views/arrive/index";
 import arriveSecond from "@/views/arrive/arriveSecond";
 import important from "@/views/important/index";
 import importantCheck from "@/views/important/checkBoxs";
+import videoModule from "@/views/video";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
 //默认布局
 const allModulesLayout = [
   { x: 1, y: 0, w: 1, h: 2, i: 0, id: "Map" },
-  { x: 0, y: 0, w: 1, h: 1, i: 1, id: "dvlpDayMonth" },
-  { x: 0, y: 1, w: 1, h: 1, i: 2, id: "dvlpTime" },
-  { x: 0, y: 2, w: 1, h: 1, i: 3, id: "cjDayMonth" },
-  { x: 1, y: 1, w: 1, h: 1, i: 4, id: "cjTime" },
-  { x: 0, y: 3, w: 1, h: 1, i: 5, id: "arrears" },
-  { x: 1, y: 2, w: 1, h: 1, i: 6, id: "cost" },
-  { x: 0, y: 4, w: 1, h: 1, i: 7, id: "share" },
-  { x: 1, y: 3, w: 1, h: 1, i: 8, id: "profit" },
-  { x: 0, y: 5, w: 1, h: 1, i: 9, id: "warning" },
-  { x: 1, y: 4, w: 1, h: 1, i: 10, id: "xiaoqu" },
-  { x: 0, y: 6, w: 1, h: 1, i: 11, id: "income" },
-  { x: 1, y: 5, w: 1, h: 1, i: 12, id: "arrive" },
-  { x: 0, y: 7, w: 1, h: 1, i: 13, id: "important" },
+  { x: 0, y: 0, w: 1, h: 1, i: 1, id: "income" },
+  { x: 0, y: 1, w: 1, h: 1, i: 2, id: "cost" },
+  { x: 0, y: 2, w: 1, h: 1, i: 3, id: "share" },
+  { x: 1, y: 1, w: 1, h: 1, i: 4, id: "profit" },
+  { x: 0, y: 3, w: 1, h: 1, i: 5, id: "dvlpDayMonth" },
+  { x: 1, y: 2, w: 1, h: 1, i: 6, id: "important" },
+  { x: 0, y: 4, w: 1, h: 1, i: 7, id: "dvlpTime" },
+  { x: 1, y: 3, w: 1, h: 1, i: 8, id: "cjDayMonth" },
+  { x: 0, y: 5, w: 1, h: 1, i: 9, id: "arrears" },
+  { x: 1, y: 4, w: 1, h: 1, i: 10, id: "cjTime" },
+  { x: 0, y: 6, w: 1, h: 1, i: 11, id: "arrive" },
+  { x: 1, y: 5, w: 1, h: 1, i: 12, id: "xiaoqu" },
+  { x: 0, y: 7, w: 1, h: 1, i: 13, id: "warning" },
+  { x: 1, y: 6, w: 1, h: 1, i: 14, id: "videoModule" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -148,6 +150,7 @@ const allModules = [
   { id: "income", name: "收入" },
   { id: "arrive", name: "到达" },
   { id: "important", name: "重点业务监控" },
+  { id: "videoModule", name: "视频" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -212,6 +215,7 @@ export default {
     arriveSecond,
     important,
     importantCheck,
+    videoModule
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
@@ -298,6 +302,7 @@ export default {
   right: 0;
   bottom: 0;
   background: rgba(255, 255, 255, 0.1);
+  z-index: 21;
   > div {
     text-align: right;
     background-color: rgba(0,0,0,0.5);
@@ -306,6 +311,7 @@ export default {
       float: right;
       font-size: 40px;
       padding-right: 6px;
+      z-index: 22;
     }
   }
 }
