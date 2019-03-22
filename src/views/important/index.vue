@@ -3,7 +3,6 @@
     <card :cardset="importantBus" :timetype="''">
       <el-button class="popBtn" type="primary" @click="sendMsg()" size="mini">指标选择</el-button>
       <div id="impLineChart" style="width:100%;height:calc(100% - 30px)"></div>
-      <!-- {{receiveParams}} -->
     </card>
   </div>
 </template>
@@ -30,6 +29,11 @@ export default {
         data: []
       }
     };
+  },
+  watch:{
+    receiveParams(val){
+      //console.log(val.checkedIds);  获取到弹窗所选的id
+    }
   },
   methods: {
     sendMsg:function() {
@@ -115,26 +119,78 @@ export default {
           thisChart.resize();
       });
     },
-    changeData(){ //假数据 传入新数据时修改此方法
-      let seriesData=[];
-      for(let i=0;i<5;i++){
-        let dataArr=[];
-        for(let j=0;j<12;j++){
-          dataArr.push(Math.floor(Math.random()*100));
-        }
-        seriesData.push({
-          name:"名称"+(i+1),
+    changeData(){ 
+      const resultData={
+        "rData":{
+            "rDate":[
+                "20190224",
+                "20190225",
+                "20190226",
+                "20190227",
+                "20190228",
+                "20190301",
+                "20190302"
+            ],
+            "rList":[
+                {
+                    "data":[
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        62,
+                        70
+                    ],
+                    "PRODUCT_NAME":"单卡",
+                    "PRODUCT_CODE":"001001"
+                },
+                {
+                    "data":[
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        50,
+                        52
+                    ],
+                    "PRODUCT_NAME":"融合",
+                    "PRODUCT_CODE":"001002"
+                },
+                {
+                    "data":[
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "PRODUCT_NAME":"M计划",
+                    "PRODUCT_CODE":"001004"
+                }
+            ]
+          }
+      }//接口数据格式
+      let seriesData = [];
+      seriesData = resultData.rData.rList.map((obj)=>(
+        {
+          name: obj.PRODUCT_NAME,
+          id: obj.PRODUCT_CODE,
           type:"line",
-          data: dataArr
-        });
-      }
+          data: obj.data
+        }
+      ));
+      this.$set(this.lineDataset,'xAxis',resultData.rData.rDate);
       this.$set(this.lineDataset,'data',seriesData);
+      this.drawLineChart(this.lineDataset);
     }
   },
   mounted(){
     setTimeout(()=>{
       this.changeData();
-      this.drawLineChart(this.lineDataset);
     },0);
   }
 };
