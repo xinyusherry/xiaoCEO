@@ -45,7 +45,7 @@
             <div @click="deleteModule(index,item.id)" class="del">×</div>
           </div>
         </div>
-        <component :is="item.id" @headCallBack="headCall"></component>
+        <component :is="item.id" @headCallBack="headCall" :receiveParams="thirdParams"></component>
       </grid-item>
     </grid-layout>
     <div v-if="isDraggable==true" class="addModule">
@@ -111,6 +111,8 @@ import xiaoqu from "@/views/xiaoqu/index";
 import xiaoquSed from "@/views/xiaoqu/xqSecond";
 import arrive from "@/views/arrive/index";
 import arriveSecond from "@/views/arrive/arriveSecond";
+import important from "@/views/important/index";
+import importantCheck from "@/views/important/checkBoxs";
 import { GridLayout, GridItem } from "vue-grid-layout";
 import { close } from 'fs';
 
@@ -129,6 +131,7 @@ const allModulesLayout = [
   { x: 1, y: 4, w: 1, h: 1, i: 10, id: "xiaoqu" },
   { x: 0, y: 6, w: 1, h: 1, i: 11, id: "income" },
   { x: 1, y: 5, w: 1, h: 1, i: 12, id: "arrive" },
+  { x: 0, y: 7, w: 1, h: 1, i: 13, id: "important" },
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -144,6 +147,7 @@ const allModules = [
   { id: "xiaoqu", name: "小区" },
   { id: "income", name: "收入" },
   { id: "arrive", name: "到达" },
+  { id: "important", name: "重点业务监控" },
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
@@ -206,6 +210,8 @@ export default {
     xiaoquSed,
     arrive,
     arriveSecond,
+    important,
+    importantCheck,
   },
   methods: {
     handleCheckAllChange(val) {  //是否全选
@@ -243,8 +249,12 @@ export default {
       //拖拽时禁止弹出层显示
       if (this.isDraggable) return false;
       this.isDialogShow = true;
-      this.dialogCompent = param.dialogCompent;
-      this.dialogTitle = param.dialogTitle;
+      if(!param.dialogTitle){
+        this.isDialogShow = false;
+      }else{
+        this.dialogCompent = param.dialogCompent;
+        this.dialogTitle = param.dialogTitle;
+      }
       if(thirdParams!=null){
         this.thirdParams = thirdParams;
       }
