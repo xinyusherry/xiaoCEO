@@ -2,21 +2,22 @@
   <div class="moveDiv" @click="sendMsg">
     <card :cardset="xs" :timetype="'month'" style="margin-right:10px;">
       <div class="cardCont flexard">
-        <el-popover
-          placement="top"
-          width="300"
-          trigger="hover">
+        <el-popover placement="top" width="300" trigger="hover">
           <div style="color:#fff">
-            <p>单元类型（农村/城市）</p>  
-            <p>市公司排名xxx  平均完成率 xxxx</p>
-            <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+            <p>单元类型（农村/城市）</p>
+            <p>市公司排名xxx 平均完成率 xxxx</p>
+            <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
             <p>分公司排名xxx 平均完成率 xxxx</p>
           </div>
           <div style="font-size:50px" slot="reference">90%</div>
         </el-popover>
-        <div style="color: #7594C3;">12 392 192.23（元）</div>
+        <div style="color: #7594C3;">12 392 192.232（元）</div>
         <div style="width:100%; height:120px">
-          <chartLine :id="'xsIncomeChart'" :dataset="xs.chartLine.dataset" :color="xs.chartLine.colors"></chartLine>
+          <chartLine
+            :id="'xsIncomeChart'"
+            :dataset="xs.chartLine.dataset"
+            :color="xs.chartLine.colors"
+          ></chartLine>
         </div>
       </div>
     </card>
@@ -24,16 +25,20 @@
       <card :cardset="dy" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont flexcc">
           <div class="progressDiv">
-            <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
+            <div class="dark">
+              <el-progress
+                :text-inside="false"
+                :stroke-width="9"
+                :percentage="80.99"
+                :show-text="false"
+              ></el-progress>
+            </div>
           </div>
-          <el-popover
-            placement="top"
-            width="300"
-            trigger="hover">
+          <el-popover placement="top" width="300" trigger="hover">
             <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>  
-              <p>市公司排名xxx  平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>单元类型（农村/城市）</p>
+              <p>市公司排名xxx 平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
               <p>分公司排名xxx 平均完成率 xxxx</p>
             </div>
             <div class="numDiv" slot="reference">88%</div>
@@ -43,16 +48,20 @@
       <card :cardset="lj" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont flexcc">
           <div class="progressDiv">
-            <div class="dark"><el-progress :text-inside="false" :stroke-width="9" :percentage="80.99" :show-text="false"></el-progress></div>
+            <div class="dark">
+              <el-progress
+                :text-inside="false"
+                :stroke-width="9"
+                :percentage="80.99"
+                :show-text="false"
+              ></el-progress>
+            </div>
           </div>
-          <el-popover
-            placement="top"
-            width="300"
-            trigger="hover">
+          <el-popover placement="top" width="300" trigger="hover">
             <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>  
-              <p>市公司排名xxx  平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
+              <p>单元类型（农村/城市）</p>
+              <p>市公司排名xxx 平均完成率 xxxx</p>
+              <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
               <p>分公司排名xxx 平均完成率 xxxx</p>
             </div>
             <div class="numDiv" slot="reference">88%</div>
@@ -71,29 +80,34 @@ const defaultParam = {
   rightcolor: "#F76B1C"
 };
 export default {
-  components: { card,chartLine },
+  components: { card, chartLine },
   data() {
     return {
       xs: {
         title: "序时收入预算完成率",
         ...defaultParam,
         width: "calc(50% - 5px)",
-        chartLine:{
+        chartLine: {
           dataset: {
-              xAxis:["1月","2月","3月","4月","5月"],
-              data: [100,300,200,500,400],
+            xAxis: ["1月", "2月", "3月", "4月", "5月"],
+            data: [100, 300, 200, 500, 400]
           },
           colors: {
-            type: 'linear',
+            type: "linear",
             x: 0,
             y: 0,
             x2: 0,
             y2: 1,
-            colorStops: [{
-                offset: 0, color: '#FAD961' // 0% 处的颜色
-            }, {
-                offset: 1, color: '#F76B1C' // 100% 处的颜色
-            }],
+            colorStops: [
+              {
+                offset: 0,
+                color: "#FAD961" // 0% 处的颜色
+              },
+              {
+                offset: 1,
+                color: "#F76B1C" // 100% 处的颜色
+              }
+            ],
             global: false // 缺省为 false
           }
         }
@@ -108,13 +122,29 @@ export default {
       }
     };
   },
+  created() {
+    this.post()
+  },
   methods: {
-      sendMsg:function() {
+    sendMsg: function() {
       const param = {
-        dialogCompent:"incomeSed",
-        dialogTitle:"收入",
-      }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+        dialogCompent: "incomeSed",
+        dialogTitle: "收入"
+      };
+      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    post() {
+      let _this = this;
+      //测试接口
+      this.$axios
+        .post("/Workbench/getIncomeIndex")
+        .then(function(res) {
+          console.log(res);
+          // _this.layout = res.data.resultData;
+        })
+        .catch(function(e) {
+          console.log(e);
+        });
     }
   }
 };
@@ -128,18 +158,18 @@ export default {
   display: flex;
   justify-content: space-between;
 }
-.content{
+.content {
   width: ~"calc(50% - 5px)";
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.cardCont{
+.cardCont {
   width: 100%;
   height: ~"calc(100% - 30px)";
   display: flex;
 }
-.flexard{
+.flexard {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -147,17 +177,17 @@ export default {
   height: ~"calc(100% - 50px)";
   margin-top: 20px;
 }
-.flexcc{
+.flexcc {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.numDiv{
+.numDiv {
   font-size: 28px;
 }
-.progressDiv{
+.progressDiv {
   width: 60%;
-  .dark{
+  .dark {
     width: 90%;
   }
 }

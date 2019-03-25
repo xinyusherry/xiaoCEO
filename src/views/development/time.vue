@@ -39,14 +39,30 @@ export default {
       colors: ["#F7E43C"]
     };
   },
-  methods:{
-      sendMsg:function() {
+  created() {
+    this.post()
+  },
+  methods: {
+    sendMsg: function() {
       const param = {
-          dialogCompent:"dvlpTimeSed",
-          dialogTitle:"发展（实时）",
-      }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
-      }
+        dialogCompent: "dvlpTimeSed",
+        dialogTitle: "发展（实时）"
+      };
+      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    post() {
+      let _this = this;
+      //测试接口
+      this.$axios
+        .post("/DevelopRealTime/index")
+        .then(function(res) {
+          console.log(res);
+          // _this.layout = res.data.resultData;
+        })
+        .catch(function(e) {
+          console.log(e);
+        });
+    }
   }
 };
 </script>

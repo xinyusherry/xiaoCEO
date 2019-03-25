@@ -10,7 +10,11 @@
           <img src="./assets/images/icon-title.png" height="26" alt>
           <img src="./assets/images/title.png" height="26" alt>
           <swiper v-if="swiperSlides.length>1" :options="swiperOption">
-            <swiper-slide v-for="(slide, index) in swiperSlides" :key="index"><span class="lightblue">{{ slide.name }}</span>  {{ slide.time }}  发展了<span class="lightblue">【{{ slide.product }}】！</span></swiper-slide>
+            <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">
+              <span class="lightblue">{{ slide.name }}</span>
+              {{ slide.time }} 发展了
+              <span class="lightblue">【{{ slide.product }}】！</span>
+            </swiper-slide>
           </swiper>
           <el-button
             class="layoutBtn"
@@ -115,7 +119,7 @@ import important from "@/views/important/index";
 import importantCheck from "@/views/important/checkBoxs";
 import videoModule from "@/views/video";
 import { GridLayout, GridItem } from "vue-grid-layout";
-import { close } from 'fs';
+import { close } from "fs";
 
 //默认布局
 const allModulesLayout = [
@@ -133,7 +137,7 @@ const allModulesLayout = [
   { x: 0, y: 6, w: 1, h: 1, i: 11, id: "arrive" },
   { x: 1, y: 5, w: 1, h: 1, i: 12, id: "xiaoqu" },
   { x: 0, y: 7, w: 1, h: 1, i: 13, id: "warning" },
-  { x: 1, y: 6, w: 1, h: 1, i: 14, id: "videoModule" },
+  { x: 1, y: 6, w: 1, h: 1, i: 14, id: "videoModule" }
 ];
 const allModules = [
   { id: "Map", name: "地图" },
@@ -150,35 +154,36 @@ const allModules = [
   { id: "income", name: "收入" },
   { id: "arrive", name: "到达" },
   { id: "important", name: "重点业务监控" },
-  { id: "videoModule", name: "视频" },
+  { id: "videoModule", name: "视频" }
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
 export default {
   data() {
     return {
-      isDraggable: false,//是否可拖动
-      isAddBtn: true,//添加模块部分显示
-      checkAll: true,//是否全选
-      isIndeterminate: false,//全选按钮状态
+      isDraggable: false, //是否可拖动
+      isAddBtn: true, //添加模块部分显示
+      checkAll: true, //是否全选
+      isIndeterminate: false, //全选按钮状态
       modules: allModules, //所有模块名称
       checkedModules: allModulesId.concat(), //已选模块id
       layout: allModulesLayout.concat(), //布局展示模块
       dialogCompent: "", //弹出层组件名字
       isDialogShow: false, //弹出层显示
       dialogTitle: "", //弹出层标题
-      thirdParams: "",//二级传至三级页面参数
-      swiperOption: { //轮播属性
-        loop : true,
-        loopAdditionalSlides : 2,
-        observer:true,
-        observeParents:true,
+      thirdParams: "", //二级传至三级页面参数
+      swiperOption: {
+        //轮播属性
+        loop: true,
+        loopAdditionalSlides: 2,
+        observer: true,
+        observeParents: true,
         speed: 1000,
         autoplay: {
-            delay: 1000,
+          delay: 1000
         }
       },
-      swiperSlides:[]//轮播数据
+      swiperSlides: [] //轮播数据
     };
   },
   components: {
@@ -218,22 +223,26 @@ export default {
     videoModule
   },
   methods: {
-    handleCheckAllChange(val) {  //是否全选
+    handleCheckAllChange(val) {
+      //是否全选
       this.checkedModules = val ? allModulesId.concat() : [];
       this.isIndeterminate = false;
     },
-    handleCheckedModulesChange(value) {  //检查所有选项状态
+    handleCheckedModulesChange(value) {
+      //检查所有选项状态
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.modules.length;
       this.isIndeterminate =
         checkedCount > 0 && checkedCount < this.modules.length;
     },
-    deleteModule(index, id) {  //删除单个模块
+    deleteModule(index, id) {
+      //删除单个模块
       this.layout.splice(index, 1);
       this.checkedModules.splice(this.checkedModules.indexOf(id), 1);
       this.handleCheckedModulesChange(this.checkedModules);
     },
-    changeModules() {  //添加删除模块
+    changeModules() {
+      //添加删除模块
       this.isAddBtn = true;
       this.layout = [];
       if (this.checkAll) {
@@ -249,44 +258,85 @@ export default {
       }
     },
     //子组件传递过来的参数
-    headCall(param,thirdParams) {
+    headCall(param, thirdParams) {
       //拖拽时禁止弹出层显示
       if (this.isDraggable) return false;
       this.isDialogShow = true;
-      if(!param.dialogTitle){
+      if (!param.dialogTitle) {
         this.isDialogShow = false;
-      }else{
+      } else {
         this.dialogCompent = param.dialogCompent;
         this.dialogTitle = param.dialogTitle;
       }
-      if(thirdParams!=null){
+      if (thirdParams != null) {
         this.thirdParams = thirdParams;
       }
     }
   },
-  created(){
+  created() {
     let params = {
-      data:this.layout
+      data: this.layout
     };
+    let _this = this;
     //测试接口
-    this.$axios.post("/Workbench/getUserModule", params
-    ).then(function(res) {
-      //console.log(res);
-    }).catch(function(e){
-      //console.log(e);
-    });
+    this.$axios
+      .post("/Workbench/getUserModule", params)
+      .then(function(res) {
+        // console.log(res);
+        _this.layout = res.data.resultData;
+      })
+      .catch(function(e) {
+        console.log(e);
+      });
   },
   mounted() {
     setTimeout(() => {
       //模拟请求轮播数据
       this.swiperSlides = [
-        {name:"赵三",time: "14 : 10 ：53",product:"天津宽带100M包月-10元/月"}, 
-        {name:"钱三",time: "14 : 20 ：53",product:"天津宽带100M包月-20元/月"}, 
-        {name:"孙三",time: "14 : 30 ：53",product:"天津宽带100M包月-30元/月"}, 
-        {name:"李三",time: "14 : 40 ：53",product:"天津宽带100M包月-40元/月"}, 
-        {name:"周三",time: "14 : 50 ：53",product:"天津宽带100M包月-50元/月"}
+        {
+          name: "赵三",
+          time: "14 : 10 ：53",
+          product: "天津宽带100M包月-10元/月"
+        },
+        {
+          name: "钱三",
+          time: "14 : 20 ：53",
+          product: "天津宽带100M包月-20元/月"
+        },
+        {
+          name: "孙三",
+          time: "14 : 30 ：53",
+          product: "天津宽带100M包月-30元/月"
+        },
+        {
+          name: "李三",
+          time: "14 : 40 ：53",
+          product: "天津宽带100M包月-40元/月"
+        },
+        {
+          name: "周三",
+          time: "14 : 50 ：53",
+          product: "天津宽带100M包月-50元/月"
+        }
       ];
-    }, 0)
+    }, 0);
+  },
+  watch: {
+    isDraggable(newValue, oldValue) {
+      if (!newValue) {
+        let params = {
+          data: this.layout
+        };
+        let _this = this;
+        //测试接口
+        this.$axios
+          .post("/Workbench/updateUserModule", params)
+          .then(function(res) {})
+          .catch(function(e) {
+            console.log(e);
+          });
+      }
+    }
   }
 };
 </script>
@@ -305,9 +355,9 @@ export default {
   z-index: 21;
   > div {
     text-align: right;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     overflow: hidden;
-    .del{
+    .del {
       float: right;
       font-size: 40px;
       padding-right: 6px;
@@ -323,11 +373,11 @@ export default {
     font-size: 14px;
     background-image: linear-gradient(-180deg, #98dcfd 0%, #5fb6f9 100%);
   }
-  .swiper-container{
+  .swiper-container {
     width: 60%;
   }
-  .lightblue{
-    color: #6AFFFD;
+  .lightblue {
+    color: #6afffd;
   }
 }
 .addModule {
@@ -344,7 +394,7 @@ export default {
   .el-checkbox {
     margin-left: 30px;
   }
-  .el-checkbox-group .el-checkbox{
+  .el-checkbox-group .el-checkbox {
     margin-bottom: 10px;
   }
   .el-button:focus,
@@ -372,23 +422,27 @@ export default {
     color: #fff;
   }
 }
-.el-radio__input.is-checked+.el-radio__label{
-  color: #fff!important;
+.el-radio__input.is-checked + .el-radio__label {
+  color: #fff !important;
 }
-.el-radio__label{
-  color: #7594C3;
+.el-radio__label {
+  color: #7594c3;
 }
-.el-radio__inner{
-  border-color: #7594C3!important;
-  background-color: #000!important;
+.el-radio__inner {
+  border-color: #7594c3 !important;
+  background-color: #000 !important;
 }
 .el-dialog__wrapper {
-  .el-dialog{
-    background: rgba(0,0,0,0.6);
-    margin-top: 10vh!important;
+  .el-dialog {
+    background: rgba(0, 0, 0, 0.6);
+    margin-top: 10vh !important;
   }
   .el-dialog__header {
-    background: linear-gradient(to right, rgba(155, 217, 252, 0.6), rgba(48, 150, 252, 0.6));
+    background: linear-gradient(
+      to right,
+      rgba(155, 217, 252, 0.6),
+      rgba(48, 150, 252, 0.6)
+    );
     text-align: center;
     padding: 15px 20px;
     .el-dialog__title {
@@ -403,123 +457,132 @@ export default {
     }
   }
 }
-.el-table th>.cell {
-    font-size: 16px;
-    color: #fff;
+.el-table th > .cell {
+  font-size: 16px;
+  color: #fff;
 }
-.el-table--striped .el-table__body tr{
-  &.el-table__row--striped{
-    td{
-      background: rgba(71, 187, 196,0.1) !important;
-      border-bottom: none!important;
+.el-table--striped .el-table__body tr {
+  &.el-table__row--striped {
+    td {
+      background: rgba(71, 187, 196, 0.1) !important;
+      border-bottom: none !important;
     }
   }
 }
-.el-table tr{
-     background: rgba(0,0,0,0.1) !important;
-    color: #fff;
-    &.current-row,&.hover-row{
-      td{
-        background: unset !important;
-      }
-    }
-    td{
-      border-bottom: none!important;
-    }
-}
-.el-table th.is-leaf{
- border-bottom: none!important;
-}
-.el-table, .el-table__expanded-cell{
-  background-color:unset!important;
-}
-.el-table--group::after, .el-table--border::after, .el-table::before{
-  background-color:unset!important;
-}
- .el-popover {
-  background: rgba(30, 60, 86, 0.8)!important;
-  border: 1px solid rgba(30, 60, 86, 0.8)!important;
-  &[x-placement^=right] .popper__arrow{
-    border-right-color: rgba(30, 60, 86, 0.8)!important;
-    &::after{
-      border-right-color: rgba(30, 60, 86, 0.8)!important;
+.el-table tr {
+  background: rgba(0, 0, 0, 0.1) !important;
+  color: #fff;
+  &.current-row,
+  &.hover-row {
+    td {
+      background: unset !important;
     }
   }
-  &[x-placement^=top] .popper__arrow{
-    border-top-color: rgba(30, 60, 86, 0.8)!important;
-    &::after{
-      border-top-color: rgba(30, 60, 86, 0.8)!important;
+  td {
+    border-bottom: none !important;
+  }
+}
+.el-table th.is-leaf {
+  border-bottom: none !important;
+}
+.el-table,
+.el-table__expanded-cell {
+  background-color: unset !important;
+}
+.el-table--group::after,
+.el-table--border::after,
+.el-table::before {
+  background-color: unset !important;
+}
+.el-popover {
+  background: rgba(30, 60, 86, 0.8) !important;
+  border: 1px solid rgba(30, 60, 86, 0.8) !important;
+  &[x-placement^="right"] .popper__arrow {
+    border-right-color: rgba(30, 60, 86, 0.8) !important;
+    &::after {
+      border-right-color: rgba(30, 60, 86, 0.8) !important;
+    }
+  }
+  &[x-placement^="top"] .popper__arrow {
+    border-top-color: rgba(30, 60, 86, 0.8) !important;
+    &::after {
+      border-top-color: rgba(30, 60, 86, 0.8) !important;
     }
   }
 }
-.el-progress-bar__outer{
-    background-color: #777 !important;
+.el-progress-bar__outer {
+  background-color: #777 !important;
 }
-.el-table td.gutter, .el-table th.gutter{
-  background: url('./assets/images/icon_table_header.png') repeat left top / 100% 100%;
+.el-table td.gutter,
+.el-table th.gutter {
+  background: url("./assets/images/icon_table_header.png") repeat left top /
+    100% 100%;
 }
 input.el-input__inner {
-    background: transparent !important;
-    border-color: #5FB6F9 !important;
-    font-size: 16px;
-    color: #ffffff;
+  background: transparent !important;
+  border-color: #5fb6f9 !important;
+  font-size: 16px;
+  color: #ffffff;
 }
 .el-icon-date:before {
-    color: #5fb6f9;
-    font-size: 18px;
+  color: #5fb6f9;
+  font-size: 18px;
 }
-.el-picker-panel.el-date-picker.el-popper{
+.el-picker-panel.el-date-picker.el-popper {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
-  border-color: #5FB6F9;
-  .el-date-table th{
+  border-color: #5fb6f9;
+  .el-date-table th {
     color: #fff;
   }
   .el-picker-panel__content table td .cell,
-  .el-date-picker__header>button,
-  .el-date-picker__header>span{
+  .el-date-picker__header > button,
+  .el-date-picker__header > span {
     color: #fff;
-    &:hover{
-      color:#409EFF;
+    &:hover {
+      color: #409eff;
     }
   }
-  .popper__arrow{
-    border-bottom-color: #409EFF;
-    border-top-color: #409EFF;
-    &::after{
+  .popper__arrow {
+    border-bottom-color: #409eff;
+    border-top-color: #409eff;
+    &::after {
       border-bottom-color: #000;
       border-top-color: #000;
     }
   }
 }
-.el-select-dropdown.el-popper,.el-select-dropdown.is-multiple{
+.el-select-dropdown.el-popper,
+.el-select-dropdown.is-multiple {
   background: rgba(0, 0, 0, 0.8);
-  border-color: #5FB6F9;
-  li.el-select-dropdown__item{
+  border-color: #5fb6f9;
+  li.el-select-dropdown__item {
     color: #fff;
     &.selected {
-      color: #409EFF;
+      color: #409eff;
       background: transparent;
     }
-    &.hover,&:hover,&.selected.hover{
-      background-color: rgba(255,255,255,0.2);
+    &.hover,
+    &:hover,
+    &.selected.hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
   }
-  .popper__arrow{
-    border-bottom-color: #409EFF !important;
-    border-top-color: #409EFF !important;
-    &::after{
+  .popper__arrow {
+    border-bottom-color: #409eff !important;
+    border-top-color: #409eff !important;
+    &::after {
       border-bottom-color: #000 !important;
       border-top-color: #000 !important;
     }
   }
 }
-.el-radio-button:first-child .el-radio-button__inner{
-  border-color: #1B8CEA!important;
+.el-radio-button:first-child .el-radio-button__inner {
+  border-color: #1b8cea !important;
 }
-span.el-radio-button__inner{
+span.el-radio-button__inner {
   background: rgba(0, 0, 0, 0.5);
-  color:#979797;
-  border-color: #1B8CEA;
+  color: #979797;
+  border-color: #1b8cea;
 }
 </style>
