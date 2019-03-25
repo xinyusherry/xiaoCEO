@@ -399,6 +399,19 @@ export default {
             data: [50, 70, 60, 61, 75, 87, 60, 62, 86, 46],
             color: "#F76B1C",
             yAxisIndex: 1
+          },
+          {
+            name: "",
+            type: "bar",
+            barWidth: 10,
+            data: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+            barGap: "-100%",
+            itemStyle: {
+              color: "transparent",
+              borderColor: "#0097FF",
+              borderWidth: 1,
+              borderType: "dashed"
+            }
           }
         ]
       };
@@ -531,7 +544,7 @@ export default {
         thisChart.resize();
       });
     },
-    cellStyle({columnIndex }) {
+    cellStyle({ columnIndex }) {
       if (columnIndex === 0) {
         return "color: #6AFFFD";
       } else {

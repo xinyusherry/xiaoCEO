@@ -1,7 +1,7 @@
 <template>
     <div :class="'card '+ (classname||'')" :style="{ width:cardset.width }">
         <div class='border' :style="{ background: background}"></div>
-        <div v-if='!classname' class='titleDiv'> <span class='title'>{{cardset.title}}</span><span class="time">{{time}}</span></div>
+        <div v-if='!classname' class='titleDiv'> <span class='title'>{{cardset.title}}</span><span class="time">{{propsTime||time}}</span></div>
         <slot></slot>
     </div>
 </template>
@@ -9,7 +9,7 @@
 <script>
     export default {
         name: 'Card',
-        props: ['cardset', 'timetype', 'classname'],
+        props: ['cardset', 'timetype', 'classname','propsTime'],
         data() {
             return {
                 background: 'linear-gradient(to right, ' + this.cardset.leftcolor + ' , ' + this.cardset.rightcolor + ')',

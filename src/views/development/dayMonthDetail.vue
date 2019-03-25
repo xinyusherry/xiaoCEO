@@ -2,15 +2,15 @@
   <div>
     <div class="header">
       <div class="tipDiv">
-        <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span>
+        <span class="tip" v-show="isDay==='r'">注：（日指标为当日月累）</span>
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 0}" @click="changeTab(0)">固网 44</li>
-        <li :class="{active:isActive === 1}" @click="changeTab(1)">移网 66</li>
+        <li :class="{active:isActive === 'GW'}" @click="changeTab('GW')">固网 {{GW_NUM}}</li>
+        <li :class="{active:isActive === 'YW'}" @click="changeTab('YW')">移网 {{YW_NUM}}</li>
       </ul>
-      <el-radio-group v-model="isDay">
-        <el-radio :label="1">日</el-radio>
-        <el-radio :label="0">月</el-radio>
+      <el-radio-group v-model="isDay" @change="changeIsDay">
+        <el-radio :label="'r'">日</el-radio>
+        <el-radio :label="'y'">月</el-radio>
       </el-radio-group>
     </div>
     <div class="chartList">
@@ -38,16 +38,19 @@
           highlight-current-row
           stripe
         >
-          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" label="姓名" width="180" sortable>
-            <template slot-scope="scope">
+          <el-table-column prop="ORGAN_NAME" align="center" label="人员名称" width="200">
+            <!-- <template slot-scope="scope">
               <el-popover placement="right" width="400" trigger="hover">
                 <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
-                <div slot="reference">{{scope.row.name}}</div>
+                <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
               </el-popover>
-            </template>
+            </template>-->
           </el-table-column>
-          <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
+          <el-table-column prop="name1" align="center" :label="resultTitle.name1" sortable></el-table-column>
+          <el-table-column prop="name2" align="center" :label="resultTitle.name2" sortable></el-table-column>
+          <el-table-column prop="name3" align="center" :label="resultTitle.name3" sortable></el-table-column>
+          <el-table-column prop="name4" align="center" :label="resultTitle.name4" sortable></el-table-column>
+          <el-table-column prop="name5" align="center" :label="resultTitle.name5" sortable></el-table-column>
         </el-table>
       </div>
     </div>
@@ -59,8 +62,10 @@ export default {
   components: {},
   data() {
     return {
-      isDay: 1,
-      isActive: 0,
+      isDay: "r",
+      isActive: "GW",
+      YW_NUM: 44,
+      GW_NUM: 66,
       xAxisData: [
         "8",
         "9",
@@ -83,7 +88,8 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
+        height: "280px",
+        overflowY:"scroll",
         padding: "18px"
       },
       headerBgStyle: {
@@ -96,45 +102,168 @@ export default {
       },
       tableData: [
         {
-          date: "2016-05-02",
-          id: "1",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          ORGAN_ID: "JL27215",
+          ORGAN_NAME: "姜莉",
+          name1: "1",
+          name2: "7",
+          name3: "0",
+          name4: "5",
+          name5: "0"
         },
         {
-          date: "2016-05-04",
-          id: "2",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          ORGAN_ID: "JL27216",
+          ORGAN_NAME: "张雅静",
+          name1: "1",
+          name2: "5",
+          name3: "0",
+          name4: "5",
+          name5: "0"
         },
         {
-          date: "2016-05-01",
-          id: "3",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
+          ORGAN_ID: "JLBC0004",
+          ORGAN_NAME: "北辰分公司青光共享池经理",
+          name1: "0",
+          name2: "1",
+          name3: "0",
+          name4: "0",
+          name5: "0"
         },
         {
-          date: "2016-05-03",
-          id: "4",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
+          ORGAN_ID: "YWJL00029",
+          ORGAN_NAME: "朱彦峰",
+          name1: "0",
+          name2: "0",
+          name3: "0",
+          name4: "0",
+          name5: "0"
         },
         {
-          date: "2016-05-07",
-          id: "5",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1515 弄"
+          ORGAN_ID: "13b0l0q",
+          ORGAN_NAME: "北辰区双青新家园小型营业厅",
+          name1: "0",
+          name2: "1",
+          name3: "0",
+          name4: "0",
+          name5: "0"
+        },
+        {
+          ORGAN_ID: "YWJL00031",
+          ORGAN_NAME: "李学均",
+          name1: "0",
+          name2: "0",
+          name3: "0",
+          name4: "0",
+          name5: "0"
+        },
+        {
+          ORGAN_ID: "JLSC0143",
+          ORGAN_NAME: "青光聚类市场",
+          name1: "0",
+          name2: "2",
+          name3: "0",
+          name4: "2",
+          name5: "0"
+        },
+        {
+          ORGAN_ID: "YWJL00028",
+          ORGAN_NAME: "刘景松",
+          name1: "0",
+          name2: "0",
+          name3: "0",
+          name4: "0",
+          name5: "0"
+        },
+        {
+          ORGAN_ID: "YWJL09897",
+          ORGAN_NAME: "李鹏",
+          name1: "0",
+          name2: "0",
+          name3: "0",
+          name4: "0",
+          name5: "0"
+        },
+        {
+          ORGAN_ID: "13a0174",
+          ORGAN_NAME: "北辰区津霸公路青光标准营业厅",
+          name1: "0",
+          name2: "2",
+          name3: "0",
+          name4: "2",
+          name5: "0"
         }
-      ]
+      ],
+      resultTitle: {
+        name: "人员",
+        name1: "单宽",
+        name2: "融合",
+        name3: "尊享红",
+        name4: "全家红",
+        name5: "孝心红"
+      }
     };
   },
   methods: {
-    changeTab(index) {
-      this.isActive = index;
+    changeTab(type) {
+      this.isActive = type;
     },
-    drawLineChart(id, color) {
+    changeIsDay(type) {
+      this.getTopData(type);
+    },
+    //顶端移网固网数量
+    getTopData(isDay) {
+      const params = {
+        dateType: isDay
+      };
+      this.$axios
+        .post("/Developry/getData", params)
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let that = this;
+            let resultData = res.data.resultData;
+            for (let i = 0, len = resultData.length; i < len; i++) {
+              switch (resultData[i].SVC_TYPE) {
+                case "YW":
+                  that.YW_NUM = resultData[i].NUM;
+                  break;
+                case "GW":
+                  that.GW_NUM = resultData[i].NUM;
+                  break;
+                default:
+                  break;
+              }
+            }
+          }
+        })
+        .catch(function(e) {});
+    },
+    getLineCharData(developType, dateType) {
+      let that = this;
+      const params = {
+        developType: developType,
+        dateType: dateType
+      };
+      this.$axios
+        .post("/Developry/getLineCharData", params)
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let xAxis = [];
+            let yAxis = [];
+            for (let i = 0, len = resultData.length; i < len; i++) {
+              xAxis.push(resultData[i].TIME);
+              yAxis.push(resultData[i].NUM);
+            }
+            that.drawLineChart("line", "#fbbf50", xAxis, yAxis);
+          }
+        })
+        .catch(function(e) {});
+      // that.drawLineChart("line", "#fbbf50");
+    },
+    drawLineChart(id, color, xAxis, yAxis) {
+      let text = this.isActive === "GW" ? "固网" : "移网";
       setTimeout(() => {
         var thisChart = this.$echarts.init(document.getElementById(id));
+        thisChart.clear();
         thisChart.setOption({
           grid: {
             containLabel: true,
@@ -145,7 +274,7 @@ export default {
           title: [
             {
               left: "center",
-              text: "固网发展趋势",
+              text: text + "发展趋势",
               textStyle: {
                 fontSize: 21,
                 color: "#24FAFF"
@@ -155,7 +284,7 @@ export default {
           tooltip: {
             trigger: "axis",
             axisPointer: {
-              type: "cross",
+              // type: "cross",
               label: {
                 backgroundColor: "#6a7985"
               }
@@ -176,7 +305,7 @@ export default {
             axisTick: {
               show: false
             },
-            data: this.xAxisData,
+            data: xAxis || this.xAxisData,
             axisLabel: {
               show: true,
               textStyle: {
@@ -199,7 +328,7 @@ export default {
             axisTick: {
               show: false
             },
-            name: "完成值(万元)",
+            name: "发展量",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -222,7 +351,19 @@ export default {
                   show: true
                 }
               },
-              data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
+              data: yAxis || [
+                0,
+                65,
+                100,
+                165,
+                200,
+                210,
+                220,
+                240,
+                300,
+                310,
+                320
+              ]
             }
           ]
         });
@@ -231,8 +372,35 @@ export default {
         });
       }, 0);
     },
-    drawPieChart(id) {
+    getPieData(developType, dateType) {
+      let that = this;
+      const params = {
+        developType: developType,
+        dateType: dateType
+      };
+      this.$axios
+        .post("/Developry/getPieData", params)
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let data = [];
+            for (let i = 0, len = resultData.length; i < len; i++) {
+              if (resultData[i].NUM != 0) {
+                let obj = new Object();
+                obj.name = resultData[i].PRODUCT_TYPE;
+                obj.value = resultData[i].NUM;
+                data.push(obj);
+              }
+            }
+            that.drawPieChart("pie", data);
+          }
+        })
+        .catch(function(e) {});
+      // this.drawPieChart("pie");
+    },
+    drawPieChart(id, data) {
       var thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       var option = {
         tooltip: {
           trigger: "item",
@@ -252,9 +420,17 @@ export default {
           {
             name: "产品结构",
             type: "pie",
-            radius: ["20%", "60%"],
-            avoidLabelOverlap: false,
-            color: ["#F868AF", "#01C6FD", "#1749F9"],
+            radius: ["20%", "50%"],
+            avoidLabelOverlap: true,
+            color: [
+              "#F868AF",
+              "#01C6FD",
+              "#1749F9",
+              "#E5621C",
+              "#D70B20",
+              "#19C072",
+              "#F75C19"
+            ],
             label: {
               normal: {
                 show: true,
@@ -280,7 +456,7 @@ export default {
                 }
               },
               emphasis: {
-                show: true,
+                show: true
               }
             },
             labelLine: {
@@ -288,7 +464,7 @@ export default {
                 show: true
               }
             },
-            data: [
+            data: data || [
               { value: 50, name: "满堂红" },
               { value: 20, name: "尊享红" },
               { value: 40, name: "其他" }
@@ -310,11 +486,14 @@ export default {
     }
   },
   mounted() {
-    this.drawLineChart("line", "#fbbf50");
-    this.drawPieChart("pie");
-    this.tableData.map(obj => {
-      this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
-    });
+    let that = this;
+    this.getTopData(that.isDay);
+    this.getLineCharData(that.isActive, that.isDay);
+    this.getPieData(that.isActive, that.isDay);
+
+    // this.tableData.map(obj => {
+    //   this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
+    // });
   }
 };
 </script>
