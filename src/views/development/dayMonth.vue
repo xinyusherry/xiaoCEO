@@ -1,17 +1,12 @@
 <template>
   <div class="moveDiv" v-on:click="sendMsg">
-    <card
-      :cardset="day.cardset"
-      :timetype="'day'"
-      style="margin-right:10px"
-     
-    >
+    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px" :propsTime="day.time">
       <div class="card-content">
         <div class="bigNum">
           {{day.developDay.value}}
-          <img
+          <!-- <img
             :src="require(`../../assets/images/icon-${day.developDay.up?'up':'down'}.png`)"
-          >
+          >-->
         </div>
         <chart-pie
           :id="'pieDay'"
@@ -21,13 +16,13 @@
         ></chart-pie>
       </div>
     </card>
-    <card :cardset="month.cardset" :timetype="'month'" >
-      <div class="card-content" >
+    <card :cardset="month.cardset" :timetype="'month'" :propsTime="month.time">
+      <div class="card-content">
         <div class="bigNum">
           {{month.developMonth.value}}
-          <img
+          <!-- <img
             :src="require(`../../assets/images/icon-${month.developMonth.up?'up':'down'}.png`)"
-          >
+          >-->
         </div>
         <chart-pie
           :id="'pieMonth'"
@@ -43,6 +38,7 @@
 <script>
 import card from "../../components/Card.vue";
 import chartPie from "../../components/chartPie.vue";
+import { formatterTime } from "../../utils/index.js";
 export default {
   components: {
     card: card,
@@ -59,20 +55,21 @@ export default {
         },
         developDay: {
           value: 35,
-          up: true,
+          // up: true,
           dataset: [
             {
-              name: "固话",
+              name: "固网",
               value: 5
             },
             {
-              name: "移动",
+              name: "移网",
               value: 15
             }
           ]
         },
         colors: ["#1AC175", "#1B8CEA"],
-        legend: ["固话", "移动"]
+        legend: ["固网", "移网"],
+        time: ""
       },
       month: {
         cardset: {
@@ -83,31 +80,77 @@ export default {
         },
         developMonth: {
           value: 325,
-          up: false,
+          // up: false,
           dataset: [
             {
-              name: "固话",
+              name: "固网",
               value: 120
             },
             {
-              name: "移动",
+              name: "移网",
               value: 200
             }
           ]
         },
         colors: ["#EDC624", "#F84F4F"],
-        legend: ["固话", "移动"]
+        legend: ["固网", "移网"],
+        time: ""
       }
     };
   },
   methods: {
-    sendMsg:function() {
+    sendMsg: function() {
       const param = {
-        dialogCompent:"dayMonthDetail",
-        dialogTitle:"发展",
-      }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+        dialogCompent: "dayMonthDetail",
+        dialogTitle: "发展"
+      };
+      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    getData() {
+      this.$axios
+        .post("/Developry/index")
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+             let that = this;
+            let resultData = res.data.resultData;
+            for (let i = 0, len = resultData.length; i < len; i++) {
+              switch (resultData[i].SVC_TYPE) {
+                case "GW_D":
+                  that.day.developDay.dataset[0].value = resultData[i].NUM;
+                  let time = formatterTime(resultData[i].TIME);
+                  that.day.time = time;
+                  break;
+                case "YW_D":
+                  that.day.developDay.dataset[1].value = resultData[i].NUM;
+                  break;
+                case "SUM_D":
+                  that.day.developDay.value = resultData[i].NUM;
+                  break;
+                case "GW_M":
+                  that.month.developMonth.dataset[0].value = resultData[i].NUM;
+                  let timeM = formatterTime(resultData[i].TIME);
+                  that.month.time = timeM;
+                  break;
+                case "YW_M":
+                  that.month.developMonth.dataset[1].value = resultData[i].NUM;
+                  break;
+                case "SUM_M":
+                  that.month.developMonth.value = resultData[i].NUM;
+                  break;
+
+                default:
+                  break;
+              }
+            }
+          }
+        })
+        .catch(function(e) {
+          console.error(e)
+        });
     }
+  },
+  mounted: function() {
+    this.getData()
   }
 };
 </script>
