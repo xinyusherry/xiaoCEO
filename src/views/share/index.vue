@@ -1,8 +1,8 @@
 <template>
   <div class="moveDiv" @click="sendMsg">
-    <card :cardset="cardset" :timetype="'month'">
+    <card :cardset="cardset" :timetype="'month'" :propsTime="time">
       <div class="card-content">
-        <chart-gauge :id="'guage'"></chart-gauge>
+        <chart-gauge :id="'guage'" :data="data"></chart-gauge>
       </div>
     </card>
   </div>
@@ -11,6 +11,7 @@
 <script>
 import card from "../../components/Card.vue";
 import chartGauge from "../../components/chartGauge.vue";
+import { formatterTime } from "../../utils/index.js";
 export default {
   components: {
     card: card,
@@ -24,16 +25,48 @@ export default {
         leftcolor: "#53A0FD",
         rightcolor: "#85B62E"
       },
+      time: "",
+      data: {}
     };
   },
-  methods:{
-      sendMsg:function() {
+  methods: {
+    sendMsg: function() {
       const param = {
-          dialogCompent:"shareSecond",
-          dialogTitle:"增量收益分享",
+        dialogCompent: "shareSecond",
+        dialogTitle: "增量收益分享"
+      };
+      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    getData() {
+      let that = this;
+      this.$axios
+        .post("/zlsyfx/index")
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            console.log("增量", res);
+            let resultData = res.data.resultData;
+            that.time = formatterTime(resultData[0].ACCT_MONTH);
+            that.data = resultData[0];
+          }
+        })
+        .catch(function(e) {
+          console.error(e);
+        });
+    }
+  },
+  mounted: function() {
+    // this.getData();
+    let that = this;
+    let resultData = [
+      {
+        ZLSY_LJ_NUM: " -263,944.30",
+        ZLSY_BN_SY: " .00",
+        ACCT_MONTH: "201902",
+        ZLSY_SY_SY: " -263,944.30"
       }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
-      }
+    ];
+    that.time = formatterTime(resultData[0].ACCT_MONTH);
+    that.data = resultData[0];
   }
 };
 </script>

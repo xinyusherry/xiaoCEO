@@ -381,7 +381,6 @@ export default {
   cursor: pointer;
   padding: 9px 20px;
   border: 1px solid #1b8cea;
-  border-left: none;
   font-size: 20px;
 }
 .mr20 {
