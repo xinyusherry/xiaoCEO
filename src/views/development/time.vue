@@ -52,7 +52,6 @@ export default {
     },
     post() {
       let _this = this;
-      //测试接口
       this.$axios
         .post("/DevelopRealTime/index")
         .then(function(res) {

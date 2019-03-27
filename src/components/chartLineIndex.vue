@@ -7,18 +7,24 @@ export default {
   props: ["id", "dataset", "color"],
   data: function() {
     return {
+      lineData: this.dataset
     };
   },
   mounted() {
-    setTimeout(()=>{
-      var thisChart = this.$echarts.init(document.getElementById(this.id));
+    setTimeout(() => {
+      this.draw();
+    }, 0);
+  },
+  methods: {
+    draw() {
+      let thisChart = this.$echarts.init(document.getElementById(this.id));
       thisChart.setOption({
         grid: {
           containLabel: true,
           top: "20%",
           bottom: "5%",
-          left:"1%",
-          right:"1%"
+          left: "1%",
+          right: "1%"
         },
         tooltip: {
           // trigger: "axis",
@@ -29,7 +35,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: true,
-          axisLabel:{
+          axisLabel: {
             show: false
           },
           axisLine: {
@@ -41,12 +47,12 @@ export default {
           axisTick: {
             show: false
           },
-          data: this.dataset.xAxis
+          data: this.lineData.xAxis
         },
         yAxis: {
           type: "value",
           // scale: true,
-          axisLabel:{
+          axisLabel: {
             show: false
           },
           axisLine: {
@@ -62,22 +68,28 @@ export default {
         series: [
           {
             type: "line",
-            symbolSize:10,
-            itemStyle:{
-              borderWidth:2
+            symbolSize: 10,
+            itemStyle: {
+              borderWidth: 2
             },
-            lineStyle:{
-              width:4
+            lineStyle: {
+              width: 4
             },
             color: this.color,
-            data: this.dataset.data
+            data: this.lineData.data
           }
         ]
       });
-      window.addEventListener("resize", () => { 
+      window.addEventListener("resize", () => {
         thisChart.resize();
       });
-    },0);
+    }
+  },
+  watch: {
+    dataset(newValue, oldValue) {
+      this.lineData = newValue;
+      this.draw();
+    }
   }
 };
 </script>
