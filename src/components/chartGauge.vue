@@ -1,14 +1,17 @@
 <template>
-  <div :id="id" style="width:100%;height:100%"></div>
+  <div :id="id" style="width:100%;height:100%" :data="data"></div>
 </template>
 
 <script>
 export default {
-  props: ["id", "dataset", "color"],
+  props: ["id", "data"],
   data: function() {
     return {};
   },
   mounted() {
+    let that = this;
+    console.log("data",that.data);
+
     setTimeout(() => {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       var mEcharts = this.$echarts;
@@ -33,7 +36,7 @@ export default {
         series: [
           {
             type: "gauge",
-            center: ["50%", "55%"], // 默认全局居中
+            center: ["53%", "55%"], // 默认全局居中
             radius: "82%",
             splitNumber: 5, //刻度数量
             min: 0,
@@ -94,7 +97,7 @@ export default {
             startAngle: 200,
             endAngle: -20,
             radius: "78%",
-            center: ["50%", "55%"], // 默认全局居中
+            center: ["53%", "55%"], // 默认全局居中
             min: 0,
             max: 100,
             axisLine: {
@@ -137,7 +140,7 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 26,
+                fontSize: 18,
                 color: "#41c9da"
               },
               formatter: "{value}万"
@@ -153,7 +156,7 @@ export default {
             data: [
               {
                 name: "已分享",
-                value: 80
+                value:  parseFloat(that.data.ZLSY_BN_SY.split(',').join('')).toFixed(2)
               }
             ]
           },
@@ -262,7 +265,7 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 26,
+                fontSize: 18,
                 color: "#41c9da"
               },
               formatter: "{value}万"
@@ -283,13 +286,13 @@ export default {
             data: [
               {
                 name: "可分享",
-                value: 656
+                value: parseFloat(that.data.ZLSY_LJ_NUM.split(',').join('')).toFixed(2)
               }
             ]
           },
           {
             type: "gauge",
-            center: ["67%", "55%"], // 默认全局居中
+            center: ["74%", "55%"], // 默认全局居中
             radius: "82%",
             splitNumber: 5, //刻度数量
             min: 0,
@@ -344,7 +347,7 @@ export default {
             startAngle: 140,
             endAngle: -45,
             radius: "78%",
-            center: ["67%", "55%"], // 默认全局居中
+            center: ["74%", "55%"], // 默认全局居中
             min: 0,
             max: 100,
             axisLine: {
@@ -385,7 +388,7 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 26,
+                fontSize: 18,
                 color: "#41c9da"
               },
               formatter: "{value}万"
@@ -401,7 +404,7 @@ export default {
             data: [
               {
                 name: "剩余可分享",
-                value: 50
+                value: parseFloat(that.data.ZLSY_SY_SY.split(',').join('')).toFixed(2)
               }
             ]
           }

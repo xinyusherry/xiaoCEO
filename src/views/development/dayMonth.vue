@@ -107,11 +107,12 @@ export default {
       this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     getData() {
+       let that = this;
       this.$axios
         .post("/Developry/index")
         .then(function(res) {
           if (res.data.resultCode === "1") {
-             let that = this;
+            
             let resultData = res.data.resultData;
             for (let i = 0, len = resultData.length; i < len; i++) {
               switch (resultData[i].SVC_TYPE) {

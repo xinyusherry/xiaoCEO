@@ -20,12 +20,24 @@
     <!-- table部分开始 -->
     <div>
       <div class="btnList header">
-        <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;"></el-date-picker>
+        <el-date-picker
+          v-model="date"
+          :type="dateType"
+          placeholder="选择日期"
+          style="background:#070d12;"
+          @change="dateChange"
+        ></el-date-picker>
         <div class="rightBtn header">
-          <div class="down mr20">下载</div>
+          <div class="down mr20" @click="TableToExcel">下载</div>
           <ul class="header">
-            <li class="down">人员</li>
-            <li class="xq">小区</li>
+            <li
+              :class=" tableType === 'ry' ?activeClass:unActiveClass"
+              @click="changeTableType('ry')"
+            >人员</li>
+            <li
+              :class=" tableType === 'xq' ?activeClass:unActiveClass"
+              @click="changeTableType('xq')"
+            >小区</li>
           </ul>
         </div>
       </div>
@@ -38,19 +50,28 @@
           highlight-current-row
           stripe
         >
-          <el-table-column prop="ORGAN_NAME" align="center" label="人员名称" width="200">
-            <!-- <template slot-scope="scope">
+          <el-table-column prop="ORGAN_NAME" align="center" label="人员" width="200">
+            <template slot-scope="scope">
               <el-popover placement="right" width="400" trigger="hover">
-                <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
+                <div :id="'tableLineChart'+scope.row.index" style="width:400px;height:200px"></div>
                 <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
               </el-popover>
-            </template>-->
+            </template>
           </el-table-column>
-          <el-table-column prop="name1" align="center" :label="resultTitle.name1" sortable></el-table-column>
-          <el-table-column prop="name2" align="center" :label="resultTitle.name2" sortable></el-table-column>
-          <el-table-column prop="name3" align="center" :label="resultTitle.name3" sortable></el-table-column>
-          <el-table-column prop="name4" align="center" :label="resultTitle.name4" sortable></el-table-column>
-          <el-table-column prop="name5" align="center" :label="resultTitle.name5" sortable></el-table-column>
+          <el-table-column prop="name1" align="center" label="单宽" sortable></el-table-column>
+          <el-table-column prop="name2" align="center" label="融合" sortable></el-table-column>
+          <el-table-column prop="name3" align="center" label="尊享红" sortable></el-table-column>
+          <el-table-column prop="name4" align="center" label="全家红" sortable></el-table-column>
+          <el-table-column prop="name5" align="center" label="孝心红" sortable></el-table-column>
+          <el-table-column
+            label="操作"
+            align="center"
+            v-if="isDay === 'r'"
+            width="100">
+            <template slot-scope="scope">
+              <el-button @click="toQuartersDetail(scope.row)" type="text" size="small">一区一表</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -58,14 +79,21 @@
 </template>
 
 <script>
+import moment from "moment";
+import qs from "qs";
 export default {
   components: {},
   data() {
     return {
       isDay: "r",
       isActive: "GW",
-      YW_NUM: 44,
-      GW_NUM: 66,
+      tableType: "ry",
+      date: new Date(),
+      dateType: "date",
+      activeClass: "down",
+      unActiveClass: "xq",
+      YW_NUM: "",
+      GW_NUM: "",
       xAxisData: [
         "8",
         "9",
@@ -79,7 +107,7 @@ export default {
         "17",
         "18"
       ],
-      date: "",
+
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -89,7 +117,7 @@ export default {
           ") left top no-repeat",
         backgroundSize: "100% 100%",
         height: "280px",
-        overflowY:"scroll",
+        overflowY: "scroll",
         padding: "18px"
       },
       headerBgStyle: {
@@ -100,125 +128,56 @@ export default {
         backgroundSize: "100% 100%",
         textAlign: "center"
       },
-      tableData: [
-        {
-          ORGAN_ID: "JL27215",
-          ORGAN_NAME: "姜莉",
-          name1: "1",
-          name2: "7",
-          name3: "0",
-          name4: "5",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "JL27216",
-          ORGAN_NAME: "张雅静",
-          name1: "1",
-          name2: "5",
-          name3: "0",
-          name4: "5",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "JLBC0004",
-          ORGAN_NAME: "北辰分公司青光共享池经理",
-          name1: "0",
-          name2: "1",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "YWJL00029",
-          ORGAN_NAME: "朱彦峰",
-          name1: "0",
-          name2: "0",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "13b0l0q",
-          ORGAN_NAME: "北辰区双青新家园小型营业厅",
-          name1: "0",
-          name2: "1",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "YWJL00031",
-          ORGAN_NAME: "李学均",
-          name1: "0",
-          name2: "0",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "JLSC0143",
-          ORGAN_NAME: "青光聚类市场",
-          name1: "0",
-          name2: "2",
-          name3: "0",
-          name4: "2",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "YWJL00028",
-          ORGAN_NAME: "刘景松",
-          name1: "0",
-          name2: "0",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "YWJL09897",
-          ORGAN_NAME: "李鹏",
-          name1: "0",
-          name2: "0",
-          name3: "0",
-          name4: "0",
-          name5: "0"
-        },
-        {
-          ORGAN_ID: "13a0174",
-          ORGAN_NAME: "北辰区津霸公路青光标准营业厅",
-          name1: "0",
-          name2: "2",
-          name3: "0",
-          name4: "2",
-          name5: "0"
-        }
-      ],
-      resultTitle: {
-        name: "人员",
-        name1: "单宽",
-        name2: "融合",
-        name3: "尊享红",
-        name4: "全家红",
-        name5: "孝心红"
-      }
+      tableData: [],
+      resultTitle: {}
     };
   },
   methods: {
+    toQuartersDetail(row){
+      let that = this;
+      let organId = row.ORGAN_ID;
+      let dayId = moment(that.date).format("YYYYMMDD")
+      let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
+      window.open(url,'_blank');
+    },
     changeTab(type) {
       this.isActive = type;
+      let that = this;
+      this.getLineCharData(this.isActive, this.isDay);
+      this.getPieData(this.isActive, this.isDay);
+      this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
+    },
+    changeTableType(val) {
+      let that = this;
+      this.tableType = val;
+      this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
     },
     changeIsDay(type) {
+      let that = this;
+      if (type === "r") {
+        that.dateType = "date";
+      } else {
+        that.dateType = "month";
+      }
       this.getTopData(type);
+      this.getLineCharData(this.isActive, this.isDay);
+      this.getPieData(this.isActive, this.isDay);
+      this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
+    },
+    dateChange(value) {
+       let that = this;
+       this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
     },
     //顶端移网固网数量
     getTopData(isDay) {
       const params = {
         dateType: isDay
       };
+      let that = this;
       this.$axios
         .post("/Developry/getData", params)
         .then(function(res) {
           if (res.data.resultCode === "1") {
-            let that = this;
             let resultData = res.data.resultData;
             for (let i = 0, len = resultData.length; i < len; i++) {
               switch (resultData[i].SVC_TYPE) {
@@ -305,7 +264,7 @@ export default {
             axisTick: {
               show: false
             },
-            data: xAxis || this.xAxisData,
+            data: xAxis,
             axisLabel: {
               show: true,
               textStyle: {
@@ -351,19 +310,7 @@ export default {
                   show: true
                 }
               },
-              data: yAxis || [
-                0,
-                65,
-                100,
-                165,
-                200,
-                210,
-                220,
-                240,
-                300,
-                310,
-                320
-              ]
+              data: yAxis
             }
           ]
         });
@@ -464,11 +411,7 @@ export default {
                 show: true
               }
             },
-            data: data || [
-              { value: 50, name: "满堂红" },
-              { value: 20, name: "尊享红" },
-              { value: 40, name: "其他" }
-            ]
+            data: data
           }
         ]
       };
@@ -476,6 +419,100 @@ export default {
       window.addEventListener("resize", () => {
         thisChart.resize();
       });
+    },
+    getTableData(developType, dateType, tableType, dayFlag) {
+      let that = this;
+      let merge = {};
+      if (dayFlag === "r") {
+        merge = {
+          dayId: moment(that.date).format("YYYYMMDD")
+        };
+      } else {
+        merge = {
+          monthId: moment(that.date).format("YYYYMM")
+        };
+      }
+      const param = {
+        developType: developType,
+        dateType: dateType,
+        tableType: tableType
+      };
+      const params = {
+        ...merge,
+        ...param
+      };
+      this.$axios
+        .post("/Developry/getTableData", params)
+        .then(function(res) {
+          console.log("表格", res);
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            resultData.map((item, index) => {
+              item.index = index;
+              const obj = {
+                developType: developType,
+                dateType: dateType,
+                organId: item.ORGAN_ID,
+                ...merge
+              };
+              that.getRYpieData(obj, index);
+              return item;
+            });
+            that.tableData = resultData;
+            that.resultTitle = res.data.resultTitle;
+          }
+        })
+        .catch(function(e) {});
+    },
+    getRYpieData(obj, index) {
+      let that = this;
+      this.$axios
+        .get(
+          "/Developry/getRYpieData?" +
+            qs.stringify({ JsonParam: JSON.stringify(obj) })
+        )
+        .then(function(res) {
+          console.log("R", res);
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let xAxis = [];
+            let yAxis = [];
+            for (let i = 0, len = resultData.length; i < len; i++) {
+              xAxis.push(resultData[i].TIME);
+              yAxis.push(resultData[i].NUM);
+            }
+            that.drawLineChart(
+              "tableLineChart" + index,
+              "#fbbf50",
+              xAxis,
+              yAxis
+            );
+          }
+        })
+        .catch(function(e) {});
+    },
+    TableToExcel(){
+      let that = this;
+      let merge = {};
+      if (that.isDay === "r") {
+        merge = {
+          dayId: moment(that.date).format("YYYYMMDD")
+        };
+      } else {
+        merge = {
+          monthId: moment(that.date).format("YYYYMM")
+        };
+      }
+      const param = {
+        developType: that.isActive,
+        dateType: that.isDay,
+        tableType: that.tableType
+      };
+      const params = {
+        ...merge,
+        ...param
+      };
+      window.open("http://10.26.20.254:8203/microservice-ui/" + "/Developry/TableToExcel?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -490,10 +527,7 @@ export default {
     this.getTopData(that.isDay);
     this.getLineCharData(that.isActive, that.isDay);
     this.getPieData(that.isActive, that.isDay);
-
-    // this.tableData.map(obj => {
-    //   this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
-    // });
+    this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
   }
 };
 </script>
@@ -522,9 +556,7 @@ export default {
     border-bottom: 5px solid #6afffd;
   }
 }
-.el-radio + .el-radio {
-  margin-left: 0px;
-}
+
 .chartList {
   display: flex;
   justify-content: space-between;
@@ -549,7 +581,6 @@ export default {
   cursor: pointer;
   padding: 9px 20px;
   border: 1px solid #1b8cea;
-  border-left: none;
   font-size: 20px;
 }
 .mr20 {
@@ -560,17 +591,5 @@ export default {
   position: relative;
 }
 
-.btnList {
-  .el-input__inner {
-    border: 1px solid #5fb6f9;
-    background-color: rgba(0, 0, 0, 0.1);
-    font-size: 16px;
-    color: #ffffff;
-    line-height: 41px;
-  }
-  .el-icon-date:before {
-    color: #5fb6f9;
-    font-size: 18px;
-  }
-}
+
 </style>
