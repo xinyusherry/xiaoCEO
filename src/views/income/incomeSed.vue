@@ -131,15 +131,12 @@ export default {
   },
   watch: {
     radio(val) {
-      // this.changePieData(val, this.date, this.tabVal);
       this.post();
     },
     date(val) {
-      // this.changePieData(this.radio, val, this.tabVal);
       this.post();
     },
     tabVal(val) {
-      // this.changePieData(this.radio, this.date, val);
       this.post();
     },
     barDataset: {
@@ -208,7 +205,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log(res);
           let data = res.data;
           // 公式
           _this.gsNum = [
@@ -240,7 +236,7 @@ export default {
           _this.lineDataset.data[3] = data.resultData.incomeBy.map(v=>v.TBY)
         })
         .catch(function(e) {
-          let data = {
+          /* let data = {
             loginId: "admin",
             resultData: {
               // 账单
@@ -358,7 +354,7 @@ export default {
           _this.lineDataset.data[0] = data.resultData.incomeBy.map(v=>v.YWBY)
           _this.lineDataset.data[1] = data.resultData.incomeBy.map(v=>v.GHBY)
           _this.lineDataset.data[2] = data.resultData.incomeBy.map(v=>v.KDBY)
-          _this.lineDataset.data[3] = data.resultData.incomeBy.map(v=>v.TBY)
+          _this.lineDataset.data[3] = data.resultData.incomeBy.map(v=>v.TBY) */
         });
     },
     changeFormula(isText) {
@@ -502,9 +498,6 @@ export default {
           }
         ]
       });
-      window.addEventListener("resize", () => {
-        thisChart.resize();
-      });
     },
     drawLineChart(id, title, dataset) {
       var thisChart = this.$echarts.init(document.getElementById(id));
@@ -614,9 +607,6 @@ export default {
           }
         ]
       });
-      window.addEventListener("resize", () => {
-        thisChart.resize();
-      });
     },
     drawPieChart(id, dataset) {
       var thisChart = this.$echarts.init(document.getElementById(id));
@@ -632,7 +622,7 @@ export default {
           {
             type: "pie",
             radius: ["20%", "60%"],
-            avoidLabelOverlap: false,
+            avoidLabelOverlap: true,
             color: ["#F868AF", "#01C6FD", "#1749F9", "#a834ef"],
             label: {
               normal: {
@@ -671,20 +661,6 @@ export default {
           }
         ]
       });
-      window.addEventListener("resize", () => {
-        thisChart.resize();
-      });
-    },
-    changePieData(radio, date, tabVal) {
-      let dataArr = [
-        { value: Math.floor(Math.random() * 100), name: "单卡" },
-        { value: Math.floor(Math.random() * 100), name: "固网" },
-        { value: Math.floor(Math.random() * 100), name: "融合" }
-      ];
-      if (tabVal == "dgs") {
-        dataArr.push({ value: Math.floor(Math.random() * 100), name: "其他" });
-      }
-      this.$set(this.pieDataset, "data", dataArr);
     },
     callback(params) {
       this.isDetail = params;

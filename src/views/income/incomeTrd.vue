@@ -22,7 +22,7 @@
           <el-radio-button label="person">人员</el-radio-button>
           <el-radio-button label="xq">小区</el-radio-button>
         </el-radio-group>
-        <el-button type="primary" style="margin-left:20px">下载</el-button>
+        <el-button type="primary" @click="TableToExcel" style="margin-left:20px">下载</el-button>
       </div>
     </div>
     <div v-show="tabVal=='person'" class="table" :style="tableBgStyle">
@@ -132,7 +132,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log(res);
           let data = res.data;
           const head = {
             ORGAN_NAME: "经理名称",
@@ -158,7 +157,7 @@ export default {
           };
         })
         .catch(function(e) {
-          let data = {
+          /* let data = {
             loginId: "admin",
             resultData: [
               {
@@ -207,7 +206,7 @@ export default {
           _this.tablePerson = {
             tHeadData: tHeadData,
             tbodyData: data.resultData
-          };
+          }; */
         });
     },
     postXqTable() {
@@ -221,7 +220,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log(res);
           let data = res.data;
           const head = {
             ORGAN_NAME: "经理名称",
@@ -247,7 +245,7 @@ export default {
           };
         })
         .catch(function(e) {
-          let data = {
+          /* let data = {
             loginId: "admin",
             resultData: [
               {
@@ -302,7 +300,7 @@ export default {
           _this.tableArea = {
             tHeadData: tHeadData,
             tbodyData: data.resultData
-          };
+          }; */
         });
     },
     drawLineChart(id, dataset) {
@@ -365,9 +363,6 @@ export default {
           }
         ]
       });
-      window.addEventListener("resize", () => {
-        thisChart.resize();
-      });
     },
     hoverShow(chartId, id) {
       let _this = this;
@@ -381,7 +376,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log(res);
           let data = res.data;
           _this.hoverData = {
             xAxis: data.resultData.map(v => v.ACCT_MONTH),
@@ -390,7 +384,7 @@ export default {
           _this.drawLineChart(chartId + id, _this.hoverData);
         })
         .catch(function(e) {
-          let data = {
+          /* let data = {
             loginId: "admin",
             resultData: [
               {
@@ -414,11 +408,21 @@ export default {
             xAxis: data.resultData.map(v => v.ACCT_MONTH),
             data: data.resultData.map(v => v.BY_FEE)
           };
-          _this.drawLineChart(chartId + id, _this.hoverData);
+          _this.drawLineChart(chartId + id, _this.hoverData); */
         });
     },
     closeThis() {
       this.$emit("callback", false);
+    },
+    TableToExcel() {
+      let params = {
+        monthId:this.date
+      }
+      if (this.tabVal === "person") {
+        window.open("http://10.26.20.254:8203/microservice-ui/" + "/Workbench/downUserDetail?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+      } else if (this.tabVal === "xq") {
+        window.open("http://10.26.20.254:8203/microservice-ui/" + "/Workbench/downCellDetail?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+      }
     }
   },
   mounted() {},
