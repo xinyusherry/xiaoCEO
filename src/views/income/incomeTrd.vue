@@ -25,22 +25,23 @@
         <el-button type="primary" @click="TableToExcel" style="margin-left:20px">下载</el-button>
       </div>
     </div>
-    <div v-show="tabVal=='person'" class="table" :style="tableBgStyle">
+    <div class="table" :style="tableBgStyle">
       <el-table
-        :data="tablePerson.tbodyData"
+        :data="tabVal=='person'?tablePerson.tbodyData:tableArea.tbodyData"
         style="width: 100%;"
         :header-cell-style="headerBgStyle"
         highlight-current-row
         stripe
         height="300"
       >
-        <template v-for="col in tablePerson.tHeadData">
+        <template v-for="(col,idx) in tabVal=='person'?tablePerson.tHeadData:tableArea.tHeadData">
           <el-table-column
             :key="col.key"
             :prop="col.prop"
             :label="col.label"
             :sortable="col.prop.search(/FEE/)===-1?false:true"
             align="center"
+            v-if="idx==0"
           >
             <template slot-scope="scope">
               <div>
@@ -49,35 +50,26 @@
                   placement="right"
                   width="400"
                   trigger="hover"
-                  @show="hoverShow('tableLineChart-sj',scope.row.ORGAN_ID)"
+                  @show="hoverShow('tableLineChart-sj'+scope.row.ORGAN_ID,scope.row.ORGAN_ID)"
                 >
-                  <div :id="'tableLineChart-sj'+scope.row.ORGAN_ID" style="width:100%;height:200px"></div>
+                  <div :id="'tableLineChart-sj'+scope.row.ORGAN_ID" style="width:400px;height:200px"></div>
                   <div slot="reference">{{scope.row[col.prop]}}</div>
                 </el-popover>
-                <div v-if="col.prop.search(/NAME/)===-1" slot="reference">{{scope.row[col.prop]}}</div>
               </div>
             </template>
           </el-table-column>
-        </template>
-      </el-table>
-    </div>
-    <div v-show="tabVal=='xq'" class="table" :style="tableBgStyle">
-      <el-table
-        :data="tableArea.tbodyData"
-        style="width: 100%;"
-        :header-cell-style="headerBgStyle"
-        highlight-current-row
-        stripe
-        height="300"
-      >
-        <template v-for="col in tableArea.tHeadData">
           <el-table-column
             :key="col.key"
             :prop="col.prop"
             :label="col.label"
             :sortable="col.prop.search(/FEE/)===-1?false:true"
             align="center"
-          ></el-table-column>
+            v-if="idx!==0"
+          >
+            <template slot-scope="scope">
+                <div v-if="col.prop.search(/NAME/)===-1" slot="reference">{{scope.row[col.prop]}}</div>
+            </template>
+          </el-table-column>
         </template>
       </el-table>
     </div>
@@ -117,7 +109,9 @@ export default {
       tablePerson: {
         tHeadData: [],
         tbodyData: []
-      }
+      },
+      chartId: "",
+      chartDivId: ""
     };
   },
   methods: {
@@ -135,7 +129,7 @@ export default {
           let data = res.data;
           const head = {
             ORGAN_NAME: "经理名称",
-            // HR_EMP_CODE: "人力编码",
+            HR_EMP_CODE: "人力编码",
             BY_FEE: "本月收入",
             YD_FEE: "移动收入",
             KD_FEE: "宽带收入",
@@ -156,58 +150,7 @@ export default {
             tbodyData: data.resultData
           };
         })
-        .catch(function(e) {
-          /* let data = {
-            loginId: "admin",
-            resultData: [
-              {
-                GH_FEE: 19221.95, //固话收入
-                ORGAN_ID: "Y1040025",
-                HR_EMP_CODE: "0236399", //人力编码
-                KD_FEE: 47475.94, //宽带收入
-                YD_FEE: 31663.82, //移动收入
-                BY_FEE: 734622.89, //本月收入
-                RH_FEE: 636261.18, //融合收入
-                ORGAN_NAME: "刘嘉" //经理名称
-              },
-              {
-                GH_FEE: 14541.46,
-                ORGAN_ID: "Y1040024",
-                HR_EMP_CODE: "0236535",
-                KD_FEE: 42572.01,
-                YD_FEE: 22141.34,
-                BY_FEE: 609300.72,
-                RH_FEE: 530045.91,
-                ORGAN_NAME: "荣健媄"
-              }
-            ],
-            loginName: "管理员",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          const head = {
-            ORGAN_NAME: "经理名称",
-            // HR_EMP_CODE: "人力编码",
-            BY_FEE: "本月收入",
-            YD_FEE: "移动收入",
-            KD_FEE: "宽带收入",
-            RH_FEE: "融合收入",
-            GH_FEE: "固话收入"
-          };
-          let tHeadData = [];
-          for (const key in head) {
-            if (head.hasOwnProperty(key)) {
-              tHeadData.push({
-                label: head[key],
-                prop: key
-              });
-            }
-          }
-          _this.tablePerson = {
-            tHeadData: tHeadData,
-            tbodyData: data.resultData
-          }; */
-        });
+        .catch(function(e) {});
     },
     postXqTable() {
       let _this = this;
@@ -222,67 +165,10 @@ export default {
         .then(function(res) {
           let data = res.data;
           const head = {
-            ORGAN_NAME: "经理名称",
-            // HR_EMP_CODE: "人力编码",
-            BY_FEE: "本月收入",
-            YD_FEE: "移动收入",
-            KD_FEE: "宽带收入",
-            RH_FEE: "融合收入",
-            GH_FEE: "固话收入"
-          };
-          let tHeadData = [];
-          for (const key in head) {
-            if (head.hasOwnProperty(key)) {
-              tHeadData.push({
-                label: head[key],
-                prop: key
-              });
-            }
-          }
-          _this.tableArea = {
-            tHeadData: tHeadData,
-            tbodyData: data.resultData
-          };
-        })
-        .catch(function(e) {
-          /* let data = {
-            loginId: "admin",
-            resultData: [
-              {
-                GH_FEE: 12996.47,
-                ORGAN_ID: "10000438",
-                KD_FEE: 19490.56,
-                YD_FEE: -29.52,
-                BY_FEE: 138399.16,
-                RH_FEE: 105941.66,
-                ORGAN_NAME: "南大西南村"
-              },
-              {
-                GH_FEE: 2707.34,
-                ORGAN_ID: "10032616",
-                KD_FEE: 3984.11,
-                YD_FEE: 248.27,
-                BY_FEE: 86304.83,
-                RH_FEE: 79365.11,
-                ORGAN_NAME: "林苑北里"
-              },
-              {
-                GH_FEE: 4162.65,
-                ORGAN_ID: "10032582",
-                KD_FEE: 7045,
-                YD_FEE: 390.56,
-                BY_FEE: 84457.53,
-                RH_FEE: 72859.32,
-                ORGAN_NAME: "观园里"
-              }
-            ],
-            loginName: "管理员",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          const head = {
             ORGAN_NAME: "小区名称",
-            // ORGAN_ID: "小区ID",
+            ORGAN_ID: "小区ID",
+            MANAGER_NAME: "经理名称",
+            GH_FEE: "固话收入",
             BY_FEE: "小区收入",
             YD_FEE: "移动收入",
             KD_FEE: "宽带收入",
@@ -300,11 +186,13 @@ export default {
           _this.tableArea = {
             tHeadData: tHeadData,
             tbodyData: data.resultData
-          }; */
-        });
+          };
+        })
+        .catch(function(e) {});
     },
     drawLineChart(id, dataset) {
       var thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       thisChart.setOption({
         color: ["#0097FF", "#F868AF"],
         grid: {
@@ -364,64 +252,48 @@ export default {
         ]
       });
     },
-    hoverShow(chartId, id) {
+    hoverShow(chartId, organId) {
+      this.chartId = chartId;
+      let url =
+        this.tabVal == "xq"
+          ? "/Workbench/getIncomeCellLine"
+          : "/Workbench/getIncomeUserLine";
       let _this = this;
       let params = {
         monthId: this.date,
-        organId: id
+        organId: organId
       };
       this.$axios
-        .get(
-          "/Workbench/getIncomeCellLine?" +
-            qs.stringify({ JsonParam: JSON.stringify(params) })
-        )
+        .get(url + "?" + qs.stringify({ JsonParam: JSON.stringify(params) }))
         .then(function(res) {
           let data = res.data;
           _this.hoverData = {
             xAxis: data.resultData.map(v => v.ACCT_MONTH),
-            data: data.resultData.map(v => v.BY_FEE)
+            data: data.resultData.map((v,i) => v.BY_FEE)
           };
-          _this.drawLineChart(chartId + id, _this.hoverData);
+          _this.drawLineChart(chartId, _this.hoverData);
         })
-        .catch(function(e) {
-          /* let data = {
-            loginId: "admin",
-            resultData: [
-              {
-                ACCT_MONTH: "201901",
-                BY_FEE: 613670.74
-              },
-              {
-                ACCT_MONTH: "201902",
-                BY_FEE: 609300.72
-              },
-              {
-                ACCT_MONTH: "201903",
-                BY_FEE: 0
-              }
-            ],
-            loginName: "管理员",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          _this.hoverData = {
-            xAxis: data.resultData.map(v => v.ACCT_MONTH),
-            data: data.resultData.map(v => v.BY_FEE)
-          };
-          _this.drawLineChart(chartId + id, _this.hoverData); */
-        });
+        .catch(function(e) {});
     },
     closeThis() {
       this.$emit("callback", false);
     },
     TableToExcel() {
       let params = {
-        monthId:this.date
-      }
+        monthId: this.date
+      };
       if (this.tabVal === "person") {
-        window.open("http://10.26.20.254:8203/microservice-ui/" + "/Workbench/downUserDetail?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+        window.open(
+          "http://10.26.20.254:8203/microservice-ui/" +
+            "/Workbench/downUserDetail?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        );
       } else if (this.tabVal === "xq") {
-        window.open("http://10.26.20.254:8203/microservice-ui/" + "/Workbench/downCellDetail?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+        window.open(
+          "http://10.26.20.254:8203/microservice-ui/" +
+            "/Workbench/downCellDetail?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        );
       }
     }
   },
@@ -437,7 +309,7 @@ export default {
     },
     hoverData: {
       handler(n, o) {
-        this.drawLineChart(chartId + id, this.hoverData);
+        this.drawLineChart(this.chartId, this.hoverData);
       },
       immediate: false,
       deep: true
