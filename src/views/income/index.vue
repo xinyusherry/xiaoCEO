@@ -1,6 +1,6 @@
 <template>
   <div class="moveDiv" @click="sendMsg">
-    <card :cardset="xs" :timetype="'month'" style="margin-right:10px;">
+    <card :cardset="xs" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="cardCont flexard">
         <el-popover placement="top" width="300" trigger="hover">
           <div style="color:#fff">
@@ -124,7 +124,9 @@ export default {
         title: "累计收入预算完成率",
         ...defaultParam
       },
-      cardData: {}
+      cardData: {},
+      monthId: "",
+      cardTime: ""
     };
   },
   created() {
@@ -147,6 +149,7 @@ export default {
         .post("/Workbench/getIncomeIndex")
         .then(function(res) {
           _this.cardData = res.data.resultData;
+          _this.monthId = res.data.resultData.monthId;
           _this.xs.chartLine.dataset = {
             xAxis: res.data.resultData.lineChart.map(v => v.ACCT_MONTH),
             data: res.data.resultData.lineChart.map(v => v.SR_NUM)
@@ -155,6 +158,25 @@ export default {
         .catch(function(e) {
           console.log(e);
         });
+    }
+  },
+  watch: {
+    monthId(newValue, oldValue) {
+      if (newValue.search(/-/) === -1 && newValue.search(/年/) === -1) {
+        if (newValue.length === 6) {
+          this.cardTime = [newValue.substr(0, 4), newValue.substr(4, 2)].join(
+            "-"
+          );
+        } else if (newValue.length === 8) {
+          this.cardTime = [
+            newValue.substr(0, 4),
+            newValue.substr(4, 2),
+            newValue.substr(6, 2)
+          ].join("-");
+        }
+      } else {
+        this.cardTime = newValue;
+      }
     }
   }
 };

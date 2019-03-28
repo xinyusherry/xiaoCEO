@@ -7,12 +7,30 @@ export default {
   props: ["id", "dataset", "color"],
   data: function() {
     return {
+      chartData: this.dataset || {}
     };
   },
   mounted() {
-    setTimeout(()=>{
+    setTimeout(() => {
+      this.draw();
+    }, 0);
+  },
+  methods: {
+    draw() {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
-      this.$emit('CallBack', thisChart);
+      this.$emit("CallBack", thisChart);
+      let series = this.chartData.data.map((v, i) => {
+        return {
+          name: v[0].name,
+          type: "bar",
+          color: this.color[i],
+          barWidth: 30,
+          itemStyle: {
+            barBorderRadius: 5
+          },
+          data: v
+        };
+      });
       thisChart.setOption({
         grid: {
           containLabel: true,
@@ -22,15 +40,15 @@ export default {
         },
         tooltip: {
           trigger: "axis",
-          axisPointer:{
-            type:"none"
+          axisPointer: {
+            type: "none"
           }
         },
         xAxis: {
           type: "category",
           boundaryGap: true,
-          axisLabel:{
-            fontSize:16,
+          axisLabel: {
+            fontSize: 16,
             color: "#24FAFF"
           },
           axisLine: {
@@ -44,16 +62,16 @@ export default {
           axisTick: {
             show: false
           },
-          data: this.dataset.xAxis
+          data: this.chartData.xAxis
         },
         yAxis: {
           type: "value",
           name: "完成值（万元）",
           // scale: true,
-          nameTextStyle:{
+          nameTextStyle: {
             color: "#24FAFF"
           },
-          axisLabel:{
+          axisLabel: {
             color: "#24FAFF"
           },
           axisLine: {
@@ -68,22 +86,32 @@ export default {
             show: false
           }
         },
-        series: [
+        series: series /* [
           {
             type: "bar",
             color: this.color,
-            barWidth:30,
-            itemStyle:{
-              barBorderRadius:5
+            barWidth: 30,
+            itemStyle: {
+              barBorderRadius: 5
             },
-            data: this.dataset.data
+            data: this.chartData.data
           }
-        ]
+        ] */
       });
-      window.addEventListener("resize", () => { 
-        thisChart.resize();
-      });
-    },0);
+      // window.addEventListener("resize", () => {
+      //   thisChart.resize();
+      // });
+    }
+  },
+  watch: {
+    dataset: {
+      handler(newValue, oldValue) {
+        this.chartData = newValue;
+        this.draw();
+      },
+      immediate: false,
+      deep: true
+    }
   }
 };
 </script>

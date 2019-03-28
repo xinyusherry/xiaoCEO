@@ -1,6 +1,6 @@
 <template>
   <div class="moveDiv" @click="sendMsg">
-    <card :cardset="cardset" :timetype="'time'">
+    <card :cardset="cardset" :timetype="'time'" :propsTime="cardTime">
       <div class="card-content">
         <chart-line :id="'lineTime'" :dataset="developOnTime.dataset" :color="colors"></chart-line>
       </div>
@@ -25,22 +25,18 @@ export default {
         rightcolor: "#C86DD7"
       },
       developOnTime: {
-        dataset: [
-          {
-            name: "固话",
-            value: 125
-          },
-          {
-            name: "移动",
-            value: 200
-          }
-        ]
+        dataset: {
+          xAxis: [],
+          data: []
+        }
       },
-      colors: ["#F7E43C"]
+      colors: ["#F7E43C", "#3E6BCE"],
+      acctDay: "",
+      cardTime:''
     };
   },
   created() {
-    this.post()
+    this.post();
   },
   methods: {
     sendMsg: function() {
@@ -48,19 +44,57 @@ export default {
         dialogCompent: "dvlpTimeSed",
         dialogTitle: "发展（实时）"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      const thirdParams = {
+        acctDay: this.acctDay
+      };
+      console.log("日期：", this.acctDay);
+      this.$emit("headCallBack", param, thirdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     post() {
       let _this = this;
       this.$axios
         .post("/DevelopRealTime/index")
         .then(function(res) {
-          console.log(res);
-          // _this.layout = res.data.resultData;
+          let data = res.data;
+          _this.acctDay = data.resultDataKD[data.resultDataKD.length - 1].date;
+          _this.developOnTime.dataset.xAxis = data.resultDataYD.map((v, i) => {
+            return v.ACCT_HOUR;
+          });
+          _this.developOnTime.dataset.data[0] = data.resultDataKD.map(v => {
+            return {
+              name: v.SVC_TYPE === "KD" ? "宽带" : "移动",
+              value: v.YD_VALUED
+            };
+          });
+          _this.developOnTime.dataset.data[1] = data.resultDataYD.map(v => {
+            return {
+              name: v.SVC_TYPE === "KD" ? "宽带" : "移动",
+              value: v.YD_VALUED
+            };
+          });
         })
         .catch(function(e) {
           console.log(e);
         });
+    }
+  },
+  watch: {
+    acctDay(newValue, oldValue) {
+      if (newValue.search(/-/) === -1 && newValue.search(/年/) === -1) {
+        if (newValue.length === 6) {
+          this.cardTime = [newValue.substr(0, 4), newValue.substr(4, 2)].join(
+            "-"
+          );
+        } else if (newValue.length === 8) {
+          this.cardTime = [
+            newValue.substr(0, 4),
+            newValue.substr(4, 2),
+            newValue.substr(6, 2)
+          ].join("-");
+        }
+      } else {
+        this.cardTime = newValue;
+      }
     }
   }
 };

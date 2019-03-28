@@ -7,29 +7,35 @@ export default {
   props: ["id", "dataset", "color"],
   data: function() {
     return {
-      xAxisData: [
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18"
-      ]
+      chartData: this.dataset || {}
     };
   },
   mounted() {
-    setTimeout(()=>{
+    setTimeout(() => {
+      this.draw();
+    }, 0);
+  },
+  methods: {
+    draw() {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
-        thisChart.on("legendselectchanged", function(param) {
+      thisChart.on("legendselectchanged", function(param) {
         event.stopPropagation();
       });
-         thisChart.on("click", function(param) {
+      thisChart.on("click", function(param) {
         event.stopPropagation();
+      });
+      let series = this.chartData.data.map((v, i) => {
+        return {
+          name: v[0].name,
+          type: "line",
+          color: this.color[i],
+          emphasis: {
+            label: {
+              show: true
+            }
+          },
+          data: v
+        };
       });
       thisChart.setOption({
         grid: {
@@ -47,6 +53,14 @@ export default {
             }
           }
         },
+        legend: {
+          // data: this.chartData.data,
+          right: 20,
+          textStyle: {
+            color: "#fff"
+          },
+          top: 12
+        },
         xAxis: {
           type: "category",
           boundaryGap: false,
@@ -62,7 +76,7 @@ export default {
           axisTick: {
             show: false
           },
-          data: this.xAxisData
+          data: this.chartData.xAxis
         },
         yAxis: {
           type: "value",
@@ -79,23 +93,19 @@ export default {
             show: false
           }
         },
-        series: [
-          {
-            type: "line",
-            color: this.color,
-            emphasis: {
-              label: {
-                show: true
-              }
-            },
-            data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
-          }
-        ]
+        series: series
       });
-      window.addEventListener("resize", () => { 
-        thisChart.resize();
-      });
-    },0);
+    }
+  },
+  watch: {
+    dataset: {
+      handler(newValue, oldValue) {
+        this.chartData = newValue;
+        this.draw();
+      },
+      immediate: false,
+      deep: true
+    }
   }
 };
 </script>

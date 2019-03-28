@@ -81,7 +81,7 @@ export default {
       d: new Date(),
       radio: this.sendParams.dyOlj || "dy",
       tabVal: this.sendParams.ywType || "yw",
-      date: this.sendParams.monthId || "201903",
+      date: this.sendParams.monthId,
       barDataset: {
         xAxis: [
           "1月",
@@ -161,7 +161,7 @@ export default {
       deep: true
     },
     gsNum(v) {
-      if (this.isText) {
+      if (!this.isText) {
         this.formula = v;
       } else {
         this.formula = [

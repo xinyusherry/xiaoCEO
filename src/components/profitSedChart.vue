@@ -4,37 +4,41 @@
 
 <script>
 export default {
-  props: ["id","type","dataset","title","color"],
+  props: ["id", "type", "dataset", "title", "color"],
   data: function() {
-    return {
-    };
+    return {};
   },
   mounted() {
-    setTimeout(()=>{
+    setTimeout(() => {
+      this.draw();
+    }, 0);
+  },
+  methods: {
+    draw() {
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       thisChart.setOption({
         color: this.color,
         title: {
-          left: 'center',
+          left: "center",
           text: this.title,
-          top:"5%",
-          textStyle:{
-            color:"#24FAFF"
+          top: "5%",
+          textStyle: {
+            color: "#24FAFF"
           }
         },
         legend: {
           data: this.dataset.legendData,
-          top:"16%",
-          textStyle:{
-            color:"#fff"
+          top: "16%",
+          textStyle: {
+            color: "#fff"
           }
         },
         grid: {
           containLabel: true,
           top: "30%",
           bottom: "5%",
-          left:"5%",
-          right:"5%"
+          left: "5%",
+          right: "5%"
         },
         tooltip: {
           trigger: "axis"
@@ -42,7 +46,7 @@ export default {
         xAxis: {
           type: "category",
           boundaryGap: true,
-          axisLabel:{
+          axisLabel: {
             color: "#24FAFF"
           },
           axisLine: {
@@ -62,10 +66,10 @@ export default {
           type: "value",
           name: "完成值（万元）",
           // scale: true,
-          nameTextStyle:{
+          nameTextStyle: {
             color: "#24FAFF"
           },
-          axisLabel:{
+          axisLabel: {
             color: "#24FAFF"
           },
           axisLine: {
@@ -82,23 +86,29 @@ export default {
         },
         series: [
           {
-            name:this.dataset.legendData[0].name,
-            type:this.type,
-            barWidth:10,
+            name: this.dataset.legendData[0].name,
+            type: this.type,
+            barWidth: 10,
             data: this.dataset.data[0]
           },
           {
-            name:this.dataset.legendData[1].name,
-            type:this.type,
-            barWidth:10,
+            name: this.dataset.legendData[1].name,
+            type: this.type,
+            barWidth: 10,
             data: this.dataset.data[1]
           }
         ]
       });
-      window.addEventListener("resize", () => { 
-        thisChart.resize();
-      });
-    },0);
+    }
+  },
+  watch: {
+    dataset: {
+      handler(newValue, oldValue) {
+        this.draw();
+      },
+      immediate: false,
+      deep: true
+    }
   }
 };
 </script>
