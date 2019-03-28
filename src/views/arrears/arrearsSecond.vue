@@ -1,8 +1,13 @@
 <template>
-  <div >
+  <div>
     <div>
       <div class="rightBtn btnList">
-        <el-select v-model="value" placeholder="请选择" style="margin-right:20px">
+        <el-select
+          v-model="value"
+          placeholder="请选择"
+          style="margin-right:20px"
+          @change="selectChange"
+        >
           <el-option
             v-for="item in options"
             :key="item.value"
@@ -10,7 +15,13 @@
             :value="item.value"
           ></el-option>
         </el-select>
-        <el-date-picker v-model="date" type="date" placeholder="选择日期" style="margin-right:20px"></el-date-picker>
+        <el-date-picker
+          v-model="date"
+          type="date"
+          placeholder="选择日期"
+          style="margin-right:20px"
+          @change="dateChange"
+        ></el-date-picker>
       </div>
       <div class="table" :style="tableBgStyle">
         <el-table
@@ -22,25 +33,35 @@
           stripe
           height="300"
         >
-          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" prop="name" label="姓名" width="180" sortable>
+          <el-table-column prop="JL_NAME" align="center" label="姓名" width="180">
               <template slot-scope="scope">
-                  <div>
-                    <el-button type="primary" @click="sendMsg(scope.row)" size="small">{{scope.row.name}}</el-button>
-                  </div>
-              </template>
+              <el-button @click="sendMsg(scope.row.JL_ID)" type="text" size="small">{{scope.row.JL_NAME}}</el-button>
+            </template>
           </el-table-column>
-          <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
+          <el-table-column align="center" prop="GW_DQ_QFYS" label="短期应收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DQ_QFSS" label="短期实收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DQ_RATE" label="短期回收率" sortable width="180"></el-table-column>
+
+              <el-table-column align="center" prop="GW_DYUE_QFYS" label="当月应收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DYUE_QFSS" label="当月实收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DYUE_RATE" label="当月回收率" sortable width="180"></el-table-column>
+
+              <el-table-column align="center" prop="GW_CQ_QFYS" label="长期应收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_CQ_QFSS" label="长期实收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_CQ_RATE" label="长期回收率" sortable width="180"></el-table-column>
+        
         </el-table>
       </div>
     </div>
   </div>
 </template>
 <script>
+import qs from "qs";
+import moment from "moment";
 export default {
   data() {
     return {
-      date: "",
+      date: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
         background:
@@ -58,55 +79,22 @@ export default {
         backgroundSize: "100% 100%",
         textAlign: "center"
       },
-      tableData: [
+      tableData: [],
+      options: [
         {
-          date: "2016-05-02",
-          id: "1",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
+          value: "rh",
+          label: "融合"
         },
         {
-          date: "2016-05-04",
-          id: "2",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
+          value: "dk",
+          label: "单宽"
         },
         {
-          date: "2016-05-01",
-          id: "3",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          id: "4",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          date: "2016-05-07",
-          id: "5",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1515 弄"
+          value: "dy",
+          label: "单移"
         }
       ],
-      options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: ''
+      value: "rh"
     };
   },
   methods: {
@@ -115,7 +103,44 @@ export default {
         dialogCompent: "arrearsThird",
         dialogTitle: "欠费"
       };
-      this.$emit("headCallBack", param, trdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      let _this = this;
+      const trdobj = {
+        type:_this.value,
+        dayId: moment(_this.date).format("YYYYMMDD"),
+        saleArea:trdParams
+      }
+      this.$emit("headCallBack", param, trdobj); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    selectChange(value) {
+      let _this = this;
+      const param = {
+        dayId: moment(_this.date).format("YYYYMMDD"),
+        type: value
+      };
+      this.getTableData(param);
+    },
+    dateChange(date) {
+      let _this = this;
+      const param = {
+        dayId: moment(date).format("YYYYMMDD"),
+        type: _this.value
+      };
+      this.getTableData(param);
+    },
+    getTableData(params) {
+      let that = this;
+      this.$axios
+        .get(
+          "/arrearage/getTableData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            that.tableData = resultData;
+          }
+        })
+        .catch(function(e) {});
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -124,6 +149,14 @@ export default {
         return "";
       }
     }
+  },
+  mounted: function() {
+    let _this = this;
+    const param = {
+      dayId: moment(_this.date).format("YYYYMMDD"),
+      type: _this.value
+    };
+    this.getTableData(param);
   }
 };
 </script>

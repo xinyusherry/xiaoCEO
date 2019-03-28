@@ -49,6 +49,7 @@
           :header-cell-style="headerBgStyle"
           highlight-current-row
           stripe
+           height= "280"
         >
           <el-table-column prop="ORGAN_NAME" align="center" label="人员" width="200">
             <template slot-scope="scope">
@@ -116,8 +117,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "280px",
-        overflowY: "scroll",
         padding: "18px"
       },
       headerBgStyle: {
