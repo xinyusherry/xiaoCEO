@@ -157,7 +157,7 @@ export default {
      dateChange(value) {
        let that = this;
         let merge = {};
-      if (that.dateType === "day") {
+      if (that.dateType === "date") {
         merge = {
           dayId: moment(value).format("YYYYMMDD")
         }
@@ -167,7 +167,7 @@ export default {
         }
       }
        const params = {
-        type:that.dateType,
+        type:that.dateType === 'date'?'day':"month",
         tableType: that.tableType,
         ...merge
       };
