@@ -5,13 +5,16 @@
         <el-popover placement="top" width="300" trigger="hover">
           <div style="color:#fff">
             <p>单元类型（农村/城市）</p>
-            <p>市公司排名xxx 平均完成率 xxxx</p>
-            <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-            <p>分公司排名xxx 平均完成率 xxxx</p>
+            <p>市公司排名 {{cardData.XS_YS_ALL_ORDER}}</p>
+            <!--  平均完成率 xxxx -->
+            <p>同类单元排名 {{cardData.XS_YS_TL_ORDER}}</p>
+            <!-- 平均完成率 xxxxx -->
+            <p>分公司排名 {{cardData.XS_YS_FGS_ORDER}}</p>
+            <!--  平均完成率 xxxx -->
           </div>
-          <div style="font-size:50px" slot="reference">90%</div>
+          <div style="font-size:50px" slot="reference">{{cardData.XS_WCL}}%</div>
         </el-popover>
-        <div style="color: #7594C3;">12 392 192.232（元）</div>
+        <div style="color: #7594C3;">{{cardData.SR_NUM}}（元）</div>
         <div style="width:100%; height:120px">
           <chartLine
             :id="'xsIncomeChart'"
@@ -29,7 +32,7 @@
               <el-progress
                 :text-inside="false"
                 :stroke-width="9"
-                :percentage="80.99"
+                :percentage="cardData.DY_WCL"
                 :show-text="false"
               ></el-progress>
             </div>
@@ -37,11 +40,11 @@
           <el-popover placement="top" width="300" trigger="hover">
             <div style="color:#fff">
               <p>单元类型（农村/城市）</p>
-              <p>市公司排名xxx 平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-              <p>分公司排名xxx 平均完成率 xxxx</p>
+              <p>市公司排名 {{cardData.DY_YS_ALL_ORDER}}</p>
+              <p>同类单元排名 {{cardData.DY_YS_TL_ORDER}}</p>
+              <p>分公司排名 {{cardData.DY_YS_FGS_ORDER}}</p>
             </div>
-            <div class="numDiv" slot="reference">88%</div>
+            <div class="numDiv" slot="reference">{{cardData.DY_WCL}}%</div>
           </el-popover>
         </div>
       </card>
@@ -52,7 +55,7 @@
               <el-progress
                 :text-inside="false"
                 :stroke-width="9"
-                :percentage="80.99"
+                :percentage="cardData.LJ_WCL"
                 :show-text="false"
               ></el-progress>
             </div>
@@ -60,11 +63,11 @@
           <el-popover placement="top" width="300" trigger="hover">
             <div style="color:#fff">
               <p>单元类型（农村/城市）</p>
-              <p>市公司排名xxx 平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-              <p>分公司排名xxx 平均完成率 xxxx</p>
+              <p>市公司排名 {{cardData.BN_YS_ALL_ORDER}}</p>
+              <p>同类单元排名 {{cardData.BN_YS_TL_ORDER}}</p>
+              <p>分公司排名 {{cardData.BN_YS_FGS_ORDER}}</p>
             </div>
-            <div class="numDiv" slot="reference">88%</div>
+            <div class="numDiv" slot="reference">{{cardData.LJ_WCL}}%</div>
           </el-popover>
         </div>
       </card>
@@ -75,6 +78,7 @@
 <script>
 import card from "../../components/Card.vue";
 import chartLine from "../../components/chartLineIndex.vue";
+import { setTimeout } from "timers";
 const defaultParam = {
   leftcolor: "#FAD961",
   rightcolor: "#F76B1C"
@@ -119,11 +123,12 @@ export default {
       lj: {
         title: "累计收入预算完成率",
         ...defaultParam
-      }
+      },
+      cardData: {}
     };
   },
   created() {
-    this.post()
+    this.post();
   },
   methods: {
     sendMsg: function() {
@@ -131,16 +136,21 @@ export default {
         dialogCompent: "incomeSed",
         dialogTitle: "收入"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      const thirdParams = {
+        monthId: this.cardData.monthId
+      };
+      this.$emit("headCallBack", param, thirdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     post() {
       let _this = this;
-      //测试接口
       this.$axios
         .post("/Workbench/getIncomeIndex")
         .then(function(res) {
-          console.log(res);
-          // _this.layout = res.data.resultData;
+          _this.cardData = res.data.resultData;
+          _this.xs.chartLine.dataset = {
+            xAxis: res.data.resultData.lineChart.map(v => v.ACCT_MONTH),
+            data: res.data.resultData.lineChart.map(v => v.SR_NUM)
+          };
         })
         .catch(function(e) {
           console.log(e);

@@ -147,10 +147,8 @@ export default {
         kpiId: this.radio
       };
       this.$axios
-        // .post("http://localhost/mapTest/test-area-xq-n.php", params)
         .post("/Workbench/getCellData", params)
         .then(res => {
-          // console.log(res);
           if (res.data.resultData.xqData.length == 0) {
             _this.haveNoValue = true;
           } else {

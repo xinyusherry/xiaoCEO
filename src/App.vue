@@ -78,7 +78,13 @@
     </div>
     <div>
       <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="80%">
-        <component :is="dialogCompent" @headCallBack="headCall" :sendParams="thirdParams"></component>
+        <!-- <el-dialog :title="dialogTitle" v-if="isDialogShow" width="80%"> -->
+        <component
+          v-if="isDialogShow"
+          :is="dialogCompent"
+          @headCallBack="headCall"
+          :sendParams="thirdParams"
+        ></component>
       </el-dialog>
     </div>
   </div>
@@ -158,6 +164,7 @@ const allModules = [
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
+import qs from 'qs';
 export default {
   data() {
     return {
@@ -171,7 +178,7 @@ export default {
       dialogCompent: "", //弹出层组件名字
       isDialogShow: false, //弹出层显示
       dialogTitle: "", //弹出层标题
-      thirdParams: "", //二级传至三级页面参数
+      thirdParams: {}, //二级传至三级页面参数
       swiperOption: {
         //轮播属性
         loop: true,
@@ -268,7 +275,7 @@ export default {
         this.dialogCompent = param.dialogCompent;
         this.dialogTitle = param.dialogTitle;
       }
-      if (thirdParams != null) {
+      if (thirdParams) {
         this.thirdParams = thirdParams;
       }
     }
@@ -278,11 +285,9 @@ export default {
       data: this.layout
     };
     let _this = this;
-    //测试接口
     this.$axios
       .post("/Workbench/getUserModule", params)
       .then(function(res) {
-        // console.log(res);
         _this.layout = res.data.resultData;
       })
       .catch(function(e) {
@@ -330,8 +335,9 @@ export default {
         let _this = this;
         //测试接口
         this.$axios
-          .post("/Workbench/updateUserModule", params)
-          .then(function(res) {})
+          .post("/Workbench/updateUserModule",params)
+          .then(function(res) {
+          })
           .catch(function(e) {
             console.log(e);
           });

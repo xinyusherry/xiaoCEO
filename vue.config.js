@@ -1,10 +1,10 @@
 module.exports = {
     // 基本路径
-    // publicPath: 'http://10.26.20.254:8203/microservice-ui/', //workingtable/
+    // publicPath: '/microservice-ui/workingtable/', 
     devServer: {
         proxy: {
             '': {
-                target: 'http://10.26.20.254:8203/',
+                target: 'http://10.26.20.254:8203/',//microservice-ui
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
