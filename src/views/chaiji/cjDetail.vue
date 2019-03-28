@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div :sendParams="sendParams">
     <div class="header">
       <div class="tipDiv">
         <!-- <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span> -->
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 0}" @click="changeTab(0)">固话拆机 44</li>
-        <li :class="{active:isActive === 1}" @click="changeTab(1)">移动拆机 66</li>
+        <li :class="{active:isActive === 0}" @click="changeTab(0)">固话拆机 {{GW_NUM}}</li>
+        <li :class="{active:isActive === 1}" @click="changeTab(1)">移动拆机 {{YW_NUM}}</li>
       </ul>
-      <el-radio-group v-model="isDay">
-        <el-radio :label="1">日</el-radio>
-        <el-radio :label="0">月</el-radio>
+      <el-radio-group v-model="isDay" @change="changeIsDay">
+        <el-radio :label="'day'">日</el-radio>
+        <el-radio :label="'month'">月</el-radio>
       </el-radio-group>
     </div>
     <div class="chartList">
@@ -23,13 +23,14 @@
         <div class="rightBtn">
           <el-date-picker
             v-model="date"
-            type="date"
+            :type="dateType"
             placeholder="选择日期"
             style="background:#070d12;margin-right:20px"
+            @change="dateChange"
           ></el-date-picker>
           <ul class="header">
-            <li class="down">人员</li>
-            <li class="xq">小区</li>
+            <li  :class=" tableType === 'people' ?activeClass:unActiveClass"  @click="changeTableType('people')">人员</li>
+            <li :class=" tableType === 'community' ?activeClass:unActiveClass"  @click="changeTableType('community')">小区</li>
           </ul>
         </div>
       </div>
@@ -41,17 +42,11 @@
           :header-cell-style="headerBgStyle"
           highlight-current-row
           stripe
+          height="280"
         >
-          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" label="姓名" width="180" sortable>
-            <template slot-scope="scope">
-              <el-popover placement="right" width="400" trigger="hover">
-                <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
-                <div slot="reference">{{scope.row.name}}</div>
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column prop="address" label="地址" align="center" sortable></el-table-column>
+          <el-table-column prop="ORGAN_NAME" align="center" label="名称"></el-table-column>
+          <el-table-column align="center" label="主拆" width="180" sortable prop="CJ_GWZD_NUM"></el-table-column>
+          <el-table-column prop="CJ_GWQF_NUM" label="欠拆" align="center" sortable></el-table-column>
         </el-table>
       </div>
     </div>
@@ -59,27 +54,28 @@
 </template>
 
 <script>
+import qs from "qs";
+import moment from "moment";
 export default {
   components: {},
+  props: ["sendParams"],
   data() {
     return {
-      isDay: 1,
+      isDay: "day",
+      dateType: "date",
+      tableType:"people",
       isActive: 0,
-      xAxisData: [
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18"
-      ],
+      xAxisData: [],
       date: "",
+      YW_NUM: "",
+      GW_NUM: "",
+      gwArr: [],
+      ywArr: [],
+      gwPieArr: [],
+      ywPieArr: [],
       isTableLineShow: false,
+       activeClass: "down",
+      unActiveClass: "xq",
       img: require("@/assets/images/sj.png"),
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -100,47 +96,137 @@ export default {
         textAlign: "center"
       },
 
-      tableData: [
-        {
-          date: "2016-05-02",
-          id: "1",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          id: "2",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          id: "3",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          id: "4",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          date: "2016-05-07",
-          id: "5",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1515 弄"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
     changeTab(index) {
+      let that = this;
       this.isActive = index;
+      if (index === 0) {
+        that.drawLineChart("line", "#fbbf50", that.xAxisData, that.gwArr);
+        that.drawPieChart("pie", that.gwPieArr);
+      } else {
+        that.drawLineChart("line", "#fbbf50", that.xAxisData, that.ywArr);
+        that.drawPieChart("pie", that.ywPieArr);
+      }
     },
-    drawLineChart(id, color) {
+    changeIsDay(type) {
+      let that = this;
+      let merge = {};
+      if (type === "day") {
+        that.dateType = "date";
+         that.date = moment(that.sendParams.dayId,'YYYY-MM-DD')
+        merge = {
+          dayId:that.sendParams.dayId
+        }
+      } else {
+        that.dateType = "month";
+          that.date = moment(that.sendParams.monthId,'YYYY-MM')
+          merge = {
+          monthId:that.sendParams.monthId
+        }
+      }
+      const params = {
+        type: type,
+        tableType: that.tableType,
+        ...merge
+      };
+      that.getTableData(params);
+    },
+      changeTableType(val) {
+      let that = this;
+      this.tableType = val;
+      let merge = {};
+      if (that.dateType === "day") {
+        merge = {
+          dayId:that.sendParams.dayId
+        }
+      } else {
+          merge = {
+          monthId:that.sendParams.monthId
+        }
+      }
+       const params = {
+        type:that.dateType,
+        tableType: that.tableType,
+        ...merge
+      };
+      this.getTableData(params);
+    },
+     dateChange(value) {
+       let that = this;
+        let merge = {};
+      if (that.dateType === "day") {
+        merge = {
+          dayId: moment(value).format("YYYYMMDD")
+        }
+      } else {
+          merge = {
+          monthId:moment(value).format("YYYYMM")
+        }
+      }
+       const params = {
+        type:that.dateType,
+        tableType: that.tableType,
+        ...merge
+      };
+      this.getTableData(params);
+    },
+    getTopNum(type) {
+      let that = this;
+      const params = {
+        type: type
+      };
+      this.$axios
+        .get(
+          "/Dismantlery/getTopNum?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            that.YW_NUM = resultData.CJ_YD_NUM;
+            that.GW_NUM = resultData.TCJ_GW_NUM;
+          }
+        })
+        .catch(function(e) {});
+    },
+    getLineData(type) {
+      let that = this;
+      const params = {
+        type: type
+      };
+      this.$axios
+        .get(
+          "/Dismantlery/getLineData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let gwArr = [],
+              ywArr = [],
+              xAxisData = [];
+            for (let i = 0; i < resultData.length; i++) {
+              xAxisData.push(resultData[i].ACCT_DAY);
+              ywArr.push(resultData[i].CJ_YD_NUM);
+              gwArr.push(resultData[i].CJ_GW_NUM);
+            }
+            that.xAxisData = xAxisData;
+            that.ywArr = ywArr;
+            that.gwArr = gwArr;
+            //固网
+            that.drawLineChart("line", "#fbbf50", xAxisData, gwArr);
+          }
+        })
+        .catch(function(e) {});
+    },
+    drawLineChart(id, color, xAxis, yData) {
       setTimeout(() => {
+        let title = this.isActive == 0 ? "固网拆机趋势" : "移动流失趋势";
         var thisChart = this.$echarts.init(document.getElementById(id));
+        thisChart.clear();
         thisChart.setOption({
           grid: {
             containLabel: true,
@@ -151,7 +237,7 @@ export default {
           title: [
             {
               left: "center",
-              text: "固网发展趋势",
+              text: title,
               textStyle: {
                 fontSize: 21,
                 color: "#24FAFF"
@@ -182,7 +268,7 @@ export default {
             axisTick: {
               show: false
             },
-            data: this.xAxisData,
+            data: xAxis,
             axisLabel: {
               show: true,
               textStyle: {
@@ -205,7 +291,7 @@ export default {
             axisTick: {
               show: false
             },
-            name: "完成值(万元)",
+            name: "拆机数(户)",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -228,7 +314,7 @@ export default {
                   show: true
                 }
               },
-              data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
+              data: yData
             }
           ]
         });
@@ -237,8 +323,61 @@ export default {
         });
       }, 0);
     },
-    drawPieChart(id) {
+    getPieData(type) {
+      let that = this;
+      const params = {
+        type: type
+      };
+      this.$axios
+        .get(
+          "/Dismantlery/getPieData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log("pie", res);
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let gwPieArr = [],
+              ywPieArr = [];
+            for (let key in resultData) {
+              if (key == "CJ_GWZD_NUM") {
+                gwPieArr.push({
+                  name: "固网主拆",
+                  value: resultData[key]
+                });
+              }
+              if (key == "CJ_GWQF_NUM") {
+                gwPieArr.push({
+                  name: "固网欠拆",
+                  value: resultData[key]
+                });
+              }
+              if (key == "CJ_YDZD_NUM") {
+                ywPieArr.push({
+                  name: "移网主拆",
+                  value: resultData[key]
+                });
+              }
+              if (key == "CJ_YDQF_NUM") {
+                ywPieArr.push({
+                  name: "移网欠拆",
+                  value: resultData[key]
+                });
+              }
+            }
+            that.gwPieArr = gwPieArr;
+            that.ywPieArr = ywPieArr;
+            console.log("gwPieArr", gwPieArr);
+            //固网
+            that.drawPieChart("pie", gwPieArr);
+          }
+        })
+        .catch(function(e) {});
+    },
+    drawPieChart(id, data) {
+      let title = this.isActive == 0 ? "固网拆机占比" : "移动拆机占比";
       var thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       var option = {
         tooltip: {
           trigger: "item",
@@ -247,7 +386,7 @@ export default {
         title: [
           {
             left: "center",
-            text: "产品结构",
+            text: title,
             textStyle: {
               fontSize: 21,
               color: "#24FAFF"
@@ -258,7 +397,7 @@ export default {
           {
             name: "产品结构",
             type: "pie",
-            radius: ["20%", "60%"],
+            radius: ["20%", "55%"],
             avoidLabelOverlap: false,
             color: ["#F868AF", "#01C6FD", "#1749F9"],
             label: {
@@ -294,11 +433,7 @@ export default {
                 show: true
               }
             },
-            data: [
-              { value: 40, name: "满堂红" },
-              { value: 20, name: "尊享红" },
-              { value: 40, name: "其他" }
-            ]
+            data: data
           }
         ]
       };
@@ -306,6 +441,26 @@ export default {
       window.addEventListener("resize", () => {
         thisChart.resize();
       });
+    },
+    getTableData(params) {
+      let that = this;
+      this.$axios
+        .get(
+          "/Dismantlery/getTableData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log("表", res);
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            resultData.map((item, index) => {
+              item.index = index;
+              return item;
+            });
+            that.tableData = resultData;
+          }
+        })
+        .catch(function(e) {});
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -316,11 +471,22 @@ export default {
     }
   },
   mounted() {
-    this.drawLineChart("line", "#fbbf50");
-    this.drawPieChart("pie");
-    this.tableData.map(obj => {
-      this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
-    });
+    // this.drawLineChart("line", "#fbbf50");
+    // this.drawPieChart("pie");
+    // this.tableData.map(obj => {
+    //   this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
+    // });
+    let that = this;
+    this.getTopNum("day");
+    this.getLineData("day");
+    this.getPieData("day");
+    const params = {
+      type: "day",
+      tableType: "people",
+      dayId: that.sendParams.dayId
+    };
+    that.date = moment(that.sendParams.dayId,'YYYY-MM-DD')
+    this.getTableData(params);
   }
 };
 </script>

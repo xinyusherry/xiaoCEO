@@ -1,25 +1,20 @@
 <template>
-  <div class="moveDiv" v-on:click="sendMsg">
-    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px">
+  <div class="moveDiv" v-on:click="sendMsg(thirdParams)" >
+    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px" :propsTime="day.time">
       <div class="card-content" >
         <div class="bigNum">
           {{day.cjDay.value}}
-          <img
-            :src="require(`../../assets/images/icon-${day.cjDay.up?'up':'down'}.png`)"
-          >
+        
         </div>
-        <stack-bar :id="'cjdaybar'" :dataset="day.cjDay.dataset" :color="day.colors"></stack-bar>
+        <stack-bar :id="'cjdaybar'" :dataset="day.cjDay.dataset" :color="day.colors" v-if="alaxEnd"></stack-bar>
       </div>
     </card>
-    <card :cardset="month.cardset" :timetype="'month'">
+    <card :cardset="month.cardset" :timetype="'month'" :propsTime="month.time">
       <div class="card-content">
         <div class="bigNum">
           {{month.cjMonth.value}}
-          <img
-            :src="require(`../../assets/images/icon-${month.cjMonth.up?'up':'down'}.png`)"
-          >
         </div>
-        <stack-bar :id="'cjmonthbar'" :dataset="month.cjMonth.dataset" :color="month.colors"></stack-bar>
+        <stack-bar :id="'cjmonthbar'" :dataset="month.cjMonth.dataset" :color="month.colors" v-if="alaxEnd"></stack-bar>
       </div>
     </card>
   </div>
@@ -28,10 +23,13 @@
 <script>
 import card from "../../components/Card.vue";
 import stackBar from "../../components/stackBar.vue";
+import { formatterTime } from "../../utils/index.js";
 export default {
   components: { card, stackBar },
   data() {
     return {
+      alaxEnd:false,
+      thirdParams:null,
       day: {
         cardset: {
           title: "拆机（日）",
@@ -40,8 +38,7 @@ export default {
           rightcolor: "#B7A57B"
         },
         cjDay: {
-          value: 10,
-          up: true,
+          value: 0,
           dataset: {
             legendData: ["主拆", "欠拆"],
             xAxis: ["移网", "固网"],
@@ -49,27 +46,28 @@ export default {
               ywData: [
                 {
                   name: "主拆",
-                  value: 5
+                  value: 0
                 },
                 {
                   name: "欠拆",
-                  value: 15
+                  value: 0
                 }
               ],
               gwData: [
                 {
                   name: "主拆",
-                  value: 5
+                  value: 0
                 },
                 {
                   name: "欠拆",
-                  value: 15
+                  value: 0
                 }
               ]
             }
           }
         },
-        colors: ["#EDC624", "#1AC175"]
+        colors: ["#EDC624", "#1AC175"],
+        time:""
       },
       month: {
         cardset: {
@@ -79,8 +77,7 @@ export default {
           rightcolor: "#B7A57B"
         },
         cjMonth: {
-          value: 125,
-          up: false,
+          value: 0,
           dataset: {
             legendData: ["主拆", "欠拆"],
             xAxis: ["移网", "固网"],
@@ -88,38 +85,73 @@ export default {
               ywData: [
                 {
                   name: "主拆",
-                  value: 5
+                  value: 0
                 },
                 {
                   name: "欠拆",
-                  value: 15
+                  value: 0
                 }
               ],
               gwData: [
                 {
                   name: "主拆",
-                  value: 5
+                  value: 0
                 },
                 {
                   name: "欠拆",
-                  value: 15
+                  value: 0
                 }
               ]
             }
           }
         },
-        colors: ["#F25F19", "#1B8CEA"]
+        colors: ["#F25F19", "#1B8CEA"],
+        time:""
       }
     };
   },
   methods:{
-      sendMsg:function() {
+      sendMsg:function(thirdParams) {
       const param = {
         dialogCompent:"cjDayMonthDetail",
         dialogTitle:"拆机",
       }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      this.$emit('headCallBack', param,thirdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    getData(){
+        let that = this;
+      this.$axios
+        .post("/Dismantlery/index")
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultDataD = res.data.resultDataD[0];
+            that.day.time = formatterTime(resultDataD.ACCT_DAY);
+            that.day.cjDay.value = resultDataD.CJ_ALL_NUM;
+            that.day.cjDay.dataset.data.ywData[0].value = resultDataD.CJ_YDZD_NUM;
+            that.day.cjDay.dataset.data.ywData[1].value = resultDataD.CJ_YDQF_NUM;
+            that.day.cjDay.dataset.data.gwData[0].value = resultDataD.CJ_GWZD_NUM;
+            that.day.cjDay.dataset.data.gwData[1].value = resultDataD.CJ_GWQF_NUM;
+            
+            let resultDataM = res.data.resultDataM[0];
+            that.month.time = formatterTime(resultDataM.ACCT_MONTH);
+            that.month.cjMonth.value = resultDataM.CJ_ALL_NUM;
+            that.month.cjMonth.dataset.data.ywData[0].value = resultDataM.CJ_YDZD_NUM;
+            that.month.cjMonth.dataset.data.ywData[1].value = resultDataM.CJ_YDQF_NUM;
+            that.month.cjMonth.dataset.data.gwData[0].value = resultDataM.CJ_GWZD_NUM;
+            that.month.cjMonth.dataset.data.gwData[1].value = resultDataM.CJ_GWQF_NUM;
+            let thirdParams = {};
+            thirdParams.dayId = resultDataD.ACCT_DAY;
+            thirdParams.monthId = resultDataM.ACCT_MONTH;
+            that.thirdParams = thirdParams;
+            that.alaxEnd = true;
+          }
+        })
+        .catch(function(e) {
+        });
     }
+  },
+  mounted:function(){
+    this.getData();
   }
 };
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg(monthId)">
     <card :cardset="cardset" :timetype="'month'" :propsTime="time">
       <div class="card-content">
-        <chart-gauge :id="'guage'" :data="data"></chart-gauge>
+        <chart-gauge :id="'guage'" :data="data" v-if="data!=null"></chart-gauge>
       </div>
     </card>
   </div>
@@ -26,16 +26,17 @@ export default {
         rightcolor: "#85B62E"
       },
       time: "",
-      data: {}
+      data: null,
+      monthId:""
     };
   },
   methods: {
-    sendMsg: function() {
+    sendMsg: function(trdParams) {
       const param = {
         dialogCompent: "shareSecond",
         dialogTitle: "增量收益分享"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      this.$emit("headCallBack", param,trdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     getData() {
       let that = this;
@@ -46,7 +47,14 @@ export default {
             console.log("增量", res);
             let resultData = res.data.resultData;
             that.time = formatterTime(resultData[0].ACCT_MONTH);
-            that.data = resultData[0];
+            that.monthId = resultData[0].ACCT_MONTH;
+            let data = resultData[0];
+            if(data){
+              for(let key in data){
+                data[key] =  data[key].replace(/\s*/g,"").split(',').join('');
+              }
+            }
+            that.data = data;
           }
         })
         .catch(function(e) {
@@ -55,18 +63,7 @@ export default {
     }
   },
   mounted: function() {
-    // this.getData();
-    let that = this;
-    let resultData = [
-      {
-        ZLSY_LJ_NUM: " -263,944.30",
-        ZLSY_BN_SY: " .00",
-        ACCT_MONTH: "201902",
-        ZLSY_SY_SY: " -263,944.30"
-      }
-    ];
-    that.time = formatterTime(resultData[0].ACCT_MONTH);
-    that.data = resultData[0];
+    this.getData();
   }
 };
 </script>

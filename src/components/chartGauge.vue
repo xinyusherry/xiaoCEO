@@ -10,9 +10,8 @@ export default {
   },
   mounted() {
     let that = this;
-    console.log("data",that.data);
-
     setTimeout(() => {
+      console.log("仪表盘",that.data)
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       var mEcharts = this.$echarts;
       thisChart.on("legendselectchanged", function(event) {
@@ -140,10 +139,12 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 18,
+                fontSize: 16,
                 color: "#41c9da"
               },
-              formatter: "{value}万"
+            formatter: function(param){
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '万'
+              }
             },
             title: {
               show: true,
@@ -156,13 +157,13 @@ export default {
             data: [
               {
                 name: "已分享",
-                value:  parseFloat(that.data.ZLSY_BN_SY.split(',').join('')).toFixed(2)
+                value:  parseFloat(that.data.ZLSY_BN_SY).toFixed(2)
               }
             ]
           },
           {
             type: "gauge",
-            center: ["33%", "55%"], // 默认全局居中
+            center: ["32%", "55%"], // 默认全局居中
             radius: "82%",
             splitNumber: 5, //刻度数量
             min: 0,
@@ -221,7 +222,7 @@ export default {
             type: "gauge",
             endAngle: 45,
             radius: "78%", //有颜色的半径
-            center: ["33%", "55%"], // 默认全局居中
+            center: ["32%", "55%"], // 默认全局居中
 
             min: 0,
             max: 100,
@@ -265,10 +266,12 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 18,
+                fontSize: 16,
                 color: "#41c9da"
               },
-              formatter: "{value}万"
+               formatter: function(param){
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
+              }
             },
             title: {
               show: true,
@@ -286,7 +289,7 @@ export default {
             data: [
               {
                 name: "可分享",
-                value: parseFloat(that.data.ZLSY_LJ_NUM.split(',').join('')).toFixed(2)
+                value: parseFloat(that.data.ZLSY_LJ_NUM).toFixed(2)
               }
             ]
           },
@@ -388,10 +391,12 @@ export default {
               show: true,
               offsetCenter: [0, 0],
               textStyle: {
-                fontSize: 18,
+                fontSize: 16,
                 color: "#41c9da"
               },
-              formatter: "{value}万"
+              formatter: function(param){
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
+              }
             },
             title: {
               show: true,
@@ -404,7 +409,7 @@ export default {
             data: [
               {
                 name: "剩余可分享",
-                value: parseFloat(that.data.ZLSY_SY_SY.split(',').join('')).toFixed(2)
+                value: parseFloat(that.data.ZLSY_SY_SY).toFixed(2)
               }
             ]
           }

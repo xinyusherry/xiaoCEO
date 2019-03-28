@@ -13,6 +13,7 @@
           :dataset="day.developDay.dataset"
           :color="day.colors"
           :legend="day.legend"
+          v-if="alaxEnd"
         ></chart-pie>
       </div>
     </card>
@@ -29,6 +30,7 @@
           :dataset="month.developMonth.dataset"
           :color="month.colors"
           :legend="month.legend"
+           v-if="alaxEnd"
         ></chart-pie>
       </div>
     </card>
@@ -46,6 +48,7 @@ export default {
   },
   data() {
     return {
+      alaxEnd:false,
       day: {
         cardset: {
           title: "发展（日）",
@@ -54,16 +57,16 @@ export default {
           rightcolor: "#B7A57B"
         },
         developDay: {
-          value: 35,
+          value: 0,
           // up: true,
           dataset: [
             {
               name: "固网",
-              value: 5
+              value: 0
             },
             {
               name: "移网",
-              value: 15
+              value: 0
             }
           ]
         },
@@ -79,16 +82,16 @@ export default {
           rightcolor: "#B7A57B"
         },
         developMonth: {
-          value: 325,
+          value: 0,
           // up: false,
           dataset: [
             {
               name: "固网",
-              value: 120
+              value: 0
             },
             {
               name: "移网",
-              value: 200
+              value: 0
             }
           ]
         },
@@ -112,8 +115,9 @@ export default {
         .post("/Developry/index")
         .then(function(res) {
           if (res.data.resultCode === "1") {
-            
             let resultData = res.data.resultData;
+            // let dataset = [];
+            // let dataset_M = [];
             for (let i = 0, len = resultData.length; i < len; i++) {
               switch (resultData[i].SVC_TYPE) {
                 case "GW_D":
@@ -143,6 +147,7 @@ export default {
                   break;
               }
             }
+            that.alaxEnd = true;
           }
         })
         .catch(function(e) {
@@ -151,6 +156,9 @@ export default {
     }
   },
   mounted: function() {
+    // this.getData()
+  },
+  created:function(){
     this.getData()
   }
 };
