@@ -107,6 +107,8 @@
   </div>
 </template>
 <script>
+import qs from "qs";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -217,6 +219,19 @@ export default {
         return "";
       }
     }
+  },
+  daoQiWarningYDDayJl(params){
+      this.$axios
+        .get(
+          "/Dismantlery/getTopNum?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+          }
+        })
+        .catch(function(e) {});
   }
 };
 </script>
