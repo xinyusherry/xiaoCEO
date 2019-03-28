@@ -5,24 +5,24 @@
       <span class="title">到达</span>
       <div class="title_right">
         <div class="mr10">
-          <el-radio-group v-model="isDay">
-            <el-radio :label="1">日</el-radio>
-            <el-radio :label="0">月</el-radio>
+          <el-radio-group v-model="isDay" @change="changeDay">
+            <el-radio :label="'day'">日</el-radio>
+            <el-radio :label="'month'">月</el-radio>
           </el-radio-group>
         </div>
-        <span class="time">2019-3-15</span>
+        <span class="time">{{time}}</span>
       </div>
     </div>
     <div class="line"></div>
     <div class="main" @click="sendMsg">
-      <div class="main_top">
+      <div class="main_top" v-if="indexNum">
         <div>
           <div class="spot"></div>
           <span class="desc ml10">宽带</span>
           <div class="lineChart">
             <chartLine :id="'drChart1'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
           </div>
-          <span class="desc">231244</span>
+          <span class="desc">{{indexNum.KD_NUM}}</span>
         </div>
          <div>
           <div class="spot"></div>
@@ -30,7 +30,7 @@
           <div class="lineChart">
             <chartLine :id="'drChart2'" :dataset="lr.chartLine.dataset" :color="lr.chartLine.colors"></chartLine>
           </div>
-          <span class="desc">231244</span>
+          <span class="desc">{{indexNum.YD_NUM}}</span>
         </div>
       </div>
       <div class="main_bottom">
@@ -77,11 +77,13 @@
 
 <script>
 import chartLine from "../../components/chartLineIndex.vue";
+import { formatterTime } from "../../utils/index.js";
+import qs from 'qs';
 export default {
   components: { chartLine },
   data() {
     return {
-      isDay: 1,
+      isDay: 'day',
       lr: {
         title: "利润",
         chartLine: {
@@ -91,10 +93,11 @@ export default {
           },
           colors: ["#4B8459"]
         }
-      }
+      },
+      indexNum:null,
+      time:""
     };
   },
-  mounted() {},
   methods: {
     sendMsg: function() {
       const param = {
@@ -102,7 +105,38 @@ export default {
         dialogTitle: "到达"
       };
       this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    changeDay(val){
+      this.getIndexNum(val)
+    },
+    getIndexNum(type){
+      let _this = this;
+      const params = {
+        type:type
+      }
+        this.$axios
+        .get(
+          "/arrive/getIndexNum?" +
+          qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log('到达',res)
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            _this.indexNum = resultData;
+            if(type === 'day'){
+              _this.time = formatterTime(resultData.ACCT_DAY);
+            }else{
+               _this.time = formatterTime(resultData.ACCT_MONTH);
+            }
+            
+          }
+        })
+        .catch(function(e) {});
     }
+  },
+  mounted:function() {
+    this.getIndexNum('day');
   }
 };
 </script>
