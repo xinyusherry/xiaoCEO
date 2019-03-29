@@ -65,7 +65,7 @@ export default {
               _this.maxHour = data.resultData[i].MAX_ACCT_HOUR;
               // } else if (data.resultData[i].date) {
             } else {
-              _this.date = data.resultData[i].date || "20190328";
+              _this.date = data.resultData[i].date;
             }
           }
           _this.developOnTime.dataset.data = [
