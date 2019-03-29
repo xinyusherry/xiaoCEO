@@ -1,14 +1,14 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg(indexNum.ACCT_MONTH)" v-if="indexNum">
     <card :cardset="lj" :timetype="'month'" style="margin-right:10px;">
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
           <span class="hj">(合计值)</span>
         </h3>
-        <h3 class="total_num">143,434,344,345,354</h3>
+        <h3 class="total_num" >{{indexNum.FINISH_VALUE}}</h3>
         <div class="line">
-             <div id="canvas" style="width:300px;height:100px;margin-top:20px"></div>
+          <div id="canvas" style="width:300px;height:100px;margin-top:20px"></div>
         </div>
       </div>
     </card>
@@ -21,7 +21,10 @@
 </template>
 
 <script>
+import qs from "qs";
+import moment from "moment";
 import card from "../../components/Card.vue";
+import { getMax } from "../../utils/index.js";
 const defaultParam = {
   width: "calc(50% - 5px)",
   leftcolor: "#3023AE",
@@ -38,18 +41,20 @@ export default {
       dy: {
         title: "累计成本完成率",
         ...defaultParam
-      }
+      },
+      indexNum: null
     };
   },
   methods: {
-      sendMsg:function() {
+    sendMsg: function(tird) {
       const param = {
-        dialogCompent:"costSecond",
-        dialogTitle:"成本",
-      }
-      this.$emit('headCallBack', param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+        dialogCompent: "costSecond",
+        dialogTitle: "成本"
+      };
+      this.$emit("headCallBack", param,tird); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
-    drawBarChart(id, color, xData, yData) {
+    drawBarChart(id, color, xData, yData, maxData) {
+      let _this = this;
       var option = {
         // backgroundColor: "#141f56",
         title: {
@@ -115,7 +120,7 @@ export default {
               normal: {
                 color: "#385472",
                 borderWidth: 0,
-                borderType:"dashed",
+                borderType: "dashed",
                 shadowBlur: {
                   shadowColor: "rgba(255,255,255,0.31)",
                   shadowBlur: 10,
@@ -125,18 +130,20 @@ export default {
               }
             },
             barWidth: "50%",
-            data: [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+            data: maxData
           }
         ]
       };
       
-      var thisChart = this.$echarts.init(document.getElementById(id));
+      var thisChart = _this.$echarts.init(document.getElementById(id));
       thisChart.setOption(option);
       window.addEventListener("resize", () => {
         thisChart.resize();
       });
     },
-    getChartData: function(color, value, id) {
+    getChartData(color, value, id) {
+      let _this = this;
+     
       var option = {
         tooltip: {
           trigger: "item",
@@ -163,7 +170,7 @@ export default {
                   normal: {
                     formatter: function(params) {
                       if (params.value < 0 || params.value == 0) {
-                        return 100 - params.value+ "%";
+                        return 100 - params.value + "%";
                       } else {
                         return value + "%";
                       }
@@ -171,7 +178,7 @@ export default {
                     textStyle: {
                       fontSize: 30,
                       color: color
-                    },
+                    }
                   }
                 },
                 itemStyle: {
@@ -221,24 +228,61 @@ export default {
           }
         ]
       };
-      var mychart = this.$echarts.init(document.getElementById(id));
+      var mychart = _this.$echarts.init(document.getElementById(id));
+      console.log('mychart',mychart)
       mychart.setOption(option);
-        window.addEventListener("resize", () => {
-        mychart.resize();
-      });
+      // window.addEventListener("resize", () => {
+      //   mychart.resize();
+      // });
+    },
+    getIndexNum() {
+      let _this = this;
+      this.$axios
+        .get("/cost/getIndexNum")
+        .then(function(res) {
+          console.log('chengben ',res)
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            _this.indexNum = resultData;
+            _this.getChartData("#6bfaff", resultData.YL, "mychart");
+            _this.getBarData(resultData.ACCT_MONTH);
+          }
+        })
+        .catch(function(e) {});
+    },
+    getBarData(monthId) {
+       let _this = this;
+      const params = {
+        monthId: monthId
+      };
+      this.$axios
+        .get(
+          "/cost/getBarData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            console.log("resultData",resultData)
+            let array = [];
+            for(let k = 0;k< resultData.length;k++){
+              array.push(resultData[k].CURRENT_VALUE)
+            }
+            let max = getMax(array) + 1000;
+            let maxArr = [];
+            let data = [];
+            for (let i = 0; i < 12; i++) {
+              data.push(i);
+              maxArr.push(max);
+            }
+            _this.drawBarChart("canvas", "#6afefc", data, array, maxArr);
+          }
+        })
+        .catch(function(e) {});
     }
   },
   mounted() {
-    var xData = (function() {
-      var data = [];
-      for (var i = 0; i < 12; i++) {
-        data.push(i);
-      }
-      return data;
-    })();
-    var yData = [13.7, 13.4, 13.5, 16.1, 17.4, 15.2];
-    this.drawBarChart("canvas", "#6afefc", xData, yData);
-    this.getChartData("#6bfaff", 10, "mychart");
+    this.getIndexNum();
   }
 };
 </script>
@@ -267,7 +311,7 @@ export default {
   font-size: 26px;
   margin-top: 20px;
 }
-.chart{
+.chart {
   display: flex;
   justify-content: center;
   align-items: center;

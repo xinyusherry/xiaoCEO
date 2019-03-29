@@ -4,7 +4,7 @@
       <div class="btnList header">
         <img :src="require(`../../assets/images/icon_goback.png`)" alt class="icon_goback" v-on:click="sendMsg">
         <div class="rightBtn header btnList">
-          <div class="down mr20">下载</div>
+          <div class="down mr20" @click="download">下载</div>
         </div>
       </div>
       <div class="table" :style="tableBgStyle">
@@ -21,11 +21,11 @@
           <el-table-column align="center" prop="DEVICE_NUMBER_GH " label="固话号码" width="180" sortable></el-table-column>
           <el-table-column prop="QIANFEI_GH" align="center" label="固话欠费额" sortable width="180"></el-table-column>
 
-          <el-table-column prop="BALANCAE"  label="固话往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+          <!-- <el-table-column prop="BALANCAE"  label="固话往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
           <el-table-column prop="BALANCE_ALL_LASTDAY" align="center" label="前一日总欠费" sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_ZONG"  label="总欠费额" align="center"  sortable width="180"></el-table-column>
 
-           <el-table-column prop="QFZ" label="实时总欠费额" align="center"  sortable width="180"></el-table-column>
+           <!-- <el-table-column prop="QFZ" label="实时总欠费额" align="center"  sortable width="180"></el-table-column> -->
            <el-table-column prop="JF_BZ"  label="是否缴费" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="BALANCE"  label="缴费金额" align="center"  sortable width="180"></el-table-column>
 
@@ -33,47 +33,47 @@
            <el-table-column prop="DEVICE_NUMBER_KD"  label="对应宽带号码" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_KD"  label="宽带欠费额" align="center"  sortable width="180"></el-table-column>
 
-           <el-table-column prop="BALANCEB"  label="宽带往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCEB"  label="宽带往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
            <el-table-column prop="IF_RH"  label="是否融合" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="RH_YH_BM"  label="融合用户编码" align="center"  sortable width="180"></el-table-column>
 
            <el-table-column prop="DEVICE_NUMBER_YD1"  label="对应手机号码1" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD1"  label="手机1欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE1"  label="手机1往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE1"  label="手机1往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD2"  label="对应手机号码2" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD2"  label="手机2欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE2"  label="手机2往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE2"  label="手机2往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD3"  label="对应手机号码3" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD3"  label="手机3欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE3"  label="手机3往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE3"  label="手机3往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD4"  label="对应手机号码4" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD4"  label="手机4欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE4"  label="手机4往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE4"  label="手机4往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD5"  label="对应手机号码5" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD5"  label="手机5欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE5"  label="手机5往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE5"  label="手机5往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD6"  label="对应手机号码6" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD6"  label="手机6欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE6"  label="手机6往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE6"  label="手机6往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD7"  label="对应手机号码7" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD7"  label="手机7欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE7" label="手机7往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE7" label="手机7往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="DEVICE_NUMBER_YD8"  label="对应手机号码8" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD8"  label="手机8欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE8" label="手机8往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE8" label="手机8往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
         
 
            <el-table-column prop="DEVICE_NUMBER_YD9"  label="对应手机号码9" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="QIANFEI_YD9"  label="手机9欠费额" align="center"  sortable width="180"></el-table-column>
-           <el-table-column prop="BALANCE9"  label="手机9往月实时欠费额" align="center"  sortable width="200"></el-table-column>
+           <!-- <el-table-column prop="BALANCE9"  label="手机9往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
 
            <el-table-column prop="IF_KDGX"  label="是否宽带共线" align="center"  sortable width="180"></el-table-column>
            <el-table-column prop="KDGX_NUMBER"  label="共线群组号" align="center"  sortable width="180"></el-table-column>
@@ -143,6 +143,14 @@ export default {
         dialogTitle: "欠费"
       };
       this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+    },
+    download(){
+      let params = this.sendParams;
+        window.open(
+          "http://10.26.20.254:8203/microservice-ui/" +
+            "/arrearage/getDownloadData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        );
     },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {

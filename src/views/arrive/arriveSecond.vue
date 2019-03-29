@@ -32,6 +32,7 @@
         <div></div>
         <div class="jk">小区监控</div>
         <div class="rightBtn header">
+          <div class="down mr20" @click="getDownloadData">下载</div>
           <el-select v-model="value" placeholder="请选择" @change="selectChange">
             <el-option
               v-for="item in options"
@@ -160,6 +161,33 @@ export default {
     };
   },
   methods: {
+    getDownloadData(){
+      let _this = this;
+       let param = {
+         type: _this.isDay,
+        svcType: _this.value,
+      };
+      let merge = {};
+      if (_this.isDay === "day") {
+        merge = {
+          dayId: moment(_this.date).format("YYYYMMDD")
+        };
+      } else {
+        merge = {
+          monthId: moment(_this.date).format("YYYYMM")
+        };
+      }
+      const params = {
+        ...param,
+        ...merge
+      };
+
+        window.open(
+          "http://10.26.20.254:8203/microservice-ui/" +
+            "/arrive/getDownloadData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        );
+    },
     changeTab(index) {
       let _this = this;
       this.isActive = index;
@@ -167,26 +195,29 @@ export default {
     },
     dayTypeChange(val) {
       let _this = this;
+      this.date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+      
       this.dateChange();
     },
     dateChange() {
       let _this = this;
-      if (_this.isActive === 0) {
-        if (_this.isDay === "day") {
+      if (_this.isActive === 0&&_this.isDay === "day") {
+        _this.dateType = "date";
           const param = {
             dayId: moment(_this.date).format("YYYYMMDD"),
             type: "day"
           };
           _this.getServicePieData(param);
           _this.getProductPieData(param);
-        } else {
+      }
+      if (_this.isActive === 0&&_this.isDay === "month") {
+        _this.dateType = "month";
           const param = {
             monthId: moment(_this.date).format("YYYYMM"),
             type: "month"
           };
           _this.getServicePieData(param);
           _this.getProductPieData(param);
-        }
       }
 
       if (_this.isActive === 1) {

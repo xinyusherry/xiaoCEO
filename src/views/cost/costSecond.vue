@@ -5,10 +5,10 @@
         <!-- <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span> -->
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 0}" @click="changeTab(0)">全部</li>
-        <li :class="{active:isActive === 1}" @click="changeTab(1)">市场</li>
-        <li :class="{active:isActive === 2}" @click="changeTab(2)">网运</li>
-        <li :class="{active:isActive === 3}" @click="changeTab(3)">综合</li>
+        <li :class="{active:isActive === ''}" @click="changeTab('')">全部</li>
+        <li :class="{active:isActive === '1001'}" @click="changeTab('1001')">市场</li>
+        <li :class="{active:isActive === '1002'}" @click="changeTab('1002')">网运</li>
+        <li :class="{active:isActive === '1003'}" @click="changeTab('1003')">综合</li>
       </ul>
       <div></div>
     </div>
@@ -27,20 +27,31 @@
     <!-- table部分开始 -->
     <div>
       <div class="rightBtn btnList">
-        <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;"></el-date-picker>
+        <el-date-picker v-model="date" type="month" placeholder="选择日期" @change="dateChange" style="background:#070d12;"></el-date-picker>
       </div>
       <div class="table" :style="tableBgStyle">
-        <el-table
+         <el-table
           :data="tableData"
           style="width: 100%;"
           :cell-style="cellStyle"
           :header-cell-style="headerBgStyle"
           highlight-current-row
           stripe
+           height="300"
         >
-          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" prop="name" label="姓名" width="180" sortable></el-table-column>
-          <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
+          <template v-for="col in tHeadData">
+          <el-table-column
+            :key="col.key"
+            :prop="col.prop"
+            :label="col.label"
+            :sortable="col.prop.search(/VALUE/)===-1?false:true"
+            align="center"
+          >
+            <template slot-scope="scope">
+              <div slot="reference">{{scope.row[col.prop]}}</div>
+            </template>
+          </el-table-column>
+        </template>
         </el-table>
       </div>
     </div>
@@ -48,12 +59,16 @@
 </template>
 
 <script>
+import qs from "qs";
+import moment from "moment";
 export default {
   components: {},
+  props: ["sendParams"],
   data() {
     return {
       isDay: 1,
-      isActive: 0,
+      isActive: "",
+      tHeadData:null,
       xAxisData: [
         "8",
         "9",
@@ -67,7 +82,7 @@ export default {
         "17",
         "18"
       ],
-      date: "",
+      date: new Date(),
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -87,53 +102,33 @@ export default {
         backgroundSize: "100% 100%",
         textAlign: "center"
       },
-      tableData: [
-        {
-          date: "2016-05-02",
-          id: "1",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          id: "2",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          id: "3",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          id: "4",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          date: "2016-05-07",
-          id: "5",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1515 弄"
-        }
-      ]
+      tableData: []
     };
   },
   methods: {
+    dateChange(value){
+      this.getTableData(moment(value).format('YYYYMM'))
+    },
     changeTab(index) {
+      let _this = this;
       this.isActive = index;
+      if(_this.isDay === 1){
+         _this.getBarData();
+      }else{
+         _this.getBarAndLineData();
+      }
+     this.getTbBarData();
+      this.getTableData(moment(_this.date).format('YYYYMM'))
     },
     handleChange(value) {
       let that = this;
       if (value == 1) {
-        that.drawLineChart1("line", "#F868AF");
+       that.getBarData();
       } else {
-        that.drawLineChart2("line", "#F868AF");
+        that.getBarAndLineData();
       }
     },
-    drawLineChart1(id, color) {
+    drawLineChart1(id, color,xAxis,data) {
       var thisChart = this.$echarts.init(document.getElementById(id));
       thisChart.clear();
       var option = {
@@ -162,18 +157,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [
-              "喀什市",
-              "疏附县",
-              "疏勒县",
-              "英吉沙县",
-              "泽普县",
-              "岳普湖县",
-              "巴楚县",
-              "伽师县",
-              "叶城县",
-              "莎车县 "
-            ],
+            data: xAxis,
             axisLine: {
               show: true,
               lineStyle: {
@@ -213,7 +197,7 @@ export default {
                 color: "#24FAFF"
               }
             },
-            name: "完成值(万元)",
+            name: "完成值(元)",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -225,9 +209,9 @@ export default {
         ],
         series: [
           {
-            name: "2018",
+            name: "",
             type: "bar",
-            data: [20, 50, 80, 58, 83, 68, 57, 80, 42, 66],
+            data: data,
             barWidth: 10, //柱子宽度
             barGap: 1, //柱子之间间距
             color: color,
@@ -244,7 +228,7 @@ export default {
         thisChart.resize();
       });
     },
-    drawLineChart2(id, color) {
+    drawLineChart2(id, color,xAxis,data,wcl,maxArr) {
       var thisChart = this.$echarts.init(document.getElementById(id));
       thisChart.clear();
       var option = {
@@ -289,18 +273,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [
-              "喀什市",
-              "疏附县",
-              "疏勒县",
-              "英吉沙县",
-              "泽普县",
-              "岳普湖县",
-              "巴楚县",
-              "伽师县",
-              "叶城县",
-              "莎车县 "
-            ],
+            data: xAxis,
             axisLine: {
               show: true,
               lineStyle: {
@@ -340,7 +313,7 @@ export default {
                 color: "#24FAFF"
               }
             },
-            name: "完成值(万元)",
+            name: "完成值(元)",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -383,7 +356,7 @@ export default {
           {
             name: "完成值",
             type: "bar",
-            data: [20, 50, 80, 58, 83, 68, 57, 80, 42, 66],
+            data: data,
             barWidth: 10, //柱子宽度
             barGap: 1, //柱子之间间距
             color: color,
@@ -396,7 +369,7 @@ export default {
           {
             name: "累计完成率",
             type: "line",
-            data: [50, 70, 60, 61, 75, 87, 60, 62, 86, 46],
+            data: wcl,
             color: "#F76B1C",
             yAxisIndex: 1
           },
@@ -404,7 +377,7 @@ export default {
             name: "",
             type: "bar",
             barWidth: 10,
-            data: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+            data: maxArr,
             barGap: "-100%",
             itemStyle: {
               color: "transparent",
@@ -420,7 +393,7 @@ export default {
         thisChart.resize();
       });
     },
-    drawDubBarChart(id) {
+    drawDubBarChart(id,xAxis,data,data2) {
       var thisChart = this.$echarts.init(document.getElementById(id));
       var option = {
         tooltip: {
@@ -459,18 +432,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            data: [
-              "喀什市",
-              "疏附县",
-              "疏勒县",
-              "英吉沙县",
-              "泽普县",
-              "岳普湖县",
-              "巴楚县",
-              "伽师县",
-              "叶城县",
-              "莎车县 "
-            ],
+            data:xAxis,
             axisLine: {
               show: true,
               lineStyle: {
@@ -510,7 +472,7 @@ export default {
                 color: "#24FAFF"
               }
             },
-            name: "完成值(万元)",
+            name: "完成值(元)",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -524,7 +486,7 @@ export default {
           {
             name: "2018",
             type: "bar",
-            data: [20, 50, 80, 58, 83, 68, 57, 80, 42, 66],
+            data: data,
             barWidth: 10, //柱子宽度
             barGap: 1, //柱子之间间距
             color: "#F868AF"
@@ -532,7 +494,7 @@ export default {
           {
             name: "2019",
             type: "bar",
-            data: [50, 70, 60, 61, 75, 87, 60, 62, 86, 46],
+            data: data2,
             barWidth: 10,
             barGap: 1,
             color: "#3AA3F3"
@@ -550,11 +512,139 @@ export default {
       } else {
         return "";
       }
-    }
+    },
+    getBarData() {
+      let _this = this;
+       const params = {
+      monthId: _this.sendParams,
+      itemType:_this.isActive
+    };
+      this.$axios
+        .get(
+          "/cost/getBarData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let data = [];
+            let  xAxis = [];
+            for(let i = 0;i<resultData.length;i++){
+              data.push(resultData[i].CURRENT_VALUE);
+              xAxis.push(resultData[i].ACCT_MONTH)
+            }
+             _this.drawLineChart1("line", "#F868AF",xAxis,data);
+          }
+        })
+        .catch(function(e) {});
+    },
+    getBarAndLineData() {
+      let _this = this;
+       const params = {
+      monthId: _this.sendParams,
+      itemType:_this.isActive
+    };
+      this.$axios
+        .get(
+          "/cost/getBarAndLineData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let data = [];
+            let  xAxis = [];
+            let maxArr = [];
+            let wcl = [];
+            for(let i = 0;i<resultData.length;i++){
+              data.push(resultData[i].FINISH_VALUE);
+              xAxis.push(resultData[i].ACCT_MONTH)
+              maxArr.push(resultData[i].BUDGET_VALUE_Y)
+              wcl.push(resultData[i].YL)
+            }
+             _this.drawLineChart2("line", "#F868AF",xAxis,data,wcl,maxArr);
+          }
+        })
+        .catch(function(e) {});
+    },
+    getTbBarData() {
+      let _this = this;
+       const params = {
+      monthId: _this.sendParams,
+      itemType:_this.isActive
+    };
+      this.$axios
+        .get(
+          "/cost/getTbBarData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData[0];
+            let resultData2 = res.data.resultData[1];
+            let data = [];
+            let  xAxis = [];
+            let data2 = [];
+            for(let i = 0;i<resultData.length;i++){
+              data.push(resultData[i].LAST_FINISH_VALUE);
+            }
+            for(let i = 0; i<12;i++){
+              xAxis.push(i+1+'月')
+            }
+            for(let i = 0;i<resultData2.length;i++){
+              data2.push(resultData2[i].FINISH_VALUE);
+            }
+            _this.drawDubBarChart("pie",xAxis,data,data2);
+          }
+        })
+        .catch(function(e) {});
+    },
+     getTableData(monthId) {
+      let _this = this;
+       const params = {
+      monthId: monthId,
+      itemType:_this.isActive
+    };
+      this.$axios
+        .get(
+          "/cost/getTableData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log('表格',res)
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            const object = {
+               ITEM_NAME: "成本项目费用",
+               BUDGET_VALUE_Y: "年度预算",
+              FINISH_VALUE:"累计完成",
+              YSWCL:"预算完成率",
+              FINISH_VALUE_TQ:"去年同期",
+              TBZZ:"同比增长",
+              CURRENT_VALUE:"当月完成",
+               CURRENT_VALUE_SY:"上月完成",
+            };
+           let tHeadData = [];
+            for (const key in object) {
+              if (object.hasOwnProperty(key)) {
+                 tHeadData.push({
+                label: object[key],
+                prop: key
+              });
+              }
+            }
+            _this.tHeadData = tHeadData;
+             _this.tableData = resultData;
+          }
+        })
+        .catch(function(e) {});
+    },
   },
   mounted() {
-    this.drawLineChart1("line", "#F868AF");
-    this.drawDubBarChart("pie");
+    let _this = this;
+    this.getBarData();
+    this.getTbBarData();
+    this.getTableData(_this.sendParams)
   }
 };
 </script>
