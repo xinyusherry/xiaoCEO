@@ -244,7 +244,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("成功了吗？",res)
+          // console.log("成功了吗？",res)
         })
         .catch(e => {});
     }
