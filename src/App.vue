@@ -279,53 +279,13 @@ export default {
       }
     },
     getSwiperData() {
-      let _this = this;/* /Workbench/getKeyTarget */
+      let _this = this;
       this.$axios
-        .get("/")
+        .get("/Workbench/getDevelopDetail")
         .then(function(res) {
-          _this.swiperSlides = data.resultData
+          _this.swiperSlides = res.data.resultData
         })
-        .catch(function(e) {
-          let data = {
-            loginId: "admin",
-            resultData: [
-              {
-                FJZQCODE: "WGNK000A",
-                DEVELOP_NAME: "南开艳阳路玲仁科技合作厅",
-                FINISH_DATE: 1553127726000,
-                PRODUCT_NAME: "畅爽全国冰激凌套餐99元(天津)"
-              },
-              {
-                FJZQCODE: "WGNK000A",
-                DEVELOP_NAME: "南开艳阳路玲仁科技合作厅",
-                FINISH_DATE: 1553128328000,
-                PRODUCT_NAME: "畅爽全国冰激凌套餐99元(天津)"
-              },
-              {
-                FJZQCODE: "WGNK000A",
-                DEVELOP_NAME: "杜宇",
-                FINISH_DATE: 1553129842000,
-                PRODUCT_NAME: "普惠e卡"
-              },
-              {
-                FJZQCODE: "WGNK000A",
-                DEVELOP_NAME: "杜宇",
-                FINISH_DATE: 1553129876000,
-                PRODUCT_NAME: "普惠e卡"
-              },
-              {
-                FJZQCODE: "WGNK000A",
-                DEVELOP_NAME: "杜宇",
-                FINISH_DATE: 1553129890000,
-                PRODUCT_NAME: "普惠e卡"
-              }
-            ],
-            loginName: "管理员",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          _this.swiperSlides = data.resultData
-        });
+        .catch(function(e) {});
     }
   },
   created() {
