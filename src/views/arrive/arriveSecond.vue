@@ -9,11 +9,17 @@
           <li :class=" isActive === 0 ?activeClass:unActiveClass" @click="changeTab(0)">产品分类</li>
           <li :class=" isActive === 1 ?activeClass:unActiveClass" @click="changeTab(1)">保有率</li>
         </ul>
-        <el-radio-group v-model="isDay">
-          <el-radio :label="1">日</el-radio>
-          <el-radio :label="0">月</el-radio>
+        <el-radio-group v-model="isDay" @change="dayTypeChange">
+          <el-radio :label="'day'">日</el-radio>
+          <el-radio :label="'month'">月</el-radio>
         </el-radio-group>
-        <el-date-picker v-model="date" type="date" placeholder="选择日期" style="background:#070d12;"></el-date-picker>
+        <el-date-picker
+          v-model="date"
+          :type="dateType"
+          placeholder="选择日期"
+          style="background:#070d12;"
+          @change="dateChange"
+        ></el-date-picker>
       </div>
     </div>
     <div class="chartList">
@@ -26,7 +32,7 @@
         <div></div>
         <div class="jk">小区监控</div>
         <div class="rightBtn header">
-          <el-select v-model="value" placeholder="请选择">
+          <el-select v-model="value" placeholder="请选择" @change="selectChange">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -44,17 +50,49 @@
           :header-cell-style="headerBgStyle"
           highlight-current-row
           stripe
+           height="300"
         >
-          <el-table-column prop="date" align="center" label="日期" width="180"></el-table-column>
-          <el-table-column align="center" label="姓名" width="180" sortable>
-            <template slot-scope="scope">
-              <el-popover placement="right" width="400" trigger="hover">
-                <div :id="'tableLineChart'+scope.row.id" style="width:400px;height:200px"></div>
-                <div slot="reference">{{scope.row.name}}</div>
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column prop="address" align="center" label="地址" sortable></el-table-column>
+          <template v-for="(col,idx) in tHeadData">
+            <el-table-column
+              :key="col.key"
+              :prop="col.prop"
+              :label="col.label"
+              :sortable="col.prop.search(/FEE/)===-1?false:true"
+              align="center"
+              v-if="idx==0"
+              :width="col.length>7?'230':'150'"
+            >
+              <template slot-scope="scope">
+                <div>
+                  <el-popover
+                    placement="right"
+                    width="400"
+                    trigger="hover"
+                    @show="hoverShow('tableLineChart'+scope.row.index,scope.row.ORGAN_ID)"
+                  >
+                    <div
+                      :id="'tableLineChart'+scope.row.index"
+                      style="width:400px;height:200px"
+                    ></div>
+                    <div slot="reference">{{scope.row[col.prop]}}</div>
+                  </el-popover>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              :key="col.key"
+              :prop="col.prop"
+              :label="col.label"
+              :sortable="col.prop.search(/NUM/)===-1?false:true"
+              align="center"
+              v-if="idx!==0"
+              :width="col.length>7?'280':'190'"
+            >
+              <template slot-scope="scope">
+                <div slot="reference">{{scope.row[col.prop]}}</div>
+              </template>
+            </el-table-column>
+          </template>
         </el-table>
       </div>
     </div>
@@ -62,12 +100,15 @@
 </template>
 
 <script>
+import qs from "qs";
+import moment from "moment";
 export default {
   components: {},
   data() {
     return {
       isActive: 0,
-      isDay: 1,
+      isDay: "day",
+      dateType: "date",
       xAxisData: [
         "8",
         "9",
@@ -81,33 +122,10 @@ export default {
         "17",
         "18"
       ],
-      moreLineChart: {
-        colors: ["#3E9EFD", "#43BF4E", "#C12337"],
-        title: "新增用户保有率",
-        data: [
-          [100, 200, 300, 400, 500, 100, 200, 300, 400, 500, 100, 200],
-          [500, 400, 300, 200, 100, 500, 400, 300, 200, 100, 500, 400],
-          [200, 300, 100, 500, 100, 500, 400, 300, 100, 300, 400, 600]
-        ],
-        xAxis: [
-          "1月",
-          "2月",
-          "3月",
-          "4月",
-          "5月",
-          "6月",
-          "7月",
-          "8月",
-          "9月",
-          "10月",
-          "11月",
-          "12月"
-        ],
-        legendData: [{ name: "移动" }, { name: "固话" }, { name: "宽带" }]
-      },
+
       activeClass: "down",
       unActiveClass: "xq",
-      date: "",
+      date: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -116,7 +134,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
         padding: "18px"
       },
       headerBgStyle: {
@@ -127,75 +144,121 @@ export default {
         backgroundSize: "100% 100%",
         textAlign: "center"
       },
-      tableData: [
-        {
-          date: "2016-05-02",
-          id: "1",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1518 弄"
-        },
-        {
-          date: "2016-05-04",
-          id: "2",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1517 弄"
-        },
-        {
-          date: "2016-05-01",
-          id: "3",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1519 弄"
-        },
-        {
-          date: "2016-05-03",
-          id: "4",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1516 弄"
-        },
-        {
-          date: "2016-05-07",
-          id: "5",
-          name: "王小虎",
-          address: "上海市普陀区金沙江路 1515 弄"
-        }
-      ],
+      tHeadData: {},
+      tableData: [],
       options: [
         {
-          value: "选项1",
-          label: "黄金糕"
+          value: "01",
+          label: "净增"
         },
         {
-          value: "选项2",
-          label: "双皮奶"
-        },
-        {
-          value: "选项3",
-          label: "蚵仔煎"
-        },
-        {
-          value: "选项4",
-          label: "龙须面"
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭"
+          value: "02",
+          label: "到达"
         }
       ],
-      value: ""
+      value: "01"
     };
   },
   methods: {
     changeTab(index) {
+      let _this = this;
       this.isActive = index;
-      if (index === 0) {
-        this.drawPieChart("line");
-        this.drawPieChart("pie");
+      this.dateChange();
+    },
+    dayTypeChange(val) {
+      let _this = this;
+      this.dateChange();
+    },
+    dateChange() {
+      let _this = this;
+      if (_this.isActive === 0) {
+        if (_this.isDay === "day") {
+          const param = {
+            dayId: moment(_this.date).format("YYYYMMDD"),
+            type: "day"
+          };
+          _this.getServicePieData(param);
+          _this.getProductPieData(param);
+        } else {
+          const param = {
+            monthId: moment(_this.date).format("YYYYMM"),
+            type: "month"
+          };
+          _this.getServicePieData(param);
+          _this.getProductPieData(param);
+        }
+      }
+
+      if (_this.isActive === 1) {
+        const param = {
+          monthId: moment(_this.date).format("YYYYMM")
+        };
+        _this.getXzLineData(param);
+        _this.getClLineData(param);
+      }
+      _this.selectChange();
+    },
+    hoverShow(chartId, organId) {
+      let _this = this;
+      const param = {
+        type: _this.isDay,
+        svcType: _this.value,
+        organId: organId
+      };
+      let merge = {};
+      if (_this.isDay === "day") {
+        merge = {
+          dayId: moment(_this.date).format("YYYYMMDD")
+        };
       } else {
-        this.drawMoreLineChart("line", this.moreLineChart);
-        this.drawMoreLineChart("pie", this.moreLineChart);
+        merge = {
+          monthId: moment(_this.date).format("YYYYMM")
+        };
+      }
+      const params = {
+        ...param,
+        ...merge
+      };
+      console.log('chartId',chartId)
+      // /arrive/getCommunityData
+        this.$axios
+        .get(
+          "/arrive/getCommunityData?" +
+          qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log('折线二',res)
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let xAxis = [],yAxis = [];
+            for(let i = 0; i<resultData.length;i++){
+              xAxis.push(resultData[i].ACCT_DAY);
+              yAxis.push(resultData[i].USER_NUM);
+            }
+            _this.drawLineChart(chartId,'#5FA8F2',xAxis,yAxis)
+          }
+        })
+        .catch(function(e) {});
+    },
+    selectChange() {
+      let _this = this;
+      if (_this.isDay === "day") {
+        const param = {
+          dayId: moment(_this.date).format("YYYYMMDD"),
+          type: "day",
+          svcType: _this.value
+        };
+        _this.getTableData(param);
+      } else {
+        const param = {
+          monthId: moment(_this.date).format("YYYYMM"),
+          type: "day",
+          svcType: _this.value
+        };
+        _this.getTableData(param);
       }
     },
-    drawLineChart(id, color) {
+    drawLineChart(id, color,xAxis,yAxis) {
       setTimeout(() => {
         var thisChart = this.$echarts.init(document.getElementById(id));
         thisChart.clear();
@@ -209,7 +272,7 @@ export default {
           title: [
             {
               left: "center",
-              text: "固网发展趋势",
+              text: "小区明细",
               textStyle: {
                 fontSize: 21,
                 color: "#24FAFF"
@@ -240,7 +303,7 @@ export default {
             axisTick: {
               show: false
             },
-            data: this.xAxisData,
+            data: xAxis,
             axisLabel: {
               show: true,
               textStyle: {
@@ -263,7 +326,7 @@ export default {
             axisTick: {
               show: false
             },
-            name: "完成值(万元)",
+            name: "",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -286,7 +349,7 @@ export default {
                   show: true
                 }
               },
-              data: [0, 65, 100, 165, 200, 210, 220, 240, 300, 310, 320]
+              data: yAxis
             }
           ]
         });
@@ -295,7 +358,7 @@ export default {
         });
       }, 0);
     },
-    drawPieChart(id) {
+    drawPieChart(id, title, data) {
       var thisChart = this.$echarts.init(document.getElementById(id));
       thisChart.clear();
       var option = {
@@ -306,7 +369,7 @@ export default {
         title: [
           {
             left: "center",
-            text: "产品结构",
+            text: title,
             textStyle: {
               fontSize: 21,
               color: "#24FAFF"
@@ -318,7 +381,7 @@ export default {
             name: "产品结构",
             type: "pie",
             radius: ["20%", "60%"],
-            avoidLabelOverlap: false,
+            avoidLabelOverlap: true,
             color: ["#F868AF", "#01C6FD", "#1749F9"],
             label: {
               normal: {
@@ -353,11 +416,7 @@ export default {
                 show: true
               }
             },
-            data: [
-              { value: 50, name: "满堂红" },
-              { value: 20, name: "尊享红" },
-              { value: 40, name: "其他" }
-            ]
+            data: data
           }
         ]
       };
@@ -396,7 +455,7 @@ export default {
             }
           ],
           tooltip: {
-            trigger: "axis",
+            trigger: "axis"
           },
           xAxis: {
             type: "category",
@@ -436,7 +495,7 @@ export default {
             axisTick: {
               show: false
             },
-            name: "完成值(万元)",
+            name: "",
             nameTextStyle: {
               color: "#24FAFF",
               fontSize: 14
@@ -446,7 +505,8 @@ export default {
               textStyle: {
                 color: "#24FAFF",
                 fontSize: 12
-              }
+              },
+              formatter: "{value}%"
             }
           },
           series: [
@@ -470,6 +530,13 @@ export default {
               color: lineData.colors[2],
               name: lineData.legendData[2].name,
               data: lineData.data[2]
+            },
+            {
+              type: "line",
+              symbol: "none",
+              color: lineData.colors[3],
+              name: lineData.legendData[3].name,
+              data: lineData.data[3]
             }
           ]
         });
@@ -484,14 +551,242 @@ export default {
       } else {
         return "";
       }
+    },
+    getServicePieData(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/arrive/getServicePieData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let arr = [];
+            for (let i = 0; i < resultData.length; i++) {
+              let obj = new Object();
+              obj.name = resultData[i].YW_TYPE;
+              obj.value = resultData[i].USER_NUM;
+              arr.push(obj);
+            }
+            _this.drawPieChart("pie", "业务分类", arr);
+          } else {
+            _this.$echarts.init(document.getElementById("pie")).clear();
+          }
+        })
+        .catch(function(e) {});
+    },
+    getProductPieData(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/arrive/getProductPieData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            let arr = [];
+            for (let i = 0; i < resultData.length; i++) {
+              let obj = new Object();
+              obj.name = resultData[i].CP_TYPE;
+              obj.value = resultData[i].USER_NUM;
+              arr.push(obj);
+            }
+            _this.drawPieChart("line", "产品结构", arr);
+          } else {
+            _this.$echarts.init(document.getElementById("line")).clear();
+          }
+        })
+        .catch(function(e) {});
+    },
+    getXzLineData(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/arrive/getXzLineData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let zxData = res.data.resultData;
+            //折线图
+            let data = [];
+            let qb = [],
+              yd = [],
+              gh = [],
+              kd = [];
+            for (let j = 0; j < zxData.length; j++) {
+              qb.push(zxData[j].ZS);
+              yd.push(zxData[j].YD);
+              gh.push(zxData[j].GH);
+              kd.push(zxData[j].KD);
+            }
+            data.push(qb);
+            data.push(yd);
+            data.push(gh);
+            data.push(kd);
+            let lineData = {
+              colors: ["#E3D54B", "#3E9EFD", "#43BF4E", "#C12337"],
+              title: "新增用户保有率",
+              data: data,
+              xAxis: [
+                "1月",
+                "2月",
+                "3月",
+                "4月",
+                "5月",
+                "6月",
+                "7月",
+                "8月",
+                "9月",
+                "10月",
+                "11月",
+                "12月"
+              ],
+              legendData: [
+                { name: "全部" },
+                { name: "移动" },
+                { name: "固话" },
+                { name: "宽带" }
+              ]
+            };
+            _this.drawMoreLineChart("line", lineData);
+          } else {
+            _this.$echarts.init(document.getElementById("line")).clear();
+          }
+        })
+        .catch(function(e) {});
+    },
+    getClLineData(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/arrive/getClLineData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          if (res.data.resultCode === "1") {
+            let zxData = res.data.resultData;
+            //折线图
+            let data = [];
+            let qb = [],
+              yd = [],
+              gh = [],
+              kd = [];
+            for (let j = 0; j < zxData.length; j++) {
+              qb.push(zxData[j].ZS);
+              yd.push(zxData[j].YD);
+              gh.push(zxData[j].GH);
+              kd.push(zxData[j].KD);
+            }
+            data.push(qb);
+            data.push(yd);
+            data.push(gh);
+            data.push(kd);
+            let lineData = {
+              colors: ["#E3D54B", "#3E9EFD", "#43BF4E", "#C12337"],
+              title: "存量用户保有率",
+              data: data,
+              xAxis: [
+                "1月",
+                "2月",
+                "3月",
+                "4月",
+                "5月",
+                "6月",
+                "7月",
+                "8月",
+                "9月",
+                "10月",
+                "11月",
+                "12月"
+              ],
+              legendData: [
+                { name: "全部" },
+                { name: "移动" },
+                { name: "固话" },
+                { name: "宽带" }
+              ]
+            };
+            _this.drawMoreLineChart("pie", lineData);
+          } else {
+            _this.$echarts.init(document.getElementById("pie")).clear();
+          }
+        })
+        .catch(function(e) {});
+    },
+    getTableData(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/arrive/getTableData?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          console.log("表格d", res);
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            const object = {
+               MANAGER_NAME: "所属经理",
+               ORGAN_ID: "小区编码",
+              RH_XXH_NUM: "孝心红",
+              GH_NUM: "小区内固话用户数",
+              DKZY_NUM: "端口数",
+              DKL: "端口实占率",
+              G4_NUM: "4G",
+              KD_NUM: "小区内宽带用户数",
+              G2_NUM: "2G",
+              STL: "住宅用户渗透压率",
+              IPTV: "IPTV",
+              ORGAN_NAME: "销售单元",
+              G3_NUM: "3G",
+              DG_NUM: "单固",
+              HOME_NUM: "住宅数",
+              DK_NUM: "单宽",
+              RH_NUM: "融合",
+              RH_QJH_NUM: "全家红",
+              RH_ZXH_NUM: "尊享红",
+              XQ_TYPE: "小区类型"
+            };
+            let tHeadData = [];
+            for (const key in object) {
+              if (object.hasOwnProperty(key)) {
+                 tHeadData.push({
+                label: object[key],
+                prop: key
+              });
+              }
+            }
+            _this.tHeadData = tHeadData;
+            _this.tableData = resultData.map((item,index)=>{
+              item.index = index;
+              return item
+            });
+          } else {
+          }
+        })
+        .catch(function(e) {});
     }
   },
   mounted() {
-    this.drawPieChart("pie");
-    this.drawPieChart("line");
+    let _this = this;
     this.tableData.map(obj => {
       this.drawLineChart("tableLineChart" + obj.id, "#fbbf50");
     });
+    const param = {
+      dayId: moment(_this.date).format("YYYYMMDD"),
+      type: "day"
+    };
+    _this.getServicePieData(param);
+    //饼图
+    _this.getProductPieData(param);
+    const tableParam = {
+      type: "day",
+      dayId: moment(_this.date).format("YYYYMMDD"),
+      svcType: _this.value
+    };
+    _this.getTableData(tableParam);
   }
 };
 </script>
