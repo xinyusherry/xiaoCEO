@@ -81,12 +81,6 @@ export default {
       this.showTime(this.timetype, date);
       date = null;
     }
-  },
-  watch: {
-    propsTime(newValue, oldValue) {
-        console.log(newValue)
-
-    }
   }
 };
 </script>

@@ -66,13 +66,6 @@ export default {
   props: ["sendParams"],
   components: { incomeTrd },
   data() {
-    let [dataArr1, dataArr2, dataArr3, dataArr4] = [[], [], [], []];
-    for (let i = 0; i < 12; i++) {
-      dataArr1.push(Math.floor(Math.random() * 100));
-      dataArr2.push(Math.floor(Math.random() * 100));
-      dataArr3.push(Math.floor(Math.random() * 100));
-      dataArr4.push(Math.floor(Math.random() * 100));
-    }
     return {
       isDetail: false,
       isText: false,

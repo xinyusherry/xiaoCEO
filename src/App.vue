@@ -11,9 +11,9 @@
           <img src="./assets/images/title.png" height="26" alt>
           <swiper v-if="swiperSlides.length>1" :options="swiperOption">
             <swiper-slide v-for="(slide, index) in swiperSlides" :key="index">
-              <span class="lightblue">{{ slide.name }}</span>
-              {{ slide.time }} 发展了
-              <span class="lightblue">【{{ slide.product }}】！</span>
+              <span class="lightblue">{{ slide.DEVELOP_NAME }}</span>
+              {{ slide.FDATE }} 发展了
+              <span class="lightblue">【{{ slide.PRODUCT_NAME }}】！</span>
             </swiper-slide>
           </swiper>
           <el-button
@@ -78,7 +78,6 @@
     </div>
     <div>
       <el-dialog :title="dialogTitle" :visible.sync="isDialogShow" width="80%">
-        <!-- <el-dialog :title="dialogTitle" v-if="isDialogShow" width="80%"> -->
         <component
           v-if="isDialogShow"
           :is="dialogCompent"
@@ -164,7 +163,7 @@ const allModules = [
 ];
 const allModulesId = allModules.map(obj => obj.id);
 
-import qs from 'qs';
+import qs from "qs";
 export default {
   data() {
     return {
@@ -278,6 +277,55 @@ export default {
       if (thirdParams) {
         this.thirdParams = thirdParams;
       }
+    },
+    getSwiperData() {
+      let _this = this;/* /Workbench/getKeyTarget */
+      this.$axios
+        .get("/")
+        .then(function(res) {
+          _this.swiperSlides = data.resultData
+        })
+        .catch(function(e) {
+          let data = {
+            loginId: "admin",
+            resultData: [
+              {
+                FJZQCODE: "WGNK000A",
+                DEVELOP_NAME: "南开艳阳路玲仁科技合作厅",
+                FINISH_DATE: 1553127726000,
+                PRODUCT_NAME: "畅爽全国冰激凌套餐99元(天津)"
+              },
+              {
+                FJZQCODE: "WGNK000A",
+                DEVELOP_NAME: "南开艳阳路玲仁科技合作厅",
+                FINISH_DATE: 1553128328000,
+                PRODUCT_NAME: "畅爽全国冰激凌套餐99元(天津)"
+              },
+              {
+                FJZQCODE: "WGNK000A",
+                DEVELOP_NAME: "杜宇",
+                FINISH_DATE: 1553129842000,
+                PRODUCT_NAME: "普惠e卡"
+              },
+              {
+                FJZQCODE: "WGNK000A",
+                DEVELOP_NAME: "杜宇",
+                FINISH_DATE: 1553129876000,
+                PRODUCT_NAME: "普惠e卡"
+              },
+              {
+                FJZQCODE: "WGNK000A",
+                DEVELOP_NAME: "杜宇",
+                FINISH_DATE: 1553129890000,
+                PRODUCT_NAME: "普惠e卡"
+              }
+            ],
+            loginName: "管理员",
+            resultCode: "1",
+            resultDesc: "success"
+          };
+          _this.swiperSlides = data.resultData
+        });
     }
   },
   created() {
@@ -293,38 +341,7 @@ export default {
       .catch(function(e) {
         console.log(e);
       });
-  },
-  mounted() {
-    setTimeout(() => {
-      //模拟请求轮播数据
-      this.swiperSlides = [
-        {
-          name: "赵三",
-          time: "14 : 10 ：53",
-          product: "天津宽带100M包月-10元/月"
-        },
-        {
-          name: "钱三",
-          time: "14 : 20 ：53",
-          product: "天津宽带100M包月-20元/月"
-        },
-        {
-          name: "孙三",
-          time: "14 : 30 ：53",
-          product: "天津宽带100M包月-30元/月"
-        },
-        {
-          name: "李三",
-          time: "14 : 40 ：53",
-          product: "天津宽带100M包月-40元/月"
-        },
-        {
-          name: "周三",
-          time: "14 : 50 ：53",
-          product: "天津宽带100M包月-50元/月"
-        }
-      ];
-    }, 0);
+    this.getSwiperData();
   },
   watch: {
     isDraggable(newValue, oldValue) {
@@ -335,9 +352,8 @@ export default {
         let _this = this;
         //测试接口
         this.$axios
-          .post("/Workbench/updateUserModule",params)
-          .then(function(res) {
-          })
+          .post("/Workbench/updateUserModule", params)
+          .then(function(res) {})
           .catch(function(e) {
             console.log(e);
           });
