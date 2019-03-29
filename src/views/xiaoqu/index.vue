@@ -1,6 +1,6 @@
 <template>
   <div class="moveDiv" @click="sendMsg">
-    <card :cardset="xq" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
+    <card :cardset="xq" :timetype="''" :propsTime="cardTime" style="margin-right:10px;">
       <div class="cardCont flexcc">
         <div style="font-size:56px">{{xqData.XQ_NUM}}</div>
       </div>
@@ -16,19 +16,19 @@
                 <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
                 <p>分公司排名xxx 平均完成率 xxxx</p>
               </div>
-              <div slot="reference">456</div>
+              <div slot="reference">{{xqData.SJ_XQ_NUM}}</div>
             </el-popover>
           </div>
           <div class="progressDiv flexcc">
             <div class="textDiv">
               <span>占比</span>
-              <span>88.88%</span>
+              <span>{{xqData.SJZB}}%</span>
             </div>
             <div class="dark">
               <el-progress
                 :text-inside="false"
                 :stroke-width="9"
-                :percentage="80.99"
+                :percentage="xqData.SJZB"
                 :show-text="false"
               ></el-progress>
             </div>
@@ -45,19 +45,19 @@
                 <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
                 <p>分公司排名xxx 平均完成率 xxxx</p>
               </div>
-              <div slot="reference">456</div>
+              <div slot="reference">{{xqData.DS_XQ_NUM}}</div>
             </el-popover>
           </div>
           <div class="progressDiv flexcc">
             <div class="textDiv">
               <span>占比</span>
-              <span>88.88%</span>
+              <span>{{xqData.DSZB}}%</span>
             </div>
             <div class="dark">
               <el-progress
                 :text-inside="false"
                 :stroke-width="9"
-                :percentage="80.99"
+                :percentage="xqData.DSZB"
                 :show-text="false"
               ></el-progress>
             </div>
@@ -103,7 +103,10 @@ export default {
         dialogCompent: "xiaoquSed",
         dialogTitle: "小区"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      const thirdParams={
+        date:this.date
+      }
+      this.$emit("headCallBack", param,thirdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     post() {
       let _this = this;
@@ -128,7 +131,6 @@ export default {
   },
   watch: {
     date(newValue, oldValue) {
-      this.postLine();
       if (newValue.search(/-/) === -1 && newValue.search(/年/) === -1) {
         if (newValue.length === 6) {
           this.cardTime = [newValue.substr(0, 4), newValue.substr(4, 2)].join(
