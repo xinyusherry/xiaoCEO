@@ -5,10 +5,10 @@
  */
 export const formatterTime=(value)=> {
     if(value.length>6){
-        var str = value.substring(0, 4) + '年' + value.substring(4, 6) + '月' + value.substring(6, 8) + '日';
+        var str = value.substring(0, 4) + '-' + value.substring(4, 6) + '-' + value.substring(6, 8);
         return str;
     }else{
-        var str = value.substring(0, 4) + '年' + value.substring(4, 6) + '月';
+        var str = value.substring(0, 4) + '-' + value.substring(4, 6);
         return str;
     }
   }
