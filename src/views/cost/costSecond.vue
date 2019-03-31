@@ -82,7 +82,7 @@ export default {
         "17",
         "18"
       ],
-      date: new Date(),
+      date: this.sendParams,
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -515,7 +515,7 @@ export default {
     getBarData() {
       let _this = this;
        const params = {
-      monthId: _this.sendParams,
+      monthId: moment(_this.sendParams).format('YYYYMM'),
       itemType:_this.isActive
     };
       this.$axios
@@ -540,7 +540,7 @@ export default {
     getBarAndLineData() {
       let _this = this;
        const params = {
-      monthId: _this.sendParams,
+      monthId: moment(_this.sendParams).format('YYYYMM'),
       itemType:_this.isActive
     };
       this.$axios
@@ -569,7 +569,7 @@ export default {
     getTbBarData() {
       let _this = this;
        const params = {
-      monthId: _this.sendParams,
+      monthId: moment(_this.sendParams).format('YYYYMM'),
       itemType:_this.isActive
     };
       this.$axios
@@ -611,6 +611,9 @@ export default {
         )
         .then(function(res) {
           console.log('表格',res)
+          if(res.data==""){
+            _this.tableData = [];
+          }
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             const object = {
@@ -633,7 +636,7 @@ export default {
               }
             }
             _this.tHeadData = tHeadData;
-             _this.tableData = resultData;
+            _this.tableData = resultData;
           }
         })
         .catch(function(e) {});
@@ -643,7 +646,7 @@ export default {
     let _this = this;
     this.getBarData();
     this.getTbBarData();
-    this.getTableData(_this.sendParams)
+    this.getTableData(moment(_this.sendParams).format('YYYYMM'))
   }
 };
 </script>

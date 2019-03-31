@@ -64,7 +64,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name: "完成值（万元）",
+          name: "完成值（元）",
           // scale: true,
           nameTextStyle: {
             color: "#24FAFF"

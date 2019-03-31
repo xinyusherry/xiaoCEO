@@ -6,12 +6,13 @@
           ￥&nbsp;&nbsp;
           <span class="hj">(合计值)</span>
         </h3>
-        <el-popover placement="top" width="300" trigger="hover">
-          <div style="color:#fff">
-            <p>单元类型（农村/城市）</p>
-            <p>市公司排名xxx 平均完成率 xxxx</p>
-            <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-            <p>分公司排名xxx 平均完成率 xxxx</p>
+        <el-popover placement="top" width="200" trigger="hover">
+          <div v-if="zlr.rankData!=null" style="color:#fff">
+            <p>单元类型：{{zlr.rankData.ORGAN_TYPE}}</p>
+            <p>指标类型：{{zlr.rankData.ZB_CODE}}</p>
+            <p>同类排名：{{zlr.rankData.RAG_ORG_TL}}</p>
+            <p>全市排名：{{zlr.rankData.RAG_ORG_QS}}</p>
+            <p>分公司排名：{{zlr.rankData.RAG_ORG_FGS}}</p>
           </div>
           <h3 class="total_num" slot="reference">{{lr.value}}</h3>
         </el-popover>
@@ -30,12 +31,13 @@
           ￥&nbsp;&nbsp;
           <span class="hj">(合计值)</span>
         </h3>
-        <el-popover placement="top" width="300" trigger="hover">
-          <div style="color:#fff">
-            <p>单元类型（农村/城市）</p>
-            <p>市公司排名xxx 平均完成率 xxxx</p>
-            <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-            <p>分公司排名xxx 平均完成率 xxxx</p>
+        <el-popover placement="top" width="200" trigger="hover">
+          <div v-if="lr.rankData!=null" style="color:#fff">
+            <p>单元类型：{{lr.rankData.ORGAN_TYPE}}</p>
+            <p>指标类型：{{lr.rankData.ZB_CODE}}</p>
+            <p>同类排名：{{lr.rankData.RAG_ORG_TL}}</p>
+            <p>全市排名：{{lr.rankData.RAG_ORG_QS}}</p>
+            <p>分公司排名：{{lr.rankData.RAG_ORG_FGS}}</p>
           </div>
           <h3 class="total_num" slot="reference">{{zlr.value}}</h3>
         </el-popover>
@@ -68,7 +70,8 @@ export default {
           dataset: {},
           colors: ["#CB68FC"]
         },
-        value: ""
+        value: "",
+        rankData:null,
       },
       lr: {
         title: "利润",
@@ -77,7 +80,8 @@ export default {
           dataset: {},
           colors: ["#62B58F"]
         },
-        value: ""
+        value: "",
+        rankData:null,
       },
       cardTime: ""
     };
@@ -99,14 +103,23 @@ export default {
     },
     postHj() {
       let _this = this;
-      this.$axios
-        .post("/ceoProfit/getNumData")
-        .then(function(res) {
+      function getNumData() {
+        return _this.$axios.get('/ceoProfit/getNumData');
+      } 
+      function getRankData() {
+        return _this.$axios.get('/ceoProfit/getRankData');
+      }
+      _this.$axios.all([getNumData(), getRankData()])
+        .then(_this.$axios.spread(function (res, resRank) {
+          // 两个请求现在都执行完成
+          console.log("利润",res,resRank);
           let data = res.data;
           _this.cardDate = data.resultData[0].ACCT_MONTH;
           _this.lr.value = data.resultData[0].GROSS_PROFIT_T;
           _this.zlr.value = data.resultData[0].QUASI_PROFIT_T;
-        })
+          _this.lr.rankData = resRank.data.resultData[1];
+          _this.zlr.rankData = resRank.data.resultData[0];
+        }))
         .catch(function(e) {});
     },
     postLine() {
@@ -141,7 +154,7 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.post();
   },
   watch: {

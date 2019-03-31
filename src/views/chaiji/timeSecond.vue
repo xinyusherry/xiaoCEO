@@ -50,8 +50,8 @@ export default {
     return {
       chartBar: {
         dataset: {
-          xAxis: ["新零售", "小区营销", "小区承接", "营业厅"],
-          data: [[100], [20]]
+          xAxis: [],
+          data: []
         },
         colors: ["#F868AF", "#F25F19"]
       },

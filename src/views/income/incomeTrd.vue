@@ -25,18 +25,18 @@
         <el-button type="primary" @click="TableToExcel" style="margin-left:20px">下载</el-button>
       </div>
     </div>
-    <div class="table" :style="tableBgStyle">
+    <div class="table" :style="tableBgStyle" v-show="tabVal=='xq'">
       <el-table
-        :data="tabVal=='person'?tablePerson.tbodyData:tableArea.tbodyData"
+        :data="tableArea.tbodyData"
         style="width: 100%;"
         :header-cell-style="headerBgStyle"
         highlight-current-row
         stripe
         height="300"
       >
-        <template v-for="(col,idx) in tabVal=='person'?tablePerson.tHeadData:tableArea.tHeadData">
+        <template v-for="(col,idx) in tableArea.tHeadData">
           <el-table-column
-            :key="col.key"
+            :key="idx"
             :prop="col.prop"
             :label="col.label"
             :sortable="col.prop.search(/FEE/)===-1?false:true"
@@ -46,7 +46,7 @@
             <template slot-scope="scope">
               <div>
                 <el-popover
-                  v-if="col.prop.search(/NAME/)!==-1"
+                  v-if="col.prop.search(/ORGAN_NAME/)!==-1"
                   placement="right"
                   width="400"
                   trigger="hover"
@@ -59,7 +59,7 @@
             </template>
           </el-table-column>
           <el-table-column
-            :key="col.key"
+            :key="idx"
             :prop="col.prop"
             :label="col.label"
             :sortable="col.prop.search(/FEE/)===-1?false:true"
@@ -67,7 +67,64 @@
             v-if="idx!==0"
           >
             <template slot-scope="scope">
-                <div v-if="col.prop.search(/NAME/)===-1" slot="reference">{{scope.row[col.prop]}}</div>
+                <div v-if="col.prop.search(/ORGAN_NAME/)===-1" slot="reference">{{scope.row[col.prop]}}</div>
+            </template>
+          </el-table-column>
+        </template>
+        <el-table-column
+            key="lastCol"
+            label="详情"
+            align="center"
+          >
+            <template slot-scope="scope">
+                <el-button class="btn-detail" size="small" @click="HrefToTable(scope.row['ORGAN_ID'])">一区一表</el-button>
+            </template>
+          </el-table-column>
+      </el-table>
+    </div>
+    <div class="table" :style="tableBgStyle" v-show="tabVal=='person'">
+      <el-table
+        :data="tablePerson.tbodyData"
+        style="width: 100%;"
+        :header-cell-style="headerBgStyle"
+        highlight-current-row
+        stripe
+        height="300"
+      >
+        <template v-for="(col,idx) in tablePerson.tHeadData">
+          <el-table-column
+            :key="idx"
+            :prop="col.prop"
+            :label="col.label"
+            :sortable="col.prop.search(/FEE/)===-1?false:true"
+            align="center"
+            v-if="idx==0"
+          >
+            <template slot-scope="scope">
+              <div>
+                <el-popover
+                  v-if="col.prop.search(/ORGAN_NAME/)!==-1"
+                  placement="right"
+                  width="400"
+                  trigger="hover"
+                  @show="hoverShow('tableLineChart-sj'+scope.row.ORGAN_ID,scope.row.ORGAN_ID)"
+                >
+                  <div :id="'tableLineChart-sj'+scope.row.ORGAN_ID" style="width:400px;height:200px"></div>
+                  <div slot="reference">{{scope.row[col.prop]}}</div>
+                </el-popover>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :key="idx"
+            :prop="col.prop"
+            :label="col.label"
+            :sortable="col.prop.search(/FEE/)===-1?false:true"
+            align="center"
+            v-if="idx!==0"
+          >
+            <template slot-scope="scope">
+                <div v-if="col.prop.search(/ORGAN_NAME/)===-1" slot="reference">{{scope.row[col.prop]}}</div>
             </template>
           </el-table-column>
         </template>
@@ -77,6 +134,7 @@
 </template>
 
 <script>
+import moment from "moment";
 import qs from "qs";
 export default {
   props: ["monthId"],
@@ -127,7 +185,6 @@ export default {
         )
         .then(function(res) {
           let data = res.data;
-          console.log(data);
           const head = {
             ORGAN_NAME: "经理名称",
             HR_EMP_CODE: "人力编码",
@@ -165,7 +222,6 @@ export default {
         )
         .then(function(res) {
           let data = res.data;
-          console.log(data);
           const head = {
             ORGAN_NAME: "小区名称",
             ORGAN_ID: "小区ID",
@@ -297,9 +353,13 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         );
       }
+    },
+    HrefToTable(organId){
+      let dayId = moment(this.date).format("YYYYMM");
+      let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
+      window.open(url,'_blank');
     }
   },
-  mounted() {},
   created() {
     this.postPersonTable();
     this.postXqTable();
@@ -328,5 +388,12 @@ export default {
 }
 .cell {
   text-align: center;
+}
+.btn-detail,
+.btn-detail:hover,
+.btn-detail:focus {
+  background-image: linear-gradient(-225deg, #a834ef 0%, #2ac6ff 100%);
+  border: none;
+  color: #fff;
 }
 </style>

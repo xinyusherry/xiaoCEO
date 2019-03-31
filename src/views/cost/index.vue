@@ -1,6 +1,6 @@
 <template>
-  <div class="moveDiv" @click="sendMsg(indexNum.ACCT_MONTH)" v-if="indexNum">
-    <card :cardset="lj" :timetype="'month'" style="margin-right:10px;">
+  <div class="moveDiv" @click="sendMsg(cardTime)" v-if="indexNum">
+    <card :cardset="lj" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
@@ -14,7 +14,7 @@
     </card>
     <card :cardset="dy" :timetype="''">
       <div class="chart">
-        <div id="mychart" style="width:200px;height:200px;margin-top:20px"></div>
+        <div id="mychartCost" style="width:200px;height:200px;margin-top:20px"></div>
       </div>
     </card>
   </div>
@@ -25,6 +25,7 @@ import qs from "qs";
 import moment from "moment";
 import card from "../../components/Card.vue";
 import { getMax } from "../../utils/index.js";
+import { setTimeout } from 'timers';
 const defaultParam = {
   width: "calc(50% - 5px)",
   leftcolor: "#3023AE",
@@ -42,8 +43,19 @@ export default {
         title: "累计成本完成率",
         ...defaultParam
       },
-      indexNum: null
+      indexNum: null,
+      cardTime:""
     };
+  },
+  watch:{
+    indexNum(newVal,oldVal){
+      if(newVal!==null){
+        setTimeout(()=>{
+          this.getBarData(newVal.ACCT_MONTH);
+          this.getChartData("#6bfaff",newVal.YL,"mychartCost");
+        },0);
+      }
+    }
   },
   methods: {
     sendMsg: function(tird) {
@@ -55,7 +67,7 @@ export default {
     },
     drawBarChart(id, color, xData, yData, maxData) {
       let _this = this;
-      var option = {
+      let option = {
         // backgroundColor: "#141f56",
         title: {
           show: false
@@ -134,16 +146,29 @@ export default {
           }
         ]
       };
-      
-      var thisChart = _this.$echarts.init(document.getElementById(id));
+      let thisChart = _this.$echarts.init(document.getElementById(id));
       thisChart.setOption(option);
       window.addEventListener("resize", () => {
         thisChart.resize();
       });
     },
+    getIndexNum() {
+      let _this = this;
+      this.$axios
+        .get("/cost/getIndexNum")
+        .then(function(res) {
+          console.log('成本',res)
+          if (res.data.resultCode === "1") {
+            let resultData = res.data.resultData;
+            _this.indexNum = resultData;
+            _this.cardTime = [_this.indexNum.ACCT_MONTH.substr(0, 4), _this.indexNum.ACCT_MONTH.substr(4, 2)].join("-");
+          }
+        })
+        .catch(function(e) {});
+    },
     getChartData(color, value, id) {
       let _this = this;
-      var option = {
+      let option = {
         tooltip: {
           trigger: "item",
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -227,30 +252,13 @@ export default {
           }
         ]
       };
-      var mychart = _this.$echarts.init(document.getElementById(id));
-      console.log('mychart',mychart)
-      mychart.setOption(option);
-      // window.addEventListener("resize", () => {
-      //   mychart.resize();
-      // });
-    },
-    getIndexNum() {
-      let _this = this;
-      this.$axios
-        .get("/cost/getIndexNum")
-        .then(function(res) {
-          console.log('成本',res)
-          if (res.data.resultCode === "1") {
-            let resultData = res.data.resultData;
-            _this.indexNum = resultData;
-            _this.getChartData("#6bfaff", resultData.YL, "mychart");
-            _this.getBarData(resultData.ACCT_MONTH);
-          }
-        })
-        .catch(function(e) {});
+      let thisChart = _this.$echarts.init(document.getElementById(id));
+      thisChart.setOption(option);
+      window.addEventListener("resize", () => {
+        thisChart.resize();
+      });
     },
     getBarData(monthId) {
-      alert(monthId);
        let _this = this;
       const params = {
         monthId: monthId
@@ -281,7 +289,7 @@ export default {
         .catch(function(e) {});
     }
   },
-  mounted() {
+  created() {
     this.getIndexNum();
   }
 };

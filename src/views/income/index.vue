@@ -2,14 +2,14 @@
   <div class="moveDiv" @click="sendMsg">
     <card :cardset="xs" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="cardCont flexard">
-        <el-popover placement="top" width="300" trigger="hover">
+        <el-popover placement="top" width="200" trigger="hover">
           <div style="color:#fff">
-            <p>单元类型（农村/城市）</p>
-            <p>市公司排名 {{cardData.XS_YS_ALL_ORDER}}</p>
+            <p>单元类型：{{cardData.WG_TYPE}}</p>
+            <p>市公司排名：{{cardData.XS_YS_ALL_ORDER}}</p>
             <!--  平均完成率 xxxx -->
-            <p>同类单元排名 {{cardData.XS_YS_TL_ORDER}}</p>
+            <p>同类单元排名：{{cardData.XS_YS_TL_ORDER}}</p>
             <!-- 平均完成率 xxxxx -->
-            <p>分公司排名 {{cardData.XS_YS_FGS_ORDER}}</p>
+            <p>分公司排名：{{cardData.XS_YS_FGS_ORDER}}</p>
             <!--  平均完成率 xxxx -->
           </div>
           <div style="font-size:50px" slot="reference">{{cardData.XS_WCL}}%</div>
@@ -37,12 +37,12 @@
               ></el-progress>
             </div>
           </div>
-          <el-popover placement="top" width="300" trigger="hover">
+          <el-popover placement="top" width="200" trigger="hover">
             <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>
-              <p>市公司排名 {{cardData.DY_YS_ALL_ORDER}}</p>
-              <p>同类单元排名 {{cardData.DY_YS_TL_ORDER}}</p>
-              <p>分公司排名 {{cardData.DY_YS_FGS_ORDER}}</p>
+              <p>单元类型：{{cardData.WG_TYPE}}</p>
+              <p>市公司排名：{{cardData.DY_YS_ALL_ORDER}}</p>
+              <p>同类单元排名：{{cardData.DY_YS_TL_ORDER}}</p>
+              <p>分公司排名：{{cardData.DY_YS_FGS_ORDER}}</p>
             </div>
             <div class="numDiv" slot="reference">{{cardData.DY_WCL}}%</div>
           </el-popover>
@@ -60,12 +60,12 @@
               ></el-progress>
             </div>
           </div>
-          <el-popover placement="top" width="300" trigger="hover">
+          <el-popover placement="top" width="200" trigger="hover">
             <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>
-              <p>市公司排名 {{cardData.BN_YS_ALL_ORDER}}</p>
-              <p>同类单元排名 {{cardData.BN_YS_TL_ORDER}}</p>
-              <p>分公司排名 {{cardData.BN_YS_FGS_ORDER}}</p>
+              <p>单元类型：{{cardData.WG_TYPE}}</p>
+              <p>市公司排名：{{cardData.BN_YS_ALL_ORDER}}</p>
+              <p>同类单元排名：{{cardData.BN_YS_TL_ORDER}}</p>
+              <p>分公司排名：{{cardData.BN_YS_FGS_ORDER}}</p>
             </div>
             <div class="numDiv" slot="reference">{{cardData.LJ_WCL}}%</div>
           </el-popover>
@@ -149,6 +149,7 @@ export default {
         .post("/Workbench/getIncomeIndex")
         .then(function(res) {
           _this.cardData = res.data.resultData;
+          console.log(_this.cardData);
           _this.monthId = res.data.resultData.monthId;
           _this.xs.chartLine.dataset = {
             xAxis: res.data.resultData.lineChart.map(v => v.ACCT_MONTH),

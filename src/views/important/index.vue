@@ -93,6 +93,7 @@ export default {
       var thisChart = this.$echarts.init(
         document.getElementById("impLineChart")
       );
+      thisChart.clear();
       thisChart.setOption({
         color: [
           "#c12e34",

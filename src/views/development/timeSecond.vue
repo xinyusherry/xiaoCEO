@@ -32,7 +32,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.YD_PERCENTAGE_D}}%</span>
+          <span>{{progress.YD_PERCENTAGE_D.toFixed(2)}}%</span>
         </div>
         <div class="flex-between">
           <span>月完成</span>
@@ -45,7 +45,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.YD_PERCENTAGE_M}}%</span>
+          <span>{{progress.YD_PERCENTAGE_M.toFixed(2)}}%</span>
         </div>
       </div>
       <div class="flex-item">
@@ -69,7 +69,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.KD_PERCENTAGE_D}}%</span>
+          <span>{{progress.KD_PERCENTAGE_D.toFixed(2)}}%</span>
         </div>
         <div class="flex-between">
           <span>月完成</span>
@@ -82,7 +82,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.KD_PERCENTAGE_M}}%</span>
+          <span>{{progress.KD_PERCENTAGE_M.toFixed(2)}}%</span>
         </div>
       </div>
     </div>
@@ -108,8 +108,8 @@ export default {
     return {
       chartBar: {
         dataset: {
-          xAxis: ["新零售", "小区营销"],
-          data: [100, 200, 300, 400]
+          xAxis: [],
+          data: []
         },
         colors: ["#F868AF", "#F25F19"]
       },

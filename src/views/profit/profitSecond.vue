@@ -135,89 +135,6 @@ export default {
           });
         })
         .catch(function(e) {
-          let data = {
-            loginId: "weizy11",
-            resultData: [
-              {
-                xAxis: [
-                  "201801",
-                  "201802",
-                  "201803",
-                  "201804",
-                  "201805",
-                  "201806",
-                  "201807",
-                  "201808",
-                  "201809",
-                  "201810",
-                  "201811",
-                  "201812",
-                  "201901"
-                ],
-                data: [
-                  "1611543.86",
-                  "1940179.73",
-                  "1481750.31",
-                  "1976127.46",
-                  "2025397.96",
-                  "2010262.22",
-                  "2080534.59",
-                  "2071552.6",
-                  "2051527.75",
-                  "1987352.09",
-                  "1999643.64",
-                  "2057838.24",
-                  "1954414.17"
-                ],
-                name: "利润"
-              },
-              {
-                xAxis: [
-                  "201801",
-                  "201802",
-                  "201803",
-                  "201804",
-                  "201805",
-                  "201806",
-                  "201807",
-                  "201808",
-                  "201809",
-                  "201810",
-                  "201811",
-                  "201812",
-                  "201901"
-                ],
-                data: [
-                  "1611543.86",
-                  "1940179.73",
-                  "1481750.31",
-                  "1976127.46",
-                  "2025397.96",
-                  "2010262.22",
-                  "2080534.59",
-                  "2071552.6",
-                  "2051527.75",
-                  "1987352.09",
-                  "1999643.64",
-                  "2057838.24",
-                  "1954414.17"
-                ],
-                name: "准利润"
-              }
-            ],
-            loginName: "魏忠义",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          data.resultData.map(v => {
-            _this.lineChart.dataset.xAxis = v.xAxis;
-            if (v.name === "利润") {
-              _this.lineChart.dataset.data[0] = v.data.map(num => Number(num));
-            } else {
-              _this.lineChart.dataset.data[1] = v.data.map(num => Number(num));
-            }
-            return;
-          });
         });
     },
     postBar() {
@@ -244,44 +161,6 @@ export default {
           });
         })
         .catch(function(e) {
-          let data = {
-            loginId: "weizy11",
-            resultData: [
-              {
-                data: [
-                  "161.15",
-                  "194.02",
-                  "148.18",
-                  "197.61",
-                  "202.54",
-                  "201.03",
-                  "208.05",
-                  "207.16",
-                  "205.15",
-                  "198.74",
-                  "199.96",
-                  "205.78"
-                ],
-                name: "2018"
-              },
-              {
-                data: ["195.44", "178.82"],
-                name: "2019"
-              }
-            ],
-            loginName: "魏忠义",
-            resultCode: "1",
-            resultDesc: "success"
-          };
-          data.resultData.map(v => {
-            _this.barChart.dataset.xAxis = v.xAxis;
-            if (v.name === "2018") {
-              _this.barChart.dataset.data[0] = v.data.map(num => Number(num));
-            } else {
-              _this.barChart.dataset.data[1] = v.data.map(num => Number(num));
-            }
-            return;
-          });
         });
     }
   },
