@@ -127,6 +127,7 @@ export default {
         )
         .then(function(res) {
           let data = res.data;
+          console.log(data);
           const head = {
             ORGAN_NAME: "经理名称",
             HR_EMP_CODE: "人力编码",
@@ -164,6 +165,7 @@ export default {
         )
         .then(function(res) {
           let data = res.data;
+          console.log(data);
           const head = {
             ORGAN_NAME: "小区名称",
             ORGAN_ID: "小区ID",

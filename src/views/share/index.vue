@@ -49,11 +49,11 @@ export default {
             that.time = formatterTime(resultData[0].ACCT_MONTH);
             that.monthId = resultData[0].ACCT_MONTH;
             let data = resultData[0];
-            if(data){
-              for(let key in data){
-                data[key] =  data[key].replace(/\s*/g,"").split(',').join('');
-              }
-            }
+            // if(data){
+            //   for(let key in data){
+            //     data[key] =  data[key].replace(/\s*/g,"").split(',').join('');
+            //   }
+            // }
             that.data = data;
           }
         })

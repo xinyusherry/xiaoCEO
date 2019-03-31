@@ -111,7 +111,7 @@ export default {
           "11月",
           "12月"
         ],
-        data: [dataArr1, dataArr2, dataArr3, dataArr4]
+        data: []
       },
       pieDataset: {
         data: [

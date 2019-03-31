@@ -58,10 +58,8 @@ export default {
   methods: {
     post(params) {
       let _this = this;
-
       this.$axios
-        .get("/Workbench/getKeyTarget?"+
-            qs.stringify({ JsonParam: JSON.stringify(params) }))
+        .get("/Workbench/getKeyTarget")
         .then(function(res) {
           let data = res.data;
           _this.mode = data.resultData.MORD;

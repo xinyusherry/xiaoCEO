@@ -143,7 +143,6 @@ export default {
     },
     getChartData(color, value, id) {
       let _this = this;
-     
       var option = {
         tooltip: {
           trigger: "item",
@@ -240,7 +239,7 @@ export default {
       this.$axios
         .get("/cost/getIndexNum")
         .then(function(res) {
-          console.log('chengben ',res)
+          console.log('成本',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.indexNum = resultData;
@@ -251,19 +250,20 @@ export default {
         .catch(function(e) {});
     },
     getBarData(monthId) {
+      alert(monthId);
        let _this = this;
       const params = {
         monthId: monthId
       };
       this.$axios
-        .get(
+        .post(
           "/cost/getBarData?" +
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
-            console.log("resultData",resultData)
+            console.log("成本折线图",resultData)
             let array = [];
             for(let k = 0;k< resultData.length;k++){
               array.push(resultData[k].CURRENT_VALUE)

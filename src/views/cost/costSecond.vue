@@ -91,7 +91,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
         padding: "18px"
       },
       headerBgStyle: {
