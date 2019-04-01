@@ -241,7 +241,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('续约表格',res)
+          //console.log('续约表格',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.tableData2 = resultData
@@ -259,7 +259,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('趸交表格',res)
+          //console.log('趸交表格',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.tableData1 = resultData
@@ -313,6 +313,7 @@ export default {
       ywType:"06"
     }
     this.daoQiWarningGWDayJl(djParam);
+    this.getTabDate();
   }
 
 };

@@ -610,7 +610,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('表格',res)
+          //console.log('表格',res)
           if(res.data==""){
             _this.tableData = [];
           }

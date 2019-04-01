@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="line"></div>
-    <div class="main" @click="sendMsg(isDay)">
+    <div class="main" @click="sendMsg(sendParams)">
       <div class="main_top" v-if="indexNum">
         <div>
           <div class="spot"></div>
@@ -42,33 +42,11 @@
           <p class="num_desc">用户净增</p>
         </div>
         <div>
-          <el-popover
-            placement="top"
-            width="300"
-            trigger="hover">
-            <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>  
-              <p>市公司排名xxx  平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
-              <p>分公司排名xxx 平均完成率 xxxx</p>
-            </div>
-            <p class="desc mb14" slot="reference">{{bottomData.STL}}%</p>
-          </el-popover>
+          <p class="desc mb14">{{bottomData.STL}}%</p>
           <p class="num_desc">住宅用户渗透率</p>
         </div>
         <div class="brnone">
-          <el-popover
-            placement="top"
-            width="300"
-            trigger="hover">
-            <div style="color:#fff">
-              <p>单元类型（农村/城市）</p>  
-              <p>市公司排名xxx  平均完成率 xxxx</p>
-              <p>同类单元排名 xxxx 平均完成率  xxxxx</p> 
-              <p>分公司排名xxx 平均完成率 xxxx</p>
-            </div>
-            <p class="desc mb14" slot="reference">{{bottomData.SZL}}%</p>
-          </el-popover>
+          <p class="desc mb14">{{bottomData.SZL}}%</p>
           <p class="num_desc">端口实占率</p>
         </div>
       </div>
@@ -107,16 +85,20 @@ export default {
       },
       indexNum:null,
       bottomData:null,
-      time:""
+      time:"",
+      sendParams:{
+        dateD:"",
+        dateM:""
+      },
     };
   },
   methods: {
-    sendMsg: function() {
+    sendMsg: function(sendParams) {
       const param = {
         dialogCompent: "arriveSecond",
         dialogTitle: "到达"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      this.$emit("headCallBack", param,sendParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     changeDay(val){
       this.getIndexNum(val)
@@ -132,14 +114,15 @@ export default {
           qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('到达',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.indexNum = resultData;
             if(type === 'day'){
               _this.time = formatterTime(resultData.ACCT_DAY);
+              _this.sendParams.dateD = formatterTime(resultData.ACCT_DAY);
             }else{
                _this.time = formatterTime(resultData.ACCT_MONTH);
+               _this.sendParams.dateM = formatterTime(resultData.ACCT_MONTH);
             }
             _this.gerLineData(type);
             _this.getIndexNumData();
@@ -172,18 +155,25 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('折线',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             let xAxis = [],yAxis = [],yAxis2 = [];
             for(let i = 0;i<resultData.length;i++){
-              xAxis.push(resultData[i].ACCT_DAY);
+              if(_this.isDay == 'day'){
+                xAxis.push(resultData[i].ACCT_DAY);
+              }else{
+                xAxis.push(resultData[i].ACCT_MONTH);
+              }
               yAxis.push(resultData[i].KD_NUM);
               yAxis2.push(resultData[i].YD_NUM);
-              _this.lr.chartLine.dataset.xAxis = xAxis;
-              _this.lr.chartLine.dataset.data = yAxis;
-              _this.lr2.chartLine.dataset.xAxis = xAxis;
-              _this.lr2.chartLine.dataset.data = yAxis2;
+              _this.lr.chartLine.dataset = {
+                xAxis: xAxis,
+                data: yAxis.map(num => Number(num))
+              };
+              _this.lr2.chartLine.dataset = {
+                xAxis: xAxis,
+                data: yAxis2.map(num => Number(num))
+              };
             }
           }
         })

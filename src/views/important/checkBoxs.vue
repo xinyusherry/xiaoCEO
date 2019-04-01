@@ -47,6 +47,7 @@
 <script>
 import qs from "qs";
 export default {
+  props:['sendParams'],
   data() {
     return {
       dateD: "",
@@ -72,7 +73,6 @@ export default {
           });
         })
         .catch(function(e) {
-          console.log(e);
         });
     },
     sendMsg(isOk) {
@@ -83,153 +83,11 @@ export default {
           [date]: this.dateType === "D" ? this.dateD : this.dateM,
           proCodes: this.checkedIds
         };
-        this.submit(param);
+        //this.submit(param);
         this.$emit("headCallBack", false, param);
       } else {
         this.$emit("headCallBack", false);
       }
-    },
-    setDefault() {
-      const resultData = {
-        MORD: "D",
-        dayId: "20190302",
-        monthId: "201902",
-        rTarget: [
-          {
-            PRO_TYPE: "001",
-            PRO_TYPE_NAME: "业务类",
-            productList: [
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "单卡：冰红99/129+尊享红199/398/599/799",
-                IS_DEFAULT: 1,
-                PRODUCT_CODE: "001001"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "融合：全家红138+尊享红融合199/398/599/799",
-                IS_DEFAULT: 1,
-                PRODUCT_CODE: "001002"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "尊红迁转",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001003"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "M计划",
-                IS_DEFAULT: 1,
-                PRODUCT_CODE: "001004"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "TV增值线下销售情况",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001005"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "智家发展",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001006"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "自建厅移动发展",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001007"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "核心渠道99及以上",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001008"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "核心渠道138及以上",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001009"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "存拉移",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001010"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "存拉宽",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001011"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "业务发展有效能人数量",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001012"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "宽带融合发展量",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001013"
-              },
-              {
-                XZ_GROUP: "10",
-                PRODUCT_NAME: "社会渠道宽带融合轻工具发展",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "001014"
-              }
-            ]
-          },
-          {
-            PRO_TYPE: "002",
-            PRO_TYPE_NAME: "拆机类",
-            productList: [
-              {
-                XZ_GROUP: "20",
-                PRODUCT_NAME: "移动主拆",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "002001"
-              },
-              {
-                XZ_GROUP: "20",
-                PRODUCT_NAME: "移动欠拆",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "002002"
-              },
-              {
-                XZ_GROUP: "20",
-                PRODUCT_NAME: "宽带主拆",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "002003"
-              },
-              {
-                XZ_GROUP: "20",
-                PRODUCT_NAME: "宽带欠拆",
-                IS_DEFAULT: 0,
-                PRODUCT_CODE: "002004"
-              }
-            ]
-          }
-        ]
-      };
-      this.dateType = resultData.MORD;
-      this.dateD =
-        resultData.dayId.slice(0, 4) +
-        "-" +
-        resultData.dayId.slice(4, 6) +
-        "-" +
-        resultData.dayId.slice(6, 8);
-      this.dateM =
-        resultData.monthId.slice(0, 4) + "-" + resultData.monthId.slice(4, 6);
-      this.checkOptions = resultData.rTarget;
-      resultData.rTarget.map((obj, index) => {
-        this.$set(this.checkOptions[index], "checkedIds", []);
-      });
     },
     changeBox() {
       this.checkedIds = [];
@@ -244,15 +102,11 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          // console.log("成功了吗？",res)
         })
         .catch(e => {});
     }
   },
   created() {
-    // setTimeout(() => {
-    //   this.setDefault();
-    // }, 0);
     this.post();
   }
 };

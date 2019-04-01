@@ -45,7 +45,7 @@
                 trigger="hover"
                 @show="hoverShow(tabVal,'tableLineChart-sj'+scope.row.ORGAN_ID,scope.row.ORGAN_ID,tabVal=='sj'?'小区收入及用户变化趋势':'小区渗透率变化趋势')"
               >
-                <div :id="'tableLineChart-sj'+scope.row.ORGAN_ID" style="width:400px;height:200px"></div>
+                <div :id="'tableLineChart-sj'+scope.row.ORGAN_ID" style="height:200px"></div>
                 <div slot="reference">{{scope.row[col.prop]}}</div>
               </el-popover>
               <div v-if="tabVal=='-1'" slot="reference">{{scope.row[col.prop]}}</div>
@@ -92,25 +92,8 @@ export default {
       lineChart: {
         dataset: {
           legendData: [{ name: "双降" }, { name: "低渗" }],
-          xAxis: [
-            "12月",
-            "1月",
-            "2月",
-            "3月",
-            "4月",
-            "5月",
-            "6月",
-            "7月",
-            "8月",
-            "9月",
-            "10月",
-            "11月",
-            "12月"
-          ],
-          data: [
-            [100, 200, 300, 400, 500, 100, 200, 300, 400, 500, 100, 200, 300],
-            [500, 400, 300, 200, 100, 500, 400, 300, 200, 100, 500, 400, 300]
-          ]
+          xAxis: [],
+          data: []
         },
         colors: ["#0097FF", "#F5515F"]
       },
@@ -209,6 +192,7 @@ export default {
     },
     drawLineChart(id) {
       let thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       thisChart.setOption({
         color: this.lineChart.colors,
         legend: {
@@ -249,6 +233,7 @@ export default {
         },
         yAxis: {
           type: "value",
+          name:"单位（个）",
           nameTextStyle: {
             color: "#24FAFF"
           },
@@ -286,6 +271,7 @@ export default {
     },
     drawsjChart(id, title, dataset) {
       let thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       thisChart.setOption({
         color: ["#0097FF", "#F868AF"],
         title: {
@@ -327,6 +313,7 @@ export default {
         yAxis: [
           {
             type: "value",
+            name:"单位(元)",
             nameTextStyle: {
               color: "#24FAFF"
             },
@@ -347,6 +334,7 @@ export default {
           },
           {
             type: "value",
+            name:"单位(%)",
             nameTextStyle: {
               color: "#24FAFF"
             },
@@ -384,7 +372,8 @@ export default {
       });
     },
     drawdsChart(id, title, dataset) {
-      var thisChart = this.$echarts.init(document.getElementById(id));
+      let thisChart = this.$echarts.init(document.getElementById(id));
+      thisChart.clear();
       thisChart.setOption({
         color: ["#0097FF", "#F868AF"],
         title: {
@@ -425,6 +414,7 @@ export default {
         },
         yAxis: {
           type: "value",
+          name:"单位(%)",
           nameTextStyle: {
             color: "#24FAFF"
           },

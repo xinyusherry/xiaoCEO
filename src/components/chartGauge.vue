@@ -11,7 +11,7 @@ export default {
   mounted() {
     let that = this;
     setTimeout(() => {
-      console.log("仪表盘",that.data)
+      //console.log("仪表盘",that.data)
       var thisChart = this.$echarts.init(document.getElementById(this.id));
       var mEcharts = this.$echarts;
       thisChart.on("legendselectchanged", function(event) {
@@ -143,7 +143,7 @@ export default {
                 color: "#41c9da"
               },
             formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '元'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '万'
               }
             },
             title: {
@@ -270,7 +270,7 @@ export default {
                 color: "#41c9da"
               },
                formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '元'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
               }
             },
             title: {
@@ -395,7 +395,7 @@ export default {
                 color: "#41c9da"
               },
               formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '元'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
               }
             },
             title: {

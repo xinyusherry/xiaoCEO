@@ -4,7 +4,7 @@
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
-          <span class="hj">(合计值)</span>
+          <span class="hj">合计值 （单位：元）</span>
         </h3>
         <el-popover placement="top" width="200" trigger="hover">
           <div v-if="zlr.rankData!=null" style="color:#fff">
@@ -29,7 +29,7 @@
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
-          <span class="hj">(合计值)</span>
+          <span class="hj">合计值 （单位：元）</span>
         </h3>
         <el-popover placement="top" width="200" trigger="hover">
           <div v-if="lr.rankData!=null" style="color:#fff">
@@ -112,7 +112,7 @@ export default {
       _this.$axios.all([getNumData(), getRankData()])
         .then(_this.$axios.spread(function (res, resRank) {
           // 两个请求现在都执行完成
-          console.log("利润",res,resRank);
+          //console.log("利润",res,resRank);
           let data = res.data;
           _this.cardDate = data.resultData[0].ACCT_MONTH;
           _this.lr.value = data.resultData[0].GROSS_PROFIT_T;

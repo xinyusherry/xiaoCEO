@@ -32,7 +32,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.YD_PERCENTAGE_D.toFixed(2)}}%</span>
+          <span>{{progress.YD_PERCENTAGE_D}}%</span>
         </div>
         <div class="flex-between">
           <span>月完成</span>
@@ -45,7 +45,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.YD_PERCENTAGE_M.toFixed(2)}}%</span>
+          <span>{{progress.YD_PERCENTAGE_M}}%</span>
         </div>
       </div>
       <div class="flex-item">
@@ -69,7 +69,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.KD_PERCENTAGE_D.toFixed(2)}}%</span>
+          <span>{{progress.KD_PERCENTAGE_D}}%</span>
         </div>
         <div class="flex-between">
           <span>月完成</span>
@@ -82,7 +82,7 @@
               :show-text="false"
             ></el-progress>
           </div>
-          <span>{{progress.KD_PERCENTAGE_M.toFixed(2)}}%</span>
+          <span>{{progress.KD_PERCENTAGE_M}}%</span>
         </div>
       </div>
     </div>

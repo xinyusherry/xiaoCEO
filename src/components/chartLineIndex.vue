@@ -51,7 +51,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          // scale: true,
+          scale: true,
           axisLabel: {
             show: false
           },

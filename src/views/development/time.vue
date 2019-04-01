@@ -47,7 +47,7 @@ export default {
       const thirdParams = {
         acctDay: this.acctDay
       };
-      console.log("日期：", this.acctDay);
+      //console.log("日期：", this.acctDay);
       this.$emit("headCallBack", param, thirdParams); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     post() {
@@ -74,7 +74,6 @@ export default {
           });
         })
         .catch(function(e) {
-          console.log(e);
         });
     }
   },

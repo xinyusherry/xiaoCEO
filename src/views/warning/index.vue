@@ -1,6 +1,6 @@
 <template>
   <div class="moveDiv" @click="sendMsg" :propsTime="day.time">
-    <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px" v-if="xyData">
+    <card :cardset="day.cardset" :timetype="'day'" :propsTime="day.time" style="margin-right:10px" v-if="xyData">
       <div class="card-content">
         <div class="bigNum">
           {{xyData.NUM_XY}}
@@ -101,7 +101,7 @@ export default {
       this.$axios
         .get("/maturityWarning/getIndexYdData")
         .then(function(res) {
-          console.log("续约", res);
+          //console.log("续约", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.xyData = resultData;
@@ -123,7 +123,7 @@ export default {
       this.$axios
         .get("/maturityWarning/getIndexGwData")
         .then(function(res) {
-          console.log("趸交", res);
+          //console.log("趸交", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.djData = resultData;

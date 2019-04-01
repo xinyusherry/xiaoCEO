@@ -9,13 +9,22 @@
           <li :class=" isActive === 0 ?activeClass:unActiveClass" @click="changeTab(0)">产品分类</li>
           <li :class=" isActive === 1 ?activeClass:unActiveClass" @click="changeTab(1)">保有率</li>
         </ul>
-        <el-radio-group v-model="isDay" @change="dayTypeChange">
+        <el-radio-group v-model="isDay" @change="dayTypeChange" v-show="isActive === 0">
           <el-radio :label="'day'">日</el-radio>
           <el-radio :label="'month'">月</el-radio>
         </el-radio-group>
         <el-date-picker
-          v-model="date"
-          :type="dateType"
+          v-model="dateD"
+          type="date"
+          v-show="isDay=='day' && isActive === 0"
+          placeholder="选择日期"
+          style="background:#070d12;"
+          @change="dateChange"
+        ></el-date-picker>
+        <el-date-picker
+          v-model="dateM"
+          type="month"
+          v-show="isDay=='month' || isActive === 1"
           placeholder="选择日期"
           style="background:#070d12;"
           @change="dateChange"
@@ -84,7 +93,7 @@
               :key="col.key"
               :prop="col.prop"
               :label="col.label"
-              :sortable="col.prop.search(/NUM/)===-1?false:true"
+              :sortable="idx>3?true:false"
               align="center"
               v-if="idx!==0"
               :width="col.length>7?'280':'190'"
@@ -103,30 +112,20 @@
 <script>
 import qs from "qs";
 import moment from "moment";
+import { formatterTime } from "../../utils/index.js";
 export default {
   components: {},
+  props: ["sendParams"],
   data() {
     return {
       isActive: 0,
       isDay: "day",
-      dateType: "date",
-      xAxisData: [
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18"
-      ],
-
+      xAxisData: [],
       activeClass: "down",
       unActiveClass: "xq",
-      date: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+      date:"",
+      dateD: this.sendParams.dateD,
+      dateM: "",
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -158,7 +157,15 @@ export default {
         }
       ],
       value: "01"
-    };
+    }
+  },
+  watch:{
+    isDay:{
+      handler(newVal) {
+    　　this.date = newVal==='day'? this.dateD : this.dateM;
+  　　},
+  　　immediate: true
+    }
   },
   methods: {
     getDownloadData(){
@@ -196,24 +203,21 @@ export default {
     dayTypeChange(val) {
       let _this = this;
       this.date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-      
       this.dateChange();
     },
     dateChange() {
       let _this = this;
-      if (_this.isActive === 0&&_this.isDay === "day") {
-        _this.dateType = "date";
+      if (_this.isActive === 0 && _this.isDay === "day") {
           const param = {
-            dayId: moment(_this.date).format("YYYYMMDD"),
+            dayId: moment(_this.dateD).format("YYYYMMDD"),
             type: "day"
           };
           _this.getServicePieData(param);
           _this.getProductPieData(param);
       }
-      if (_this.isActive === 0&&_this.isDay === "month") {
-        _this.dateType = "month";
+      if (_this.isActive === 0 && _this.isDay === "month") {
           const param = {
-            monthId: moment(_this.date).format("YYYYMM"),
+            monthId: moment(_this.dateM).format("YYYYMM"),
             type: "month"
           };
           _this.getServicePieData(param);
@@ -222,7 +226,7 @@ export default {
 
       if (_this.isActive === 1) {
         const param = {
-          monthId: moment(_this.date).format("YYYYMM")
+          monthId: moment(_this.dateM).format("YYYYMM")
         };
         _this.getXzLineData(param);
         _this.getClLineData(param);
@@ -250,7 +254,6 @@ export default {
         ...param,
         ...merge
       };
-      console.log('chartId',chartId)
       // /arrive/getCommunityData
         this.$axios
         .get(
@@ -258,12 +261,15 @@ export default {
           qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log('折线二',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             let xAxis = [],yAxis = [];
             for(let i = 0; i<resultData.length;i++){
-              xAxis.push(resultData[i].ACCT_DAY);
+              if (_this.isDay === "day") {
+                xAxis.push(resultData[i].ACCT_DAY);
+              } else {
+                xAxis.push(resultData[i].ACCT_MONTH);
+              }
               yAxis.push(resultData[i].USER_NUM);
             }
             _this.drawLineChart(chartId,'#5FA8F2',xAxis,yAxis)
@@ -755,30 +761,29 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("表格d", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             const object = {
-               MANAGER_NAME: "所属经理",
-               ORGAN_ID: "小区编码",
-              RH_XXH_NUM: "孝心红",
-              GH_NUM: "小区内固话用户数",
+              ORGAN_NAME: "销售单元",
+              ORGAN_ID: "小区编码",
+              MANAGER_NAME: "所属经理",
+              XQ_TYPE: "小区类型",
+              HOME_NUM: "住宅数",
+              STL: "住宅用户渗透压率",
               DKZY_NUM: "端口数",
               DKL: "端口实占率",
-              G4_NUM: "4G",
+              GH_NUM: "小区内固话用户数",
               KD_NUM: "小区内宽带用户数",
               G2_NUM: "2G",
-              STL: "住宅用户渗透压率",
-              IPTV: "IPTV",
-              ORGAN_NAME: "销售单元",
               G3_NUM: "3G",
+              G4_NUM: "4G",
+              IPTV: "IPTV",
               DG_NUM: "单固",
-              HOME_NUM: "住宅数",
               DK_NUM: "单宽",
               RH_NUM: "融合",
+              RH_XXH_NUM: "孝心红",
               RH_QJH_NUM: "全家红",
               RH_ZXH_NUM: "尊享红",
-              XQ_TYPE: "小区类型"
             };
             let tHeadData = [];
             for (const key in object) {
@@ -799,6 +804,20 @@ export default {
         })
         .catch(function(e) {});
     }
+  },
+  created(){
+    let _this = this;
+    this.$axios
+    .get(
+      "/arrive/getIndexNum?" +
+      qs.stringify({ JsonParam: JSON.stringify({type:'month'}) })
+    )
+    .then(function(res) {
+      if (res.data.resultCode === "1") {
+        _this.dateM = formatterTime(res.data.resultData.ACCT_MONTH);
+      }
+    })
+    .catch(function(e) {});
   },
   mounted() {
     let _this = this;

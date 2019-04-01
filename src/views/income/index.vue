@@ -15,7 +15,7 @@
           <div style="font-size:50px" slot="reference">{{cardData.XS_WCL}}%</div>
         </el-popover>
         <div style="color: #7594C3;">{{cardData.SR_NUM}}（元）</div>
-        <div style="width:100%; height:120px">
+        <div style="width:100%; height:80px">
           <chartLine
             :id="'xsIncomeChart'"
             :dataset="xs.chartLine.dataset"
@@ -149,7 +149,6 @@ export default {
         .post("/Workbench/getIncomeIndex")
         .then(function(res) {
           _this.cardData = res.data.resultData;
-          console.log(_this.cardData);
           _this.monthId = res.data.resultData.monthId;
           _this.xs.chartLine.dataset = {
             xAxis: res.data.resultData.lineChart.map(v => v.ACCT_MONTH),
@@ -157,7 +156,6 @@ export default {
           };
         })
         .catch(function(e) {
-          console.log(e);
         });
     }
   },

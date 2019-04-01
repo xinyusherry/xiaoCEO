@@ -107,7 +107,11 @@ export default {
         dialogCompent: "dayMonthDetail",
         dialogTitle: "发展"
       };
-      this.$emit("headCallBack", param); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
+      let sendDate = {
+        dateD: this.day.time,
+        dateM: this.month.time,
+      }
+      this.$emit("headCallBack", param,sendDate); //第一个参数是父组件中v-on绑定的自定义回调方法，第二个参数为传递的参数
     },
     getData() {
        let that = this;
@@ -118,6 +122,7 @@ export default {
             let resultData = res.data.resultData;
             // let dataset = [];
             // let dataset_M = [];
+            //console.log("发展日月",res);
             for (let i = 0, len = resultData.length; i < len; i++) {
               switch (resultData[i].SVC_TYPE) {
                 case "GW_D":

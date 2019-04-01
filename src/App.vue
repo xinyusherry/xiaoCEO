@@ -299,7 +299,6 @@ export default {
         _this.layout = res.data.resultData;
       })
       .catch(function(e) {
-        console.log(e);
       });
     this.getSwiperData();
   },
@@ -315,7 +314,6 @@ export default {
           .post("/Workbench/updateUserModule", params)
           .then(function(res) {})
           .catch(function(e) {
-            console.log(e);
           });
       }
     }

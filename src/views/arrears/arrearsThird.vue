@@ -18,7 +18,7 @@
           height="300"
         >
           <el-table-column prop="AREA_NAME"  label="分公司" align="center"  width="180" ></el-table-column>
-          <el-table-column align="center" prop="DEVICE_NUMBER_GH " label="固话号码" width="180" sortable></el-table-column>
+          <el-table-column align="center" prop="DEVICE_NUMBER_GH" label="固话号码" width="180" sortable></el-table-column>
           <el-table-column prop="QIANFEI_GH" align="center" label="固话欠费额" sortable width="180"></el-table-column>
 
           <!-- <el-table-column prop="BALANCAE"  label="固话往月实时欠费额" align="center"  sortable width="200"></el-table-column> -->
@@ -167,7 +167,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("table3", res);
+          //console.log("table3", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             that.tableData = resultData;

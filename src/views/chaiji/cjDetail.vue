@@ -47,6 +47,14 @@
           <el-table-column prop="ORGAN_NAME" align="center" label="名称"></el-table-column>
           <el-table-column align="center" label="主拆" width="180" sortable prop="CJ_GWZD_NUM"></el-table-column>
           <el-table-column prop="CJ_GWQF_NUM" label="欠拆" align="center" sortable></el-table-column>
+          <el-table-column
+            label="操作"
+            align="center"
+            v-if="tableType === 'community'">
+            <template slot-scope="scope">
+                <el-button class="btn-detail" size="small" @click="HrefToTable(scope.row['ORGAN_ID'])">一区一表</el-button>
+            </template>
+          </el-table-column>
         </el-table>
       </div>
     </div>
@@ -84,7 +92,6 @@ export default {
           require("@/assets/images/tabBg.png") +
           ") left top no-repeat",
         backgroundSize: "100% 100%",
-        height: "297px",
         padding: "18px"
       },
       headerBgStyle: {
@@ -127,6 +134,9 @@ export default {
           monthId:that.sendParams.monthId
         }
       }
+      this.getTopNum(type);
+      this.getLineData(type);
+      this.getPieData(type);
       const params = {
         type: type,
         tableType: that.tableType,
@@ -334,7 +344,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("pie", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             let gwPieArr = [],
@@ -367,7 +376,6 @@ export default {
             }
             that.gwPieArr = gwPieArr;
             that.ywPieArr = ywPieArr;
-            console.log("gwPieArr", gwPieArr);
             //固网
             that.drawPieChart("pie", gwPieArr);
           }
@@ -450,7 +458,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("表", res);
+          //console.log("表", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             resultData.map((item, index) => {
@@ -468,6 +476,11 @@ export default {
       } else {
         return "";
       }
+    },
+    HrefToTable(organId){
+      let dayId = moment(this.date).format("YYYYMMDD");
+      let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
+      window.open(url,'_blank');
     }
   },
   mounted() {
@@ -491,7 +504,7 @@ export default {
 };
 </script>
 
-<style lang="less">
+<style scope lang="less">
 .header {
   display: flex;
   justify-content: space-between;
@@ -555,5 +568,12 @@ export default {
 .table {
   margin-top: 20px;
   position: relative;
+}
+.btn-detail,
+.btn-detail:hover,
+.btn-detail:focus {
+  background-image: linear-gradient(-225deg, #a834ef 0%, #2ac6ff 100%) !important;
+  border: none !important;
+  color: #fff !important;
 }
 </style>

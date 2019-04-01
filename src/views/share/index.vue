@@ -44,7 +44,7 @@ export default {
         .post("/zlsyfx/index")
         .then(function(res) {
           if (res.data.resultCode === "1") {
-            console.log("增量", res);
+            //console.log("增量", res);
             let resultData = res.data.resultData;
             that.time = formatterTime(resultData[0].ACCT_MONTH);
             that.monthId = resultData[0].ACCT_MONTH;

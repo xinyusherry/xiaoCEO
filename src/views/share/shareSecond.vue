@@ -130,7 +130,6 @@ export default {
      changeFormula(isText){
       this.isText = !isText;
       let _this = this;
-      console.log(_this.formula)
     },
     dateChange(value) {
        let that = this;
@@ -266,7 +265,9 @@ export default {
     getFormulaAndTableData(params){
       let _this = this;
         this.$axios
-        .get("/zlsyfx/getFormulaAndTableData?"+qs.stringify({ JsonParam: JSON.stringify(params) }))
+        .get("/zlsyfx/getFormulaAndTableData?"+
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;

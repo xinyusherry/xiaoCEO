@@ -122,7 +122,6 @@ export default {
           _this.date = data.resultData.ACCT_MONTH;
         })
         .catch(function(e) {
-          console.log(e);
         });
     }
   },

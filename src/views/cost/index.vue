@@ -4,7 +4,7 @@
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
-          <span class="hj">(合计值)</span>
+          <span class="hj">合计值 （单位：元）</span>
         </h3>
         <h3 class="total_num" >{{indexNum.FINISH_VALUE}}</h3>
         <div class="line">
@@ -157,7 +157,7 @@ export default {
       this.$axios
         .get("/cost/getIndexNum")
         .then(function(res) {
-          console.log('成本',res)
+          //console.log('成本',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.indexNum = resultData;
@@ -271,7 +271,6 @@ export default {
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
-            console.log("成本折线图",resultData)
             let array = [];
             for(let k = 0;k< resultData.length;k++){
               array.push(resultData[k].CURRENT_VALUE)

@@ -21,8 +21,17 @@
     <div>
       <div class="btnList header">
         <el-date-picker
-          v-model="date"
-          :type="dateType"
+          v-model="dateD"
+          type="date"
+          v-show="isDay==='r'"
+          placeholder="选择日期"
+          style="background:#070d12;"
+          @change="dateChange"
+        ></el-date-picker>
+        <el-date-picker
+          v-model="dateM"
+          type="month"
+          v-show="isDay!=='r'"
           placeholder="选择日期"
           style="background:#070d12;"
           @change="dateChange"
@@ -43,6 +52,7 @@
       </div>
       <div class="table" :style="tableBgStyle">
         <el-table
+        v-if="resultTitle!=null"
           :data="tableData"
           style="width: 100%;"
           :cell-style="cellStyle"
@@ -51,23 +61,23 @@
           stripe
            height= "280"
         >
-          <el-table-column prop="ORGAN_NAME" align="center" label="人员" width="200">
+          <el-table-column prop="ORGAN_NAME" align="center" :label="resultTitle.name" width="200">
             <template slot-scope="scope">
-              <el-popover placement="right" width="400" trigger="hover">
-                <div :id="'tableLineChart'+scope.row.index" style="width:400px;height:200px"></div>
+              <el-popover placement="right" width="400" trigger="hover" @show="hoverChart(scope.row.ORGAN_ID,'tableLineChart-dev'+scope.row.index)">
+                <div :id="'tableLineChart-dev'+scope.row.index" style="height:200px"></div>
                 <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column prop="name1" align="center" label="单宽" sortable></el-table-column>
-          <el-table-column prop="name2" align="center" label="融合" sortable></el-table-column>
-          <el-table-column prop="name3" align="center" label="尊享红" sortable></el-table-column>
-          <el-table-column prop="name4" align="center" label="全家红" sortable></el-table-column>
-          <el-table-column prop="name5" align="center" label="孝心红" sortable></el-table-column>
+          <el-table-column prop="name1" align="center" :label="resultTitle['name1']" sortable></el-table-column>
+          <el-table-column prop="name2" align="center" :label="resultTitle['name2']" sortable></el-table-column>
+          <el-table-column prop="name3" align="center" :label="resultTitle['name3']" sortable></el-table-column>
+          <el-table-column prop="name4" align="center" :label="resultTitle['name4']" sortable></el-table-column>
+          <el-table-column prop="name5" align="center" :label="resultTitle['name5']" sortable></el-table-column>
           <el-table-column
             label="操作"
             align="center"
-            v-if="isDay === 'r'"
+            v-if="tableType !== 'ry'"
             width="100">
             <template slot-scope="scope">
               <el-button @click="toQuartersDetail(scope.row)" type="text" size="small">一区一表</el-button>
@@ -84,31 +94,20 @@ import moment from "moment";
 import qs from "qs";
 export default {
   components: {},
+  props: ["sendParams"],
   data() {
     return {
       isDay: "r",
       isActive: "GW",
       tableType: "ry",
-      date: new Date(),
-      dateType: "date",
+      date: "",
+      dateD: this.sendParams.dateD,
+      dateM: this.sendParams.dateM,
       activeClass: "down",
       unActiveClass: "xq",
       YW_NUM: "",
       GW_NUM: "",
-      xAxisData: [
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18"
-      ],
-
+      xAxisData: [],
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
@@ -128,8 +127,16 @@ export default {
         textAlign: "center"
       },
       tableData: [],
-      resultTitle: {}
+      resultTitle: null
     };
+  },
+  watch:{
+    isDay:{
+      handler(newVal) {
+    　　this.date = newVal==='r'? this.dateD : this.dateM;
+  　　},
+  　　immediate: true
+    }
   },
   methods: {
     toQuartersDetail(row){
@@ -220,7 +227,7 @@ export default {
     drawLineChart(id, color, xAxis, yAxis) {
       let text = this.isActive === "GW" ? "固网" : "移网";
       setTimeout(() => {
-        var thisChart = this.$echarts.init(document.getElementById(id));
+        let thisChart = this.$echarts.init(document.getElementById(id));
         thisChart.clear();
         thisChart.setOption({
           grid: {
@@ -229,16 +236,14 @@ export default {
             height: "70%",
             top: "18%"
           },
-          title: [
-            {
+          title:{
               left: "center",
               text: text + "发展趋势",
               textStyle: {
                 fontSize: 21,
                 color: "#24FAFF"
               }
-            }
-          ],
+          },
           tooltip: {
             trigger: "axis",
             axisPointer: {
@@ -443,7 +448,7 @@ export default {
       this.$axios
         .post("/Developry/getTableData", params)
         .then(function(res) {
-          console.log("表格", res);
+          //console.log("表格",params,res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             resultData.map((item, index) => {
@@ -454,7 +459,6 @@ export default {
                 organId: item.ORGAN_ID,
                 ...merge
               };
-              that.getRYpieData(obj, index);
               return item;
             });
             that.tableData = resultData;
@@ -463,15 +467,21 @@ export default {
         })
         .catch(function(e) {});
     },
-    getRYpieData(obj, index) {
+    hoverChart(id,divId){
       let that = this;
+      let params={
+        developType: that.isActive,
+        dateType: that.isDay,
+        organId: id,
+        monthId: moment(that.dateM).format("YYYYMM"),
+        dayId: moment(that.dateD).format("YYYYMMDD"),
+      }
       this.$axios
         .get(
           "/Developry/getRYpieData?" +
-            qs.stringify({ JsonParam: JSON.stringify(obj) })
+            qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log("R", res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             let xAxis = [];
@@ -481,7 +491,7 @@ export default {
               yAxis.push(resultData[i].NUM);
             }
             that.drawLineChart(
-              "tableLineChart" + index,
+              divId,
               "#fbbf50",
               xAxis,
               yAxis

@@ -26,20 +26,7 @@ export default {
         ...defaultParam
       },
       lineDataset: {
-        xAxis: [
-          "1月",
-          "2月",
-          "3月",
-          "4月",
-          "5月",
-          "6月",
-          "7月",
-          "8月",
-          "9月",
-          "10月",
-          "11月",
-          "12月"
-        ],
+        xAxis: [],
         data: []
       },
       mode: "",
@@ -51,12 +38,11 @@ export default {
   },
   watch: {
     receiveParams(val) {
-      console.log("前厅",val);  //获取到弹窗所选的id
       this.post(val);
     }
   },
   methods: {
-    post(params) {
+    getDefault(){
       let _this = this;
       this.$axios
         .get("/Workbench/getKeyTarget")
@@ -79,7 +65,34 @@ export default {
           _this.drawLineChart(_this.lineDataset);
         })
         .catch(function(e) {
-          console.log(e);
+        });
+    },
+    post(params) {
+      let _this = this;
+      this.$axios
+        .get(
+          "/Workbench/setKeyTarget?" +
+            qs.stringify({ JsonParam: JSON.stringify(params) })
+        )
+        .then(function(res) {
+          let data = res.data;
+          _this.mode = data.resultData.MORD;
+          _this.dayId = data.resultData.dayId;
+          _this.monthId = data.resultData.monthId;
+          _this.rData = data.resultData.rData
+          _this.rTarget = data.resultData.rTarget
+          let seriesData = [];
+          seriesData = data.resultData.rData.rList.map(obj => ({
+            name: obj.PRODUCT_NAME,
+            id: obj.PRODUCT_CODE,
+            type: "line",
+            data: obj.data
+          }));
+          _this.$set(_this.lineDataset, "xAxis", data.resultData.rData.rDate);
+          _this.$set(_this.lineDataset, "data", seriesData);
+          _this.drawLineChart(_this.lineDataset);
+        })
+        .catch(function(e) {
         });
     },
     sendMsg: function() {
@@ -212,7 +225,7 @@ export default {
     }
   },
   created() {
-    this.post({});
+    this.getDefault();
   }
 };
 </script>
