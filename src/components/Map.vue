@@ -168,7 +168,7 @@ export default {
           this.showLevel3();
         })
         .catch(error => {
-          console.error(error);
+          //console.error(error);
         });
     },
     //显示小区数据

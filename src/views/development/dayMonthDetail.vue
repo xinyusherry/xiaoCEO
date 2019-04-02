@@ -52,7 +52,7 @@
       </div>
       <div class="table" :style="tableBgStyle">
         <el-table
-        v-if="resultTitle!=null"
+        v-if="tHeadData.length>0"
           :data="tableData"
           style="width: 100%;"
           :cell-style="cellStyle"
@@ -61,24 +61,34 @@
           stripe
            height= "280"
         >
-          <el-table-column prop="ORGAN_NAME" align="center" :label="resultTitle.name" width="200">
-            <template slot-scope="scope">
-              <el-popover placement="right" width="400" trigger="hover" @show="hoverChart(scope.row.ORGAN_ID,'tableLineChart-dev'+scope.row.index)">
-                <div :id="'tableLineChart-dev'+scope.row.index" style="height:200px"></div>
-                <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
-              </el-popover>
-            </template>
-          </el-table-column>
-          <el-table-column prop="name1" align="center" :label="resultTitle['name1']" sortable></el-table-column>
-          <el-table-column prop="name2" align="center" :label="resultTitle['name2']" sortable></el-table-column>
-          <el-table-column prop="name3" align="center" :label="resultTitle['name3']" sortable></el-table-column>
-          <el-table-column prop="name4" align="center" :label="resultTitle['name4']" sortable></el-table-column>
-          <el-table-column prop="name5" align="center" :label="resultTitle['name5']" sortable></el-table-column>
+          <template v-for="(col,idx) in tHeadData">
+            <el-table-column
+              v-if="idx==0"
+              :key="col.key"
+              :prop="col.prop"
+              :label="col.label" 
+              align="center">
+              <template slot-scope="scope">
+                <el-popover placement="right" width="400" trigger="hover" @show="hoverChart(scope.row.ORGAN_ID,'tableLineChart-dev'+scope.row.index)">
+                  <div :id="'tableLineChart-dev'+scope.row.index" style="height:200px"></div>
+                  <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
+                </el-popover>
+              </template>
+            </el-table-column>
+            <el-table-column
+              v-if="idx!==0"
+              :key="col.key"
+              :prop="col.prop"
+              :label="col.label"
+              sortable
+              align="center"
+            >
+            </el-table-column>
+          </template>
           <el-table-column
             label="操作"
             align="center"
-            v-if="tableType !== 'ry'"
-            width="100">
+            v-if="tableType !== 'ry'">
             <template slot-scope="scope">
               <el-button @click="toQuartersDetail(scope.row)" type="text" size="small">一区一表</el-button>
             </template>
@@ -127,7 +137,7 @@ export default {
         textAlign: "center"
       },
       tableData: [],
-      resultTitle: null
+      tHeadData:[]
     };
   },
   watch:{
@@ -142,7 +152,10 @@ export default {
     toQuartersDetail(row){
       let that = this;
       let organId = row.ORGAN_ID;
-      let dayId = moment(that.date).format("YYYYMMDD")
+      let dayId = "";
+      if(that.isDay=='r'){
+        dayId = moment(that.date).format("YYYYMMDD");
+      }
       let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
       window.open(url,'_blank');
     },
@@ -448,7 +461,7 @@ export default {
       this.$axios
         .post("/Developry/getTableData", params)
         .then(function(res) {
-          //console.log("表格",params,res);
+          console.log("表格",params,res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             resultData.map((item, index) => {
@@ -462,7 +475,18 @@ export default {
               return item;
             });
             that.tableData = resultData;
-            that.resultTitle = res.data.resultTitle;
+            let resultTitle = res.data.resultTitle;
+            let tHeadData = [];
+            for (const key in resultTitle) {
+              if (resultTitle.hasOwnProperty(key)) {
+                 tHeadData.push({
+                label: resultTitle[key],
+                prop: key
+              });
+              }
+            }
+            //tHeadData.shift();
+            that.tHeadData = tHeadData;
           }
         })
         .catch(function(e) {});

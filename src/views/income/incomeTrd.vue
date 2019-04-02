@@ -173,6 +173,15 @@ export default {
     };
   },
   methods: {
+    removeArr(arr, item) {
+      let result=[];
+          for(let i=0; i<arr.length; i++){
+          if(arr[i]!=item){
+              result.push(arr[i]);
+          }
+      }
+      return result;
+    },
     postPersonTable() {
       let _this = this;
       let params = {
@@ -325,9 +334,11 @@ export default {
         .get(url + "?" + qs.stringify({ JsonParam: JSON.stringify(params) }))
         .then(function(res) {
           let data = res.data;
+          var hoverArr = data.resultData.map((v,i) => v.BY_FEE);
+          hoverArr = _this.removeArr(hoverArr,-1);
           _this.hoverData = {
             xAxis: data.resultData.map(v => v.ACCT_MONTH),
-            data: data.resultData.map((v,i) => v.BY_FEE)
+            data: hoverArr
           };
           _this.drawLineChart(chartId, _this.hoverData);
         })

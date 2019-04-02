@@ -64,7 +64,10 @@ export default {
           {
             name: "主拆",
             type: "bar",
-            data: this.ywData,
+            data: [
+              this.ywData[0],
+              this.gwData[0],
+            ],
             stack: "one",
             barWidth: 15
           },
@@ -72,7 +75,10 @@ export default {
             name: "欠拆",
             barWidth: 15,
             type: "bar",
-            data: this.gwData,
+            data: [
+              this.ywData[1],
+              this.gwData[1],
+            ],
             stack: "one"
           }
         ]

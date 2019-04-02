@@ -5,7 +5,7 @@
         <!-- <span class="tip" v-show="isDay===1">注：（日指标为当日月累）</span> -->
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 0}" @click="changeTab(0)">固话拆机 {{GW_NUM}}</li>
+        <li :class="{active:isActive === 0}" @click="changeTab(0)">固网拆机 {{GW_NUM}}</li>
         <li :class="{active:isActive === 1}" @click="changeTab(1)">移动拆机 {{YW_NUM}}</li>
       </ul>
       <el-radio-group v-model="isDay" @change="changeIsDay">
@@ -148,7 +148,7 @@ export default {
       let that = this;
       this.tableType = val;
       let merge = {};
-      if (that.dateType === "day") {
+      if (that.isDay === "day") {
         merge = {
           dayId:that.sendParams.dayId
         }
@@ -158,7 +158,7 @@ export default {
         }
       }
        const params = {
-        type:that.dateType,
+        type:that.isDay,
         tableType: that.tableType,
         ...merge
       };
@@ -194,10 +194,11 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
+          console.log(res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             that.YW_NUM = resultData.CJ_YD_NUM;
-            that.GW_NUM = resultData.TCJ_GW_NUM;
+            that.GW_NUM = resultData.CJ_GW_NUM;
           }
         })
         .catch(function(e) {});
@@ -219,7 +220,11 @@ export default {
               ywArr = [],
               xAxisData = [];
             for (let i = 0; i < resultData.length; i++) {
-              xAxisData.push(resultData[i].ACCT_DAY);
+              if(that.isDay=='day'){
+                xAxisData.push(resultData[i].ACCT_DAY);
+              }else{
+                xAxisData.push(resultData[i].ACCT_MONTH);
+              }
               ywArr.push(resultData[i].CJ_YD_NUM);
               gwArr.push(resultData[i].CJ_GW_NUM);
             }
@@ -363,13 +368,13 @@ export default {
               }
               if (key == "CJ_YDZD_NUM") {
                 ywPieArr.push({
-                  name: "移网主拆",
+                  name: "移动主拆",
                   value: resultData[key]
                 });
               }
               if (key == "CJ_YDQF_NUM") {
                 ywPieArr.push({
-                  name: "移网欠拆",
+                  name: "移动欠拆",
                   value: resultData[key]
                 });
               }
@@ -478,7 +483,10 @@ export default {
       }
     },
     HrefToTable(organId){
-      let dayId = moment(this.date).format("YYYYMMDD");
+      let dayId = "";
+      if(this.isDay=='day'){
+        dayId = moment(this.date).format("YYYYMMDD");
+      }
       let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
       window.open(url,'_blank');
     }

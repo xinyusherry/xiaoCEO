@@ -31,6 +31,7 @@
             v-for="(product,index) in typeLi.productList"
             :label="product.PRODUCT_CODE"
             :checked="product.IS_DEFAULT==1"
+            :disabled="product.XZ_GROUP!==checkType&&checkType!=='any'"
             @change="changeBox()"
             :key="index"
           >{{product.PRODUCT_NAME}}</el-checkbox>
@@ -54,7 +55,10 @@ export default {
       dateM: "",
       dateType: "",
       checkedIds: [],
-      checkOptions: []
+      checkOptions: [],
+      checkedData: [],
+      optionList: [],
+      checkType:'any'
     };
   },
   methods: {
@@ -68,7 +72,18 @@ export default {
           _this.dateD = resultData.dayId;
           _this.dateM = resultData.monthId;
           _this.checkOptions = resultData.rTarget;
+          _this.checkedData = [];
+          resultData.rTarget.map(v => {
+            _this.optionList = _this.optionList.concat(v.productList);
+          });
           resultData.rTarget.map((obj, index) => {
+            obj.productList.map(v => {
+              if (v.IS_DEFAULT == 1)
+                _this.checkedData.push({
+                  type: v.XZ_GROUP,
+                  value: v.PRODUCT_CODE
+                });
+            });
             _this.$set(_this.checkOptions[index], "checkedIds", []);
           });
         })
@@ -108,6 +123,35 @@ export default {
   },
   created() {
     this.post();
+  },
+  watch: {
+    checkedData: {
+      handler(newValue, oldValue) {
+        this.checkedIds = newValue.map(v => v.value);
+      },
+      immediate: false,
+      deep: true
+    },
+    checkedIds(n, v) {
+      if (n.length > 0) {
+        this.optionList.find(v => {
+          if (v.PRODUCT_CODE === n[0]) {
+            this.checkType = v.XZ_GROUP;
+          }
+        });
+      } else {
+        this.checkType = "any";
+      }
+    }
+  },
+  computed: {
+    checkType() {
+      if (this.checkedData.length == 0) {
+        return "any";
+      } else {
+        return this.checkedData[0].type;
+      }
+    }
   }
 };
 </script>

@@ -296,7 +296,7 @@ export default {
 }
 .lineChart {
   height: 10%;
-  width: 30%;
+  width: 40%;
 }
 .add {
   color: #35c98e;

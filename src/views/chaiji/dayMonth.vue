@@ -41,25 +41,25 @@ export default {
           value: 0,
           dataset: {
             legendData: ["主拆", "欠拆"],
-            xAxis: ["移网", "固网"],
+            xAxis: ["移动", "固网"],
             data: {
               ywData: [
                 {
-                  name: "主拆",
+                  name: "移动主拆",
                   value: 0
                 },
                 {
-                  name: "欠拆",
+                  name: "移动欠拆",
                   value: 0
                 }
               ],
               gwData: [
                 {
-                  name: "主拆",
+                  name: "固网主拆",
                   value: 0
                 },
                 {
-                  name: "欠拆",
+                  name: "固网欠拆",
                   value: 0
                 }
               ]
@@ -80,25 +80,25 @@ export default {
           value: 0,
           dataset: {
             legendData: ["主拆", "欠拆"],
-            xAxis: ["移网", "固网"],
+            xAxis: ["移动", "固网"],
             data: {
               ywData: [
                 {
-                  name: "主拆",
+                  name: "移动主拆",
                   value: 0
                 },
                 {
-                  name: "欠拆",
+                  name: "移动欠拆",
                   value: 0
                 }
               ],
               gwData: [
                 {
-                  name: "主拆",
+                  name: "固网主拆",
                   value: 0
                 },
                 {
-                  name: "欠拆",
+                  name: "固网欠拆",
                   value: 0
                 }
               ]
@@ -121,7 +121,7 @@ export default {
     getData(){
         let that = this;
       this.$axios
-        .post("/Dismantlery/index")
+        .get("/Dismantlery/index")
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultDataD = res.data.resultDataD[0];

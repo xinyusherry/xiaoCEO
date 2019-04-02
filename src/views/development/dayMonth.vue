@@ -116,19 +116,20 @@ export default {
     getData() {
        let that = this;
       this.$axios
-        .post("/Developry/index")
+        .get("/Developry/index")
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
-            // let dataset = [];
-            // let dataset_M = [];
-            //console.log("发展日月",res);
+            console.log("发展日月",res);
+            let last = resultData.length-1;
+            that.month.time = formatterTime(resultData[last].monthId);
+            that.day.time = formatterTime(resultData[last].dayId);
+            // that.month.time = "2019-04";
+            // that.day.time = "2019-04-02";
             for (let i = 0, len = resultData.length; i < len; i++) {
               switch (resultData[i].SVC_TYPE) {
                 case "GW_D":
                   that.day.developDay.dataset[0].value = resultData[i].NUM;
-                  let time = formatterTime(resultData[i].TIME);
-                  that.day.time = time;
                   break;
                 case "YW_D":
                   that.day.developDay.dataset[1].value = resultData[i].NUM;
@@ -138,8 +139,6 @@ export default {
                   break;
                 case "GW_M":
                   that.month.developMonth.dataset[0].value = resultData[i].NUM;
-                  let timeM = formatterTime(resultData[i].TIME);
-                  that.month.time = timeM;
                   break;
                 case "YW_M":
                   that.month.developMonth.dataset[1].value = resultData[i].NUM;
@@ -147,7 +146,6 @@ export default {
                 case "SUM_M":
                   that.month.developMonth.value = resultData[i].NUM;
                   break;
-
                 default:
                   break;
               }
@@ -156,7 +154,6 @@ export default {
           }
         })
         .catch(function(e) {
-          console.error(e)
         });
     }
   },

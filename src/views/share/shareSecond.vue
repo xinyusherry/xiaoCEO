@@ -74,6 +74,7 @@
 <script>
 import qs from "qs";
 import moment from "moment";
+import { formatterTime } from "../../utils/index.js";
 export default {
   components: {},
   props:['sendParams'],
@@ -97,7 +98,7 @@ export default {
         "11月",
         "12月",
       ],
-      date: "",
+      date: formatterTime(this.sendParams),
       isTableLineShow: false,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {

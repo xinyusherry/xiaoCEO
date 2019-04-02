@@ -576,8 +576,7 @@ export default {
       return label;
     },
     HrefToTable(organId){
-      let dayId = moment(this.date).format("YYYYMM");
-      let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?dayId='+dayId+'&organId='+organId;
+      let url = 'http://10.26.20.254/pure/dss/workbench/CommakDetailO!toQuartersDetail.action?organId='+organId;
       window.open(url,'_blank');
     }
   },

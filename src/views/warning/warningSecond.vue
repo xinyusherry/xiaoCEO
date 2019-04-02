@@ -8,7 +8,7 @@
         </el-radio-group>
         <div class="rightBtn btnList">
           <el-date-picker v-model="date" type="date" placeholder="选择日期" style="margin-right:20px" @change="dateChange"></el-date-picker>
-          <div class="down mr20">下载</div>
+          <div class="down mr20" @click="downLoadTable()">下载</div>
         </div>
       </div>
       <div v-show="tabVal=='dj'">
@@ -81,6 +81,7 @@
             <el-table-column align="center" prop="AD_RATE" label="宽带速率" width="180" sortable></el-table-column>
 
              <el-table-column align="center" prop="ACCOUNT_NO" label="宽带上网账号" width="180" sortable></el-table-column>
+             <el-table-column align="center" prop="IF_RH" label="是否融合" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="YJ_SVC_NAME" label="预警业务类型" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="ACTIVE_NAME" label="活动名称" width="180" sortable></el-table-column>
 
@@ -96,8 +97,7 @@
             <el-table-column align="center" prop="XY_ACCEPT_DATE" label="续约订购时间" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="CONTACT_PHONE" label="报障联系电话" width="180" sortable></el-table-column>
 
-                   <el-table-column align="center" prop="IPTV_ACCT_NO" label="IPTV帐号" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="SL_STAFF_NAME" label="受理员工姓名" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="IPTV_ACCT_NO" label="IPTV帐号" width="180" sortable></el-table-column>
           </el-table>
         </div>
       </div>
@@ -137,45 +137,47 @@
             stripe
             height="300"
           >
-             <el-table-column prop="USER_NO" align="center" label="用户ID" width="180"></el-table-column>
+            <el-table-column align="center" prop="ACCT_DAY" label="账期" width="180"></el-table-column>
+            <el-table-column align="center" prop="AREA_NO" label="分公司" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="DEVICE_NUMBER" label="设备号码" width="180" sortable></el-table-column>
-            <el-table-column prop="VILLAGE_NAME" align="center" label="归属小区" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="JL_NAME" label="所属经理" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="MANAGER_ID" label="经理编码" width="180" sortable></el-table-column>
 
-            <el-table-column align="center" prop="WG_NAME" label="所属分局" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="CUST_NAME" label="客户姓名" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="MANAGER_NAME" label="经理名称" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="ZYX_CODE" label="专业线标识" width="180" sortable>
+              <template slot-scope="scope">
+                 <div>{{scope.row.ZYX_CODE=='2'?'商企线':(scope.row.ZYX_CODE=='5'?'大客线':'')}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="CUST_NAME" label="客户名称" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="PRODCUT_NAME" label="产品名称" width="180" sortable></el-table-column>
 
              <el-table-column align="center" prop="ACCT_FEE" label="本月出账收入（元）" width="200" sortable></el-table-column>
             <el-table-column align="center" prop="IN_DATE" label="开户时间" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="INSTALL_ADDRESS" label="详细地址" width="180" sortable></el-table-column>
-
-             <el-table-column align="center" prop="FENJU_NAME" label="局向" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="DEVICE_NUMBER_GH" label="对应固话" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="PHONE_NUMBER" label="联系电话" width="180" sortable></el-table-column>
-
-             <el-table-column align="center" prop="IF_FTTH" label="是否FTTH" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="IF_IPTV" label="是否IPTV" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="AD_RATE" label="宽带速率" width="180" sortable></el-table-column>
-
-             <el-table-column align="center" prop="ACCOUNT_NO" label="宽带上网账号" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="YJ_SVC_NAME" label="预警业务类型" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="IF_RH" label="是否融合" width="180" sortable>
+              <template slot-scope="scope">
+                 <div>{{scope.row.IF_RH=='N'?'否':'是'}}</div>
+              </template>
+            </el-table-column>
+            <el-table-column align="center" prop="YJ_SVC_TYPE" label="预警业务类型" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="YJ_SVC_NAME" label="预警业务名称" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="ACTIVE_NAME" label="活动名称" width="180" sortable></el-table-column>
 
-               <el-table-column align="center" prop="START_DATE" label="开始时间" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="START_DATE" label="开始时间" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="END_DATE" label="结束时间" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="YJ_MONTH" label="提前提醒月份" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="PHONE_NUMBER" label="联系电话" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="YJ_MONTH" label="提前预警月份" width="180" sortable></el-table-column>
 
-               <el-table-column align="center" prop="XY_START_DATE" label="续约生效时间" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="IF_WX" label="是否进行维系" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="WX_BEIZHU" label="维系备注" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="SVC_TYPE" label="业务类型" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="IF_VIP" label="是否VIP" width="180" sortable></el-table-column>
+
+            <el-table-column align="center" prop="XY_START_DATE" label="续约生效时间" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="XY_END_DATE" label="续约结束时间" width="180" sortable></el-table-column>
             <el-table-column align="center" prop="XY_ACTIVE_NAME" label="续约活动名称" width="180" sortable></el-table-column>
-
-                   <el-table-column align="center" prop="XY_TYPE" label="续约类型" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="XY_ACCEPT_DATE" label="续约订购时间" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="CONTACT_PHONE" label="报障联系电话" width="180" sortable></el-table-column>
-
-            <el-table-column align="center" prop="IPTV_ACCT_NO" label="IPTV帐号" width="180" sortable></el-table-column>
-            <el-table-column align="center" prop="SL_STAFF_NAME" label="受理员工姓名" width="180" sortable></el-table-column>
+            <el-table-column align="center" prop="XY_TYPE" label="续约类型" width="180" sortable></el-table-column>
+            
           </el-table>
         </div>
       </div>
@@ -226,6 +228,28 @@ export default {
     };
   },
   methods: {
+    downLoadTable(){
+      let _this = this;
+      let params={};
+      if(_this.tabVal === "dj"){
+        params = {
+          dayId:moment(_this.date).format('YYYYMMDD'),
+          ifXY:_this.formInlineDJ.ifXY,
+          yjType:_this.formInlineDJ.yjType,
+          yfType:_this.formInlineDJ.yfType.join(','),
+          isCB:_this.formInlineDJ.isCB,
+          ywType:"06"
+        }
+        window.open("http://10.26.20.254:8203/microservice-ui/maturityWarning/getGWDownloadData?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+      }else{
+        params = {
+          dayId:moment(_this.date).format('YYYYMMDD'),
+          ifXY:_this.formInlineXY.ifXY,
+          yjType:_this.formInlineXY.yjType
+        }
+        window.open("http://10.26.20.254:8203/microservice-ui/maturityWarning/getYDDownloadData?" +qs.stringify({ JsonParam: JSON.stringify(params) }));
+      }
+    },
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
         return "color: #6AFFFD";
@@ -241,7 +265,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          //console.log('续约表格',res)
+          console.log('续约表格',res)
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.tableData2 = resultData
@@ -250,7 +274,7 @@ export default {
           }
         })
         .catch(function(e) {});
-  },
+    },
      daoQiWarningGWDayJl(params){
        let _this = this;
       this.$axios
@@ -268,33 +292,31 @@ export default {
           }
         })
         .catch(function(e) {});
-  },
-  dateChange(val){
-    this.getTabDate();
-  },
-  getTabDate(){
-    let _this = this;
-    if(_this.tabVal === "dj"){
-       const djParam = {
-       dayId:moment(_this.date).format('YYYYMMDD'),
-      ifXY:_this.formInlineDJ.ifXY,
-      yjType:_this.formInlineDJ.yjType,
-      yfType:_this.formInlineDJ.yfType.join(','),
-      isCB:_this.formInlineDJ.isCB,
-       ywType:"06"
+    },
+    dateChange(val){
+      this.getTabDate();
+    },
+    getTabDate(){
+      let _this = this;
+      if(_this.tabVal === "dj"){
+        const djParam = {
+          dayId:moment(_this.date).format('YYYYMMDD'),
+          ifXY:_this.formInlineDJ.ifXY,
+          yjType:_this.formInlineDJ.yjType,
+          yfType:_this.formInlineDJ.yfType.join(','),
+          isCB:_this.formInlineDJ.isCB,
+          ywType:"06"
+        }
+        _this.daoQiWarningGWDayJl(djParam);
+      }else{
+        const params = {
+          dayId:moment(_this.date).format('YYYYMMDD'),
+          ifXY:_this.formInlineXY.ifXY,
+          yjType:_this.formInlineXY.yjType
+        }
+        _this.daoQiWarningYDDayJl(params);
+      }
     }
-    _this.daoQiWarningGWDayJl(djParam);
-    }else{
-       const params = {
-      dayId:moment(_this.date).format('YYYYMMDD'),
-      ifXY:_this.formInlineXY.ifXY,
-      yjType:_this.formInlineXY.yjType
-    }
-    _this.daoQiWarningYDDayJl(params);
-    }
-   
-   
-  }
   },
   mounted:function(){
     // dayId,ifXY,yjType

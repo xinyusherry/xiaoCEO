@@ -143,7 +143,7 @@ export default {
                 color: "#41c9da"
               },
             formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '万'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '元'
               }
             },
             title: {
@@ -270,7 +270,7 @@ export default {
                 color: "#41c9da"
               },
                formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '元'
               }
             },
             title: {
@@ -395,7 +395,7 @@ export default {
                 color: "#41c9da"
               },
               formatter: function(param){
-                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '万'
+                return (param + '').replace(/\B(?=(\d{3})+(?!\d))/g, ',')+ '元'
               }
             },
             title: {
