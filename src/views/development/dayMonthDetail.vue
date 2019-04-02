@@ -5,8 +5,8 @@
         <span class="tip" v-show="isDay==='r'">注：（日指标为当日月累）</span>
       </div>
       <ul class="tabs header">
-        <li :class="{active:isActive === 'GW'}" @click="changeTab('GW')">固网 {{GW_NUM}}</li>
-        <li :class="{active:isActive === 'YW'}" @click="changeTab('YW')">移网 {{YW_NUM}}</li>
+        <li :class="{active:isActive === 'GW'}" @click="changeTab('GW')">宽带 {{GW_NUM}}</li>
+        <li :class="{active:isActive === 'YW'}" @click="changeTab('YW')">移动 {{YW_NUM}}</li>
       </ul>
       <el-radio-group v-model="isDay" @change="changeIsDay">
         <el-radio :label="'r'">日</el-radio>
@@ -187,7 +187,7 @@ export default {
        let that = this;
        this.getTableData(that.isActive, that.isDay, that.tableType, that.isDay);
     },
-    //顶端移网固网数量
+    //顶端移动宽带数量
     getTopData(isDay) {
       const params = {
         dateType: isDay
@@ -238,7 +238,7 @@ export default {
       // that.drawLineChart("line", "#fbbf50");
     },
     drawLineChart(id, color, xAxis, yAxis) {
-      let text = this.isActive === "GW" ? "固网" : "移网";
+      let text = this.isActive === "GW" ? "宽带" : "移动";
       setTimeout(() => {
         let thisChart = this.$echarts.init(document.getElementById(id));
         thisChart.clear();

@@ -61,17 +61,17 @@ export default {
           // up: true,
           dataset: [
             {
-              name: "固网",
+              name: "宽带",
               value: 0
             },
             {
-              name: "移网",
+              name: "移动",
               value: 0
             }
           ]
         },
         colors: ["#1AC175", "#1B8CEA"],
-        legend: ["固网", "移网"],
+        legend: ["宽带", "移动"],
         time: ""
       },
       month: {
@@ -86,17 +86,17 @@ export default {
           // up: false,
           dataset: [
             {
-              name: "固网",
+              name: "宽带",
               value: 0
             },
             {
-              name: "移网",
+              name: "移动",
               value: 0
             }
           ]
         },
         colors: ["#EDC624", "#F84F4F"],
-        legend: ["固网", "移网"],
+        legend: ["宽带", "移动"],
         time: ""
       }
     };
