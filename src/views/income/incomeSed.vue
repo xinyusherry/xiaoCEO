@@ -44,7 +44,7 @@
         <el-radio-group v-model="tabVal" size="small" style="margin-top:20px">
           <el-radio-button label="yw">收入分业务</el-radio-button>
           <el-radio-button label="cp">收入分产品</el-radio-button>
-          <el-radio-button label="dgs">收入大工商</el-radio-button>
+          <el-radio-button label="dgs">收入大公商</el-radio-button>
         </el-radio-group>
       </div>
       <div class="rt-cont">
