@@ -126,9 +126,9 @@ export default {
         this.formula = [
           "结果",
           "账单",
-          "滚存回收",
-          "结转收入",
           "滚存回收收入",
+          "结转收入",
+          "公允值",
           "其他收入",
           "税"
         ];
@@ -141,9 +141,9 @@ export default {
         this.formula = [
           "结果",
           "账单",
-          "滚存回收",
-          "结转收入",
           "滚存回收收入",
+          "结转收入",
+          "公允值",
           "其他收入",
           "税"
         ];
@@ -178,7 +178,7 @@ export default {
           _this.gsNum = [
             data.resultData.END,
             data.resultData.USER_CHARGE_FEE,
-            data.resultData.GY_CHARGE_FEE,
+            data.resultData.BACK_CHARGE_FEE,
             data.resultData.JZ_CHARGE_FEE,
             data.resultData.GY_CHARGE_FEE,
             data.resultData.QT_CHARGE_FEE,
