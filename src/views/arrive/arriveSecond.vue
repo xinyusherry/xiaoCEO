@@ -99,7 +99,7 @@
               :width="col.length>7?'280':'190'"
             >
               <template slot-scope="scope">
-                <div slot="reference">{{scope.row[col.prop]}}</div>
+                <div slot="reference">{{scope.row[col.prop]}}{{col.prop=='STL'||col.prop=='DKL'?"%":""}}</div>
               </template>
             </el-table-column>
           </template>
@@ -202,7 +202,6 @@ export default {
     },
     dayTypeChange(val) {
       let _this = this;
-      this.date = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
       this.dateChange();
     },
     dateChange() {
@@ -281,15 +280,15 @@ export default {
       let _this = this;
       if (_this.isDay === "day") {
         const param = {
-          dayId: moment(_this.date).format("YYYYMMDD"),
+          dayId: moment(_this.dateD).format("YYYYMMDD"),
           type: "day",
           svcType: _this.value
         };
         _this.getTableData(param);
       } else {
         const param = {
-          monthId: moment(_this.date).format("YYYYMM"),
-          type: "day",
+          monthId: moment(_this.dateM).format("YYYYMM"),
+          type: "month",
           svcType: _this.value
         };
         _this.getTableData(param);
@@ -761,6 +760,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
+          //console.log(params,res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             const object = {
@@ -769,7 +769,7 @@ export default {
               MANAGER_NAME: "所属经理",
               XQ_TYPE: "小区类型",
               HOME_NUM: "住宅数",
-              STL: "住宅用户渗透压率",
+              STL: "住宅用户渗透率",
               DKZY_NUM: "端口数",
               DKL: "端口实占率",
               GH_NUM: "小区内固话用户数",

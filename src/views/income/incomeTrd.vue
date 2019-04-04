@@ -196,6 +196,7 @@ export default {
           let data = res.data;
           const head = {
             ORGAN_NAME: "经理名称",
+            JL_TYPE: "经理类型",
             HR_EMP_CODE: "人力编码",
             BY_FEE: "本月收入",
             YD_FEE: "移动收入",

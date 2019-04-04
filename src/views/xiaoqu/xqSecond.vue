@@ -334,7 +334,7 @@ export default {
           },
           {
             type: "value",
-            name:"单位(%)",
+            name:"%",
             nameTextStyle: {
               color: "#24FAFF"
             },
@@ -414,7 +414,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name:"单位(%)",
+          name:"%",
           nameTextStyle: {
             color: "#24FAFF"
           },
@@ -459,6 +459,7 @@ export default {
         .get(url + "?" + qs.stringify({ JsonParam: JSON.stringify(params) }))
         .then(function(res) {
           let data = res.data;
+          console.log(data);
           _this.hoverData = {
             xAxis: data.resultData.map(v => v.ACCT_MONTH),
             data: [
