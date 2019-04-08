@@ -82,7 +82,7 @@ export default {
     return {
       isDay: 1,
       isActive: 0,
-      isText:false,
+      isText:true,
       formula:null,
       xAxisData: [
         "1月",
