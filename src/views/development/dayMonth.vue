@@ -120,7 +120,7 @@ export default {
         .then(function(res) {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
-            console.log("发展日月",res);
+            //console.log("发展日月",res);
             let last = resultData.length-1;
             that.month.time = formatterTime(resultData[last].monthId);
             that.day.time = formatterTime(resultData[last].dayId);

@@ -4,7 +4,7 @@ module.exports = {
     // devServer: {
     //     proxy: {
     //         '': {
-    //             target: 'http://10.26.20.254:8203/',//microservice-ui
+    //             target: 'http://10.26.14.105:8087/',//'http://10.26.20.254:8203/',//microservice-ui
     //             changeOrigin: true,
     //             ws: true,
     //             pathRewrite: {

@@ -9,6 +9,10 @@
       </div>
       <div class="table" :style="tableBgStyle">
         <el-table
+        v-loading="loading"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.5)"
           :data="tableData"
           style="width: 100%;"
           :header-cell-style="headerBgStyle"
@@ -114,6 +118,7 @@ export default {
   data() {
     return {
       date: "",
+      loading: true,
       tableBg: require("@/assets/images/tabBg.png"),
       tableBgStyle: {
         background:
@@ -131,9 +136,7 @@ export default {
         backgroundSize: "100% 100%",
         textAlign: "center"
       },
-      tableData: [
-       
-      ],
+      tableData: [],
     };
   },
   methods: {
@@ -171,6 +174,7 @@ export default {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             that.tableData = resultData;
+            that.loading = false;
           }
         })
         .catch(function(e) {});

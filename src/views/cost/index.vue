@@ -73,11 +73,19 @@ export default {
           show: false
         },
         tooltip: {
-          trigger: "item",
-          backgroundColor: "rgba(0,0,0,0.7)", // 背景
-          padding: [8, 10], //内边距
-          extraCssText: "box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);", //添加阴影
-          show: false
+          trigger: "axis",
+          axisPointer:{
+            type:'shadow',
+            shadowStyle:{
+              color:'rgba(150,150,150,0)',
+              shadowColor:'rgba(0,0,0,0.1)'
+            }
+          },
+          formatter:(params)=>{
+              if(params.length>1){
+                return params[0].marker+params[0].name+"："+params[0].value;
+              }
+          }
         },
         grid: {
           borderWidth: 0,
@@ -101,6 +109,7 @@ export default {
         ],
         yAxis: {
           show: false,
+          scale: true,
           type: "value"
         },
         series: [
@@ -279,7 +288,7 @@ export default {
             let maxArr = [];
             let data = [];
             for (let i = 0; i < 12; i++) {
-              data.push(i);
+              data.push(i+1+"月");
               maxArr.push(max);
             }
             _this.drawBarChart("canvas", "#6afefc", data, array, maxArr);

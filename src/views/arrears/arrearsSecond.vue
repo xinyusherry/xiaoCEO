@@ -135,7 +135,6 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
-          console.log(res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             that.tableData = resultData;
