@@ -33,20 +33,20 @@
           stripe
           height="300"
         >
-          <el-table-column prop="JL_NAME" align="center" label="姓名" width="180">
+          <el-table-column prop="JL_NAME" align="center" label="经理名称" width="180">
               <template slot-scope="scope">
               <el-button @click="sendMsg(scope.row.JL_ID)" type="text" size="small">{{scope.row.JL_NAME}}</el-button>
             </template>
           </el-table-column>
+          <el-table-column align="center" prop="GW_DYUE_QFYS" label="当月应收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DYUE_QFSS" label="当月实收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_DYUE_RATE" label="当月回收率" sortable width="180"></el-table-column>
+
           <el-table-column align="center" prop="GW_DQ_QFYS" label="短期应收" sortable width="180"></el-table-column>
           <el-table-column align="center" prop="GW_DQ_QFSS" label="短期实收" sortable width="180"></el-table-column>
           <el-table-column align="center" prop="GW_DQ_RATE" label="短期回收率" sortable width="180"></el-table-column>
 
-              <el-table-column align="center" prop="GW_DYUE_QFYS" label="当月应收" sortable width="180"></el-table-column>
-          <el-table-column align="center" prop="GW_DYUE_QFSS" label="当月实收" sortable width="180"></el-table-column>
-          <el-table-column align="center" prop="GW_DYUE_RATE" label="当月回收率" sortable width="180"></el-table-column>
-
-              <el-table-column align="center" prop="GW_CQ_QFYS" label="长期应收" sortable width="180"></el-table-column>
+          <el-table-column align="center" prop="GW_CQ_QFYS" label="长期应收" sortable width="180"></el-table-column>
           <el-table-column align="center" prop="GW_CQ_QFSS" label="长期实收" sortable width="180"></el-table-column>
           <el-table-column align="center" prop="GW_CQ_RATE" label="长期回收率" sortable width="180"></el-table-column>
         
@@ -135,6 +135,7 @@ export default {
             qs.stringify({ JsonParam: JSON.stringify(params) })
         )
         .then(function(res) {
+          console.log(res);
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             that.tableData = resultData;
