@@ -69,10 +69,11 @@
               :label="col.label" 
               align="center">
               <template slot-scope="scope">
-                <el-popover placement="right" width="400" trigger="hover" @show="hoverChart(scope.row.ORGAN_ID,'tableLineChart-dev'+scope.row.index)">
+                <el-popover v-if="tableType=='ry'" placement="right" width="400" trigger="hover" @show="hoverChart(scope.row.ORGAN_ID,'tableLineChart-dev'+scope.row.index)">
                   <div :id="'tableLineChart-dev'+scope.row.index" style="height:200px"></div>
                   <div slot="reference">{{scope.row.ORGAN_NAME}}</div>
                 </el-popover>
+                <div v-if="tableType=='xq'">{{scope.row.ORGAN_NAME}}</div>
               </template>
             </el-table-column>
             <el-table-column
@@ -440,6 +441,7 @@ export default {
     getTableData(developType, dateType, tableType, dayFlag) {
       let that = this;
       let merge = {};
+      let merge2 = {};
       if (dayFlag === "r") {
         merge = {
           dayId: moment(that.date).format("YYYYMMDD")
@@ -449,13 +451,22 @@ export default {
           monthId: moment(that.date).format("YYYYMM")
         };
       }
+      if (tableType === "xq") {
+        merge2 = {
+          developType: 'GW'
+        };
+      } else {
+        merge2 = {
+          developType: developType
+        };
+      }
       const param = {
-        developType: developType,
         dateType: dateType,
         tableType: tableType
       };
       const params = {
         ...merge,
+        ...merge2,
         ...param
       };
       this.$axios
