@@ -66,7 +66,7 @@ export default {
         },
         yAxis: {
           type: "value",
-          name: "完成量（人）",
+          name: "完成量（户）",
           // scale: true,
           nameTextStyle: {
             color: "#24FAFF"

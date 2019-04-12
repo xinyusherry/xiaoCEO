@@ -1,5 +1,6 @@
 <template>
   <div class="devTimeSed">
+    <div class="tip">注：当日指标</div>
     <div class="dateDiv">
       <el-date-picker
         size="small"
@@ -144,6 +145,15 @@ export default {
 </script>
 
 <style scoped lang="less">
+.devTimeSed{
+  position: relative;
+  .tip{
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    color: #f00;
+  }
+}
 .dateDiv {
   text-align: right;
   span {
