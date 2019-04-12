@@ -14,11 +14,11 @@
       <div class="flex-item" style="margin-right:10%">
         <div class="title blue">移动发展</div>
         <div>
-          <span class="type">日</span>
+          <span class="type">日&emsp;</span>
           <span>{{progress.YD_VALUED}} / {{progress.YD_TARGETD}}</span>
         </div>
         <div>
-          <span class="type now">月</span>
+          <span class="type now">日累</span>
           <span>{{progress.YD_VALUEM_LJ}} / {{progress.YD_TARGETM}}</span>
         </div>
         <div class="flex-between">
@@ -35,7 +35,7 @@
           <span>{{progress.YD_PERCENTAGE_D}}%</span>
         </div>
         <div class="flex-between">
-          <span>月完成</span>
+          <span>日累&emsp;</span>
           <div style="width:60%">
             <el-progress
               :text-inside="false"
@@ -51,11 +51,11 @@
       <div class="flex-item">
         <div class="title green">宽带发展</div>
         <div>
-          <span class="type">日</span>
+          <span class="type">日&emsp;</span>
           <span>{{progress.KD_VALUED}} / {{progress.KD_TARGETD}}</span>
         </div>
         <div>
-          <span class="type now">月</span>
+          <span class="type now">日累</span>
           <span>{{progress.KD_VALUEM_LJ}} / {{progress.KD_TARGETM}}</span>
         </div>
         <div class="flex-between">
@@ -72,7 +72,7 @@
           <span>{{progress.KD_PERCENTAGE_D}}%</span>
         </div>
         <div class="flex-between">
-          <span>月完成</span>
+          <span>日累&emsp;</span>
           <div style="width:60%">
             <el-progress
               :text-inside="false"
