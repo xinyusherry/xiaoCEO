@@ -24,12 +24,11 @@
           <h3 class="jsdesc"  v-if="isText === false ">成本预算</h3>
           <h3 class="jsdesc" v-if="isText === true && formula">{{formula[0].CBWC_ND_XS}}</h3>
           <img src="~@/assets/images/icon_h_r.png" alt class="icon_h">
-        </div>
-        <img src="~@/assets/images/icon_r.png" alt class="icon_l">
-
-         <img src="~@/assets/images/icon_ch.png" alt class="icon_jh">
+          <img src="~@/assets/images/icon_ch.png" alt class="icon_jh">
           <h3 class="xsdesc"  v-if="isText === false ">分享门槛</h3>
           <h3 class="xsdesc" v-if="isText === true && formula">{{formula[0].SRXS_TC_XS}}</h3>
+        </div>
+        <img src="~@/assets/images/icon_r.png" alt class="icon_l">
           <img src="~@/assets/images/icon_ch.png" alt class="icon_jh">
           <h3 class="xsdesc"  v-if="isText === false ">系数</h3>
           <h3 class="xsdesc" v-if="isText === true && formula">{{formula[0].ZLSY_SJ_FX}}</h3>
