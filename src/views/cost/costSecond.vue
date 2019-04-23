@@ -487,7 +487,7 @@ export default {
             type: "bar",
             data: data,
             barWidth: 10, //柱子宽度
-            barGap: 1, //柱子之间间距
+            barGap: '10%', //柱子之间间距
             color: "#3AA3F3"
           },
           {
@@ -495,7 +495,7 @@ export default {
             type: "bar",
             data: data2,
             barWidth: 10,
-            barGap: 1,
+            barGap: '10%',
             color: "#F868AF"
           }
         ]
