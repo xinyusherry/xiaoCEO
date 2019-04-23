@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg"
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="xs" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="cardCont flexard">
         <el-popover placement="top" width="200" trigger="hover">
@@ -87,6 +91,7 @@ export default {
   components: { card, chartLine },
   data() {
     return {
+      loading:true,
       xs: {
         title: "序时收入预算完成率",
         ...defaultParam,
@@ -154,6 +159,7 @@ export default {
             xAxis: res.data.resultData.lineChart.map(v => v.ACCT_MONTH),
             data: res.data.resultData.lineChart.map(v => v.SR_NUM)
           };
+          _this.loading = false;
         })
         .catch(function(e) {
         });

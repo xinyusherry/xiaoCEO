@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg"
+   v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="xq" :timetype="''" :propsTime="cardTime" style="margin-right:10px;">
       <div class="cardCont flexcc">
         <div style="font-size:56px">{{xqData.XQ_NUM}}</div>
@@ -79,6 +83,7 @@ export default {
   components: { card },
   data() {
     return {
+      loading:true,
       xq: {
         title: "小区数",
         ...defaultParam,
@@ -120,6 +125,7 @@ export default {
           let data = res.data;
           _this.xqData = data.resultData;
           _this.date = data.resultData.ACCT_MONTH;
+          _this.loading = false;
         })
         .catch(function(e) {
         });

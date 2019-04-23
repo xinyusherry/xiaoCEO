@@ -488,7 +488,7 @@ export default {
             data: data,
             barWidth: 10, //柱子宽度
             barGap: 1, //柱子之间间距
-            color: "#F868AF"
+            color: "#3AA3F3"
           },
           {
             name: "2019",
@@ -496,7 +496,7 @@ export default {
             data: data2,
             barWidth: 10,
             barGap: 1,
-            color: "#3AA3F3"
+            color: "#F868AF"
           }
         ]
       };

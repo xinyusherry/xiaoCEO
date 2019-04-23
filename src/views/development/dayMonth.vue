@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" v-on:click="sendMsg">
+  <div class="moveDiv" v-on:click="sendMsg"
+   v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px" :propsTime="day.time">
       <div class="card-content">
         <div class="bigNum">
@@ -48,6 +52,7 @@ export default {
   },
   data() {
     return {
+      loading:true,
       alaxEnd:false,
       day: {
         cardset: {
@@ -151,6 +156,7 @@ export default {
               }
             }
             that.alaxEnd = true;
+            that.loading = false;
           }
         })
         .catch(function(e) {

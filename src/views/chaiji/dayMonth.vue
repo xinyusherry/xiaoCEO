@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" v-on:click="sendMsg(thirdParams)" >
+  <div class="moveDiv" v-on:click="sendMsg(thirdParams)" 
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="day.cardset" :timetype="'day'" style="margin-right:10px" :propsTime="day.time">
       <div class="card-content" >
         <div class="bigNum">
@@ -28,6 +32,7 @@ export default {
   components: { card, stackBar },
   data() {
     return {
+      loading:true,
       alaxEnd:false,
       thirdParams:null,
       day: {
@@ -144,6 +149,7 @@ export default {
             thirdParams.monthId = resultDataM.ACCT_MONTH;
             that.thirdParams = thirdParams;
             that.alaxEnd = true;
+            that.loading = false;
           }
         })
         .catch(function(e) {

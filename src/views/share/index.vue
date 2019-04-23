@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg(monthId)">
+  <div class="moveDiv" @click="sendMsg(monthId)"
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="cardset" :timetype="'month'" :propsTime="time">
       <div class="card-content">
         <chart-gauge :id="'guage'" :data="data" v-if="data!=null"></chart-gauge>
@@ -19,6 +23,7 @@ export default {
   },
   data() {
     return {
+      loading:true,
       cardset: {
         title: "增量收益分享",
         width: "100%",
@@ -55,6 +60,7 @@ export default {
             //   }
             // }
             that.data = data;
+            that.loading = false;
           }
         })
         .catch(function(e) {

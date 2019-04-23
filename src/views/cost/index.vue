@@ -1,12 +1,16 @@
 <template>
-  <div class="moveDiv" @click="sendMsg(cardTime)" v-if="indexNum">
+  <div class="moveDiv" @click="sendMsg(cardTime)"
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="lj" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="warpper">
         <h3 class="hj_unit">
           ￥&nbsp;&nbsp;
           <span class="hj">合计值 （单位：元）</span>
         </h3>
-        <h3 class="total_num" >{{indexNum.FINISH_VALUE}}</h3>
+        <h3 class="total_num" >{{indexNum==null?'':indexNum.FINISH_VALUE}}</h3>
         <div class="line">
           <div id="canvas" style="width:300px;height:100px;margin-top:20px"></div>
         </div>
@@ -35,6 +39,7 @@ export default {
   components: { card },
   data() {
     return {
+      loading:true,
       lj: {
         title: "成本完成值",
         ...defaultParam
@@ -157,6 +162,7 @@ export default {
       };
       let thisChart = _this.$echarts.init(document.getElementById(id));
       thisChart.setOption(option);
+      _this.loading = false;
       window.addEventListener("resize", () => {
         thisChart.resize();
       });

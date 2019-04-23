@@ -1,5 +1,9 @@
 <template>
-  <div class="card">
+  <div class="card"
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <div class="border"></div>
     <div class="titleDiv">
       <span class="title">到达</span>
@@ -62,6 +66,7 @@ export default {
   components: { chartLine },
   data() {
     return {
+      loading:true,
       isDay: 'day',
       lr: {
         title: "利润",
@@ -207,6 +212,7 @@ export default {
           if (res.data.resultCode === "1") {
             let resultData = res.data.resultData;
             _this.bottomData = resultData;
+            _this.loading = false;
           }
         })
         .catch(function(e) {});

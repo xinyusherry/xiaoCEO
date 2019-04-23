@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg" :propsTime="day.time">
+  <div class="moveDiv" @click="sendMsg" :propsTime="day.time"
+   v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="day.cardset" :timetype="'day'" :propsTime="day.time" style="margin-right:10px" v-if="xyData">
       <div class="card-content">
         <div class="bigNum">
@@ -58,6 +62,7 @@ export default {
   components: { card },
   data() {
     return {
+      loading:true,
       day: {
         cardset: {
           title: "到期预警",
@@ -137,6 +142,7 @@ export default {
             };
              _this.month.time = formatterTime(moment(new Date(new Date().getTime() - 24 * 60 * 60 * 1000)).format('YYYYMMDD'));
           }
+          _this.loading = false;
         })
         .catch(function(e) {});
     }

@@ -1,19 +1,23 @@
 <template>
-  <div class="moveDiv" v-on:click="sendMsg" v-if="arrears!=null">
+  <div class="moveDiv" v-on:click="sendMsg" 
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+    >
     <div class="content">
       <card :cardset="lj" :timetype="''" style="margin-right:10px;">
         <div class="precent">
-          <el-progress :percentage="arrears.LJ_RATE"  color="red" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
+          <el-progress v-if="arrears!=null" :percentage="arrears.LJ_RATE"  color="red" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
           <h3 class="precent_text">
-            {{arrears.LJ_RATE}}
+            {{arrears!=null && arrears.LJ_RATE}}
             <span class="unit">%</span>
           </h3>
         </div>
       </card>
       <card :cardset="dy" :timetype="''">
         <div class="precent">
-          <el-progress :percentage="arrears.DYUE_RATE" color="#19c172" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
-          <h3 class="precent_text">{{arrears.DYUE_RATE}}
+          <el-progress v-if="arrears!=null" :percentage="arrears.DYUE_RATE" color="#19c172" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
+          <h3 class="precent_text">{{arrears!=null && arrears.DYUE_RATE}}
             <span class="unit">%</span>
           </h3>
         </div>
@@ -23,16 +27,16 @@
       <card :cardset="dq" :timetype="''" style="margin-right:10px;">
         <div class="precent">
          
-          <el-progress :percentage="arrears.DQ_RATE" color="#F16012" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
-          <h3 class="precent_text">{{arrears.DQ_RATE}}
+          <el-progress v-if="arrears!=null" :percentage="arrears.DQ_RATE" color="#F16012" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
+          <h3 class="precent_text">{{arrears!=null && arrears.DQ_RATE}}
             <span class="unit">%</span>
           </h3>
         </div>
       </card>
       <card :cardset="cq" :timetype="''">
         <div class="precent">
-          <el-progress :percentage="arrears.CQ_RATE" color="#68FCFC" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
-          <h3 class="precent_text">{{arrears.CQ_RATE}}
+          <el-progress v-if="arrears!=null" :percentage="arrears.CQ_RATE" color="#68FCFC" style="width:70%" :show-text="false" :stroke-width="12" ></el-progress>
+          <h3 class="precent_text">{{arrears!=null && arrears.CQ_RATE}}
             <span class="unit">%</span>
           </h3>
         </div>
@@ -53,6 +57,7 @@ export default {
   components: { card },
   data() {
     return {
+      loading:true,
       lj: {
         title: "累计欠费回收率",
         ...defaultParam
@@ -70,7 +75,6 @@ export default {
         ...defaultParam
       },
       arrears:null
-
     };
   },
   methods: {
@@ -93,6 +97,7 @@ export default {
               resultData[key] = Number(parseFloat(resultData[key].replace(/\s*/g,"")).toFixed(2))
             }
             that.arrears = resultData;
+            that.loading = false;
           }
         })
         .catch(function(e) {});

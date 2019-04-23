@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg"
+   v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="cardset" :timetype="'time'" :propsTime="cardTime">
       <div class="card-content">
         <chart-line :id="'lineTime'" :dataset="developOnTime.dataset" :color="colors"></chart-line>
@@ -18,6 +22,7 @@ export default {
   },
   data() {
     return {
+      loading:true,
       cardset: {
         title: "发展（实时）",
         width: "100%",
@@ -72,6 +77,7 @@ export default {
               value: v.YD_VALUED
             };
           });
+          _this.loading = false;
         })
         .catch(function(e) {
         });

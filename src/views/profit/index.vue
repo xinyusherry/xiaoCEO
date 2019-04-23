@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv" @click="sendMsg">
+  <div class="moveDiv" @click="sendMsg"
+    v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="zlr" :timetype="'month'" :propsTime="cardTime" style="margin-right:10px;">
       <div class="warpper">
         <h3 class="hj_unit">
@@ -62,6 +66,7 @@ export default {
   components: { card, chartLine },
   data() {
     return {
+      loading:true,
       cardDate: "",
       zlr: {
         title: "准利润",
@@ -119,6 +124,7 @@ export default {
           _this.zlr.value = data.resultData[0].QUASI_PROFIT_T;
           _this.lr.rankData = resRank.data.resultData[1];
           _this.zlr.rankData = resRank.data.resultData[0];
+          _this.loading = false;
         }))
         .catch(function(e) {});
     },

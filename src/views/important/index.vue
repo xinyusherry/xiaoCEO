@@ -1,5 +1,9 @@
 <template>
-  <div class="moveDiv">
+  <div class="moveDiv"
+  v-loading="loading"
+    element-loading-text="Loading"
+    element-loading-background="rgba(0, 0, 0, 0.8)"
+  >
     <card :cardset="importantBus" :timetype="''">
       <el-button class="popBtn" type="primary" @click="sendMsg()" size="mini">指标选择</el-button>
       <div id="impLineChart" style="width:100%;height:calc(100% - 30px)"></div>
@@ -21,6 +25,7 @@ export default {
   props: ["receiveParams"],
   data() {
     return {
+      loading:true,
       importantBus: {
         title: "重点业务监控",
         ...defaultParam
@@ -63,6 +68,7 @@ export default {
           _this.$set(_this.lineDataset, "xAxis", data.resultData.rData.rDate);
           _this.$set(_this.lineDataset, "data", seriesData);
           _this.drawLineChart(_this.lineDataset);
+          _this.loading = false;
         })
         .catch(function(e) {
         });
