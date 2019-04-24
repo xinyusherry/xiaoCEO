@@ -13,15 +13,7 @@
       <card :cardset="sjxq" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont">
           <div class="numDiv flexcc">
-            <el-popover placement="top" width="300" trigger="hover">
-              <div style="color:#fff">
-                <p>单元类型（农村/城市）</p>
-                <p>市公司排名xxx 平均完成率 xxxx</p>
-                <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-                <p>分公司排名xxx 平均完成率 xxxx</p>
-              </div>
-              <div slot="reference">{{xqData.SJ_XQ_NUM}}</div>
-            </el-popover>
+            <div>{{xqData.SJ_XQ_NUM}}</div>
           </div>
           <div class="progressDiv flexcc">
             <div class="textDiv">
@@ -42,15 +34,7 @@
       <card :cardset="dsxq" :timetype="''" style="height:calc(50% - 5px);">
         <div class="cardCont">
           <div class="numDiv flexcc">
-            <el-popover placement="top" width="300" trigger="hover">
-              <div style="color:#fff">
-                <p>单元类型（农村/城市）</p>
-                <p>市公司排名xxx 平均完成率 xxxx</p>
-                <p>同类单元排名 xxxx 平均完成率 xxxxx</p>
-                <p>分公司排名xxx 平均完成率 xxxx</p>
-              </div>
-              <div slot="reference">{{xqData.DS_XQ_NUM}}</div>
-            </el-popover>
+            <div>{{xqData.DS_XQ_NUM}}</div>
           </div>
           <div class="progressDiv flexcc">
             <div class="textDiv">

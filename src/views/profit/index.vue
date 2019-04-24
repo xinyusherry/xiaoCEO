@@ -11,12 +11,12 @@
           <span class="hj">合计值 （单位：元）</span>
         </h3>
         <el-popover placement="top" width="200" trigger="hover">
-          <div v-if="zlr.rankData!=null" style="color:#fff">
-            <p>单元类型：{{zlr.rankData.ORGAN_TYPE}}</p>
-            <p>指标类型：{{zlr.rankData.ZB_CODE}}</p>
-            <p>同类排名：{{zlr.rankData.RAG_ORG_TL}}</p>
-            <p>全市排名：{{zlr.rankData.RAG_ORG_QS}}</p>
-            <p>分公司排名：{{zlr.rankData.RAG_ORG_FGS}}</p>
+          <div style="color:#fff">
+            <p>单元类型：{{zlr.rankData!=null?"--":zlr.rankData.ORGAN_TYPE}}</p>
+            <p>指标类型：{{zlr.rankData!=null?"--":zlr.rankData.ZB_CODE}}</p>
+            <p>同类排名：{{zlr.rankData!=null?"--":zlr.rankData.RAG_ORG_TL}}</p>
+            <p>全市排名：{{zlr.rankData!=null?"--":zlr.rankData.RAG_ORG_QS}}</p>
+            <p>分公司排名：{{zlr.rankData!=null?"--":zlr.rankData.RAG_ORG_FGS}}</p>
           </div>
           <h3 class="total_num" slot="reference">{{lr.value}}</h3>
         </el-popover>
@@ -36,12 +36,12 @@
           <span class="hj">合计值 （单位：元）</span>
         </h3>
         <el-popover placement="top" width="200" trigger="hover">
-          <div v-if="lr.rankData!=null" style="color:#fff">
-            <p>单元类型：{{lr.rankData.ORGAN_TYPE}}</p>
-            <p>指标类型：{{lr.rankData.ZB_CODE}}</p>
-            <p>同类排名：{{lr.rankData.RAG_ORG_TL}}</p>
-            <p>全市排名：{{lr.rankData.RAG_ORG_QS}}</p>
-            <p>分公司排名：{{lr.rankData.RAG_ORG_FGS}}</p>
+          <div style="color:#fff">
+            <p>单元类型：{{lr.rankData!=null?"--":lr.rankData.ORGAN_TYPE}}</p>
+            <p>指标类型：{{lr.rankData!=null?"--":lr.rankData.ZB_CODE}}</p>
+            <p>同类排名：{{lr.rankData!=null?"--":lr.rankData.RAG_ORG_TL}}</p>
+            <p>全市排名：{{lr.rankData!=null?"--":lr.rankData.RAG_ORG_QS}}</p>
+            <p>分公司排名：{{lr.rankData!=null?"--":lr.rankData.RAG_ORG_FGS}}</p>
           </div>
           <h3 class="total_num" slot="reference">{{zlr.value}}</h3>
         </el-popover>
@@ -117,7 +117,7 @@ export default {
       _this.$axios.all([getNumData(), getRankData()])
         .then(_this.$axios.spread(function (res, resRank) {
           // 两个请求现在都执行完成
-          //console.log("利润",res,resRank);
+          console.log("利润",res,resRank);
           let data = res.data;
           _this.cardDate = data.resultData[0].ACCT_MONTH;
           _this.lr.value = data.resultData[0].GROSS_PROFIT_T;
