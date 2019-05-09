@@ -290,7 +290,7 @@ export default {
             for(let k = 0;k< resultData.length;k++){
               array.push(resultData[k].CURRENT_VALUE)
             }
-            let max = getMax(array) + 1000;
+            let max = getMax(array.concat()) + 1000;
             let maxArr = [];
             let data = [];
             for (let i = 0; i < 12; i++) {

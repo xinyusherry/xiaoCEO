@@ -404,7 +404,7 @@ export default {
         title: [
           {
             left: "center",
-            text: "同比分析",
+            text: "累计同比分析",
             textStyle: {
               fontSize: 21,
               color: "#24FAFF"
